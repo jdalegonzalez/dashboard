@@ -38,11 +38,11 @@ type TThemeConfigs = {
 };
 
 const themeConfig: TThemeConfigs = {
-	projectTitle: 'Fyr',
-	projectName: 'React TypeScript Tailwind Admin & AI Chat Template',
+	projectTitle: 'Teramis',
+	projectName: 'Default dashboard theme from the Teramis control panel.',
 	language: 'en',
 
-	theme: DARK_MODE.SYSTEM,
+	theme: DARK_MODE.DARK,
 	themeColor: 'blue',
 	themeColorShade: '500',
 	rounded: 'rounded-lg',

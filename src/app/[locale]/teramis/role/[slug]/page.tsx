@@ -1,5 +1,5 @@
 import React from 'react';
-import RoleClient from '@/app/[locale]/crm/role/[slug]/client';
+import RoleClient from '@/app/[locale]/teramis/role/[slug]/client';
 
 const RolePage = () => {
 	return <RoleClient />;

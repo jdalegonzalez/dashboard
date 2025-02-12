@@ -84,7 +84,7 @@ const CustomerClient = () => {
 			<Subheader>
 				<SubheaderLeft>
 					<Link
-						href={`${appPages.crmAppPages.subPages.customerPage.subPages.listPage.to}`}>
+						href={`${appPages.teramisAppPages.subPages.agentPage.subPages.listPage.to}`}>
 						<Button icon='HeroArrowLeft' className='!px-0'>
 							Back to List
 						</Button>

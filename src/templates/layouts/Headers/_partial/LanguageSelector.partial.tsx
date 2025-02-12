@@ -36,8 +36,8 @@ const LanguageSelectorPartial = () => {
 		if (currentLocale === i18nConfig.defaultLocale && !i18nConfig.prefixDefault) {
 			i18n.changeLanguage(newLocale)
 				.then(() => {
-					localStorage.setItem('fyr_language', newLocale);
-					localStorage.setItem('fyr_dir', i18n.dir());
+					localStorage.setItem('teramis_language', newLocale);
+					localStorage.setItem('teramis_dir', i18n.dir());
 				})
 				.then(() => {
 					setLanguage(newLocale);
@@ -56,8 +56,8 @@ const LanguageSelectorPartial = () => {
 		} else {
 			i18n.changeLanguage(newLocale)
 				.then(() => {
-					localStorage.setItem('fyr_language', newLocale);
-					localStorage.setItem('fyr_dir', i18n.dir());
+					localStorage.setItem('teramis_language', newLocale);
+					localStorage.setItem('teramis_dir', i18n.dir());
 				})
 				.then(() => {
 					setLanguage(newLocale);

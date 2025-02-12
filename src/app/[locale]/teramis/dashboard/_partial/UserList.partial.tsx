@@ -1,40 +1,29 @@
 'use client';
 
 import React, { useState } from 'react';
-import PageWrapper from '@/components/layouts/PageWrapper/PageWrapper';
 import {
-	SortingState,
 	createColumnHelper,
-	useReactTable,
 	getCoreRowModel,
 	getFilteredRowModel,
-	getSortedRowModel,
 	getPaginationRowModel,
+	getSortedRowModel,
+	SortingState,
+	useReactTable,
 } from '@tanstack/react-table';
+import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/components/ui/Card';
 import usersDb, { TUser } from '@/mocks/db/users.db';
 import { appPages } from '@/config/pages.config';
-import Link from 'next/link';
 import Avatar from '@/components/Avatar';
 import Icon from '@/components/icon/Icon';
 import Tooltip from '@/components/ui/Tooltip';
-import Subheader, { SubheaderLeft, SubheaderRight } from '@/components/layouts/Subheader/Subheader';
-import FieldWrap from '@/components/form/FieldWrap';
-import Input from '@/components/form/Input';
-import Button from '@/components/ui/Button';
-import Container from '@/components/layouts/Container/Container';
-import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
-import Dropdown, {
-	DropdownItem,
-	DropdownMenu,
-	DropdownNavLinkItem,
-	DropdownToggle,
-} from '@/components/ui/Dropdown';
 import TableTemplate, { TableCardFooterTemplate } from '@/templates/common/TableParts.template';
+import Input from '@/components/form/Input';
+import FieldWrap from '@/components/form/FieldWrap';
+import Link from 'next/link';
 
 const columnHelper = createColumnHelper<TUser>();
 
-const editLinkPath = `${appPages.crmAppPages.subPages.customerPage.subPages.editPageLink.to}/`;
+const editLinkPath = `${appPages.teramisAppPages.subPages.agentPage.subPages.editPageLink.to}/`;
 
 const columns = [
 	columnHelper.accessor('image', {
@@ -43,8 +32,8 @@ const columns = [
 				<Avatar
 					src={info.getValue()?.thumb}
 					name={`${info.row.original.firstName} ${info.row.original.lastName}`}
-					className='!aspect-[9/12] !w-14 2xl:!w-20'
-					rounded='rounded'
+					className='!w-10'
+					rounded='rounded-full'
 				/>
 			</Link>
 		),
@@ -103,7 +92,7 @@ const columns = [
 	}),
 ];
 
-const CustomerListClient = () => {
+const UserListPartial = () => {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [globalFilter, setGlobalFilter] = useState<string>('');
 
@@ -130,9 +119,12 @@ const CustomerListClient = () => {
 	});
 
 	return (
-		<PageWrapper>
-			<Subheader>
-				<SubheaderLeft>
+		<Card className='h-full'>
+			<CardHeader>
+				<CardHeaderChild>
+					<CardTitle>Users</CardTitle>
+				</CardHeaderChild>
+				<CardHeaderChild>
 					<FieldWrap
 						firstSuffix={<Icon className='mx-2' icon='HeroMagnifyingGlass' />}
 						lastSuffix={
@@ -155,72 +147,18 @@ const CustomerListClient = () => {
 							onChange={(e) => setGlobalFilter(e.target.value)}
 						/>
 					</FieldWrap>
-				</SubheaderLeft>
-				<SubheaderRight>
-					<Link href={`${editLinkPath}new`}>
-						<Button variant='solid' icon='HeroPlus'>
-							New Customer
-						</Button>
-					</Link>
-				</SubheaderRight>
-			</Subheader>
-			<Container>
-				<Card className='h-full'>
-					<CardHeader>
-						<CardHeaderChild>
-							<CardTitle>All Customers</CardTitle>
-							<Badge
-								variant='outline'
-								className='border-transparent px-4'
-								rounded='rounded-full'>
-								{table.getFilteredRowModel().rows.length} items
-							</Badge>
-						</CardHeaderChild>
-						<CardHeaderChild>
-							<Dropdown>
-								<DropdownToggle>
-									<Button icon='HeroRocketLaunch'>Actions</Button>
-								</DropdownToggle>
-								<DropdownMenu placement='bottom-end'>
-									<div className='grid grid-cols-12 gap-4 divide-zinc-200 dark:divide-zinc-800 md:divide-x'>
-										<div className='col-span-12 gap-4 md:col-span-3'>
-											<DropdownNavLinkItem to='/' icon='HeroLink'>
-												Home Page
-											</DropdownNavLinkItem>
-											<DropdownNavLinkItem to='/ui/dropdown' icon='HeroLink'>
-												Dropdown
-											</DropdownNavLinkItem>
-											<DropdownItem icon='HeroSquare2Stack'>
-												Item 3
-											</DropdownItem>
-										</div>
-										<div className='col-span-12 gap-4 md:col-span-3'>
-											<DropdownItem icon='HeroSquare2Stack'>
-												Item 4
-											</DropdownItem>
-											<DropdownItem icon='HeroSquare2Stack'>
-												Item 5
-											</DropdownItem>
-											<DropdownItem icon='HeroSquare2Stack'>
-												Item 6
-											</DropdownItem>
-										</div>
-										<div className='col-span-12 gap-4 px-4 md:col-span-6'>
-											Lorem ipsum dolor sit amet.
-										</div>
-									</div>
-								</DropdownMenu>
-							</Dropdown>
-						</CardHeaderChild>
-					</CardHeader>
-					<CardBody className='overflow-auto'>
-						<TableTemplate className='table-fixed max-md:min-w-[70rem]' table={table} />
-					</CardBody>
-					<TableCardFooterTemplate table={table} />
-				</Card>
-			</Container>
-		</PageWrapper>
+				</CardHeaderChild>
+			</CardHeader>
+			<CardBody className='overflow-auto'>
+				<TableTemplate
+					className='table-fixed max-md:min-w-[70rem]'
+					table={table}
+					hasFooter={false}
+				/>
+			</CardBody>
+			<TableCardFooterTemplate table={table} />
+		</Card>
 	);
 };
 
-export default CustomerListClient;
+export default UserListPartial;

@@ -26,22 +26,13 @@ const DefaultAsideTemplate = () => {
 			</AsideHead>
 			<AsideBody>
 				<Nav>
-					<NavItem {...appPages.salesAppPages.subPages.salesDashboardPage} />
-					<NavItem {...appPages.aiAppPages.subPages.aiDashboardPage}>
-						<Badge
-							variant='outline'
-							color='amber'
-							className='border-transparent leading-none'>
-							NEW
-						</Badge>
-					</NavItem>
-					<NavItem {...appPages.crmAppPages.subPages.crmDashboardPage}>
+					<NavItem {...appPages.teramisAppPages.subPages.teramisDashboardPage}>
 						<NavButton
-							title='New Customer'
+							title='New Agent'
 							icon='HeroPlusCircle'
 							onClick={() => {
 								router.push(
-									`../${appPages.crmAppPages.subPages.customerPage.to}/new`,
+									`../${appPages.teramisAppPages.subPages.agentPage.to}/new`,
 								);
 							}}
 						/>
@@ -84,7 +75,6 @@ const DefaultAsideTemplate = () => {
 							/>
 						</NavCollapse>
 					</NavCollapse>
-
 					<NavCollapse
 						text={appPages.aiAppPages.text}
 						to={appPages.aiAppPages.to}
@@ -130,30 +120,30 @@ const DefaultAsideTemplate = () => {
 					</NavCollapse>
 
 					<NavCollapse
-						text={appPages.crmAppPages.text}
-						to={appPages.crmAppPages.to}
-						icon={appPages.crmAppPages.icon}>
-						<NavItem {...appPages.crmAppPages.subPages.crmDashboardPage} />
+						text={appPages.teramisAppPages.text}
+						to={appPages.teramisAppPages.to}
+						icon={appPages.teramisAppPages.icon}>
+						<NavItem {...appPages.teramisAppPages.subPages.teramisDashboardPage} />
 						<NavCollapse
-							text={appPages.crmAppPages.subPages.customerPage.text}
-							to={appPages.crmAppPages.subPages.customerPage.to}
-							icon={appPages.crmAppPages.subPages.customerPage.icon}>
+							text={appPages.teramisAppPages.subPages.agentPage.text}
+							to={appPages.teramisAppPages.subPages.agentPage.to}
+							icon={appPages.teramisAppPages.subPages.agentPage.icon}>
 							<NavItem
-								{...appPages.crmAppPages.subPages.customerPage.subPages.listPage}
+								{...appPages.teramisAppPages.subPages.agentPage.subPages.listPage}
 							/>
 							<NavItem
-								{...appPages.crmAppPages.subPages.customerPage.subPages.editPage}
+								{...appPages.teramisAppPages.subPages.agentPage.subPages.editPage}
 							/>
 						</NavCollapse>
 						<NavCollapse
-							text={appPages.crmAppPages.subPages.rolePage.text}
-							to={appPages.crmAppPages.subPages.rolePage.to}
-							icon={appPages.crmAppPages.subPages.rolePage.icon}>
+							text={appPages.teramisAppPages.subPages.rolePage.text}
+							to={appPages.teramisAppPages.subPages.rolePage.to}
+							icon={appPages.teramisAppPages.subPages.rolePage.icon}>
 							<NavItem
-								{...appPages.crmAppPages.subPages.rolePage.subPages.listPage}
+								{...appPages.teramisAppPages.subPages.rolePage.subPages.listPage}
 							/>
 							<NavItem
-								{...appPages.crmAppPages.subPages.rolePage.subPages.editPage}
+								{...appPages.teramisAppPages.subPages.rolePage.subPages.editPage}
 							/>
 						</NavCollapse>
 					</NavCollapse>

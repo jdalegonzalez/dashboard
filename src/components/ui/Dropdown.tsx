@@ -138,6 +138,7 @@ interface IDropdownMenuProps extends HTMLAttributes<HTMLUListElement> {
 	rounded?: TRounded;
 	setIsOpen?: Dispatch<SetStateAction<boolean>>;
 	referenceElement?: HTMLElement;
+	setReferenceElement?: Dispatch<SetStateAction<HTMLElement>>;
 }
 export const DropdownMenu: FC<IDropdownMenuProps> = (props) => {
 	const {
@@ -151,6 +152,7 @@ export const DropdownMenu: FC<IDropdownMenuProps> = (props) => {
 		rounded = themeConfig.rounded,
 		fallbackPlacements = [`top-start`, `bottom-start`],
 		referenceElement,
+		setReferenceElement,
 		...rest
 	} = props;
 

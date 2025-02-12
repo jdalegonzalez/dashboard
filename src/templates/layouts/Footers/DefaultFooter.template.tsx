@@ -6,11 +6,11 @@ const DefaultFooterTemplate = () => {
 	return (
 		<Footer>
 			<FooterLeft className='text-zinc-500'>
-				<div>Copyright © {dayjs().format('YYYY')}</div>
+				<div>Cape Endeavors</div>
 			</FooterLeft>
 			<FooterRight className='text-zinc-500'>
 				<span>
-					<b>Fyr</b> React Template
+					info@capeendeavors.com
 				</span>
 			</FooterRight>
 		</Footer>

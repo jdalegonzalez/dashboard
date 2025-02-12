@@ -27,7 +27,7 @@ import Input from '@/components/form/Input';
 
 const columnHelper = createColumnHelper<TRole>();
 
-const editLinkPath = `${appPages.crmAppPages.subPages.rolePage.subPages.editPageLink.to}/`;
+const editLinkPath = `${appPages.teramisAppPages.subPages.rolePage.subPages.editPageLink.to}/`;
 
 const columns = [
 	columnHelper.accessor('name', {

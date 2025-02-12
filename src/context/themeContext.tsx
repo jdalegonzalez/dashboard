@@ -44,12 +44,12 @@ export const ThemeContextProvider: FC<IThemeContextProviderProps> = ({ children 
 	 * Language
 	 */
 	const [language, setLanguage] = useState<TLang>(
-		(typeof window !== 'undefined' && (localStorage.getItem('fyr_language') as TLang)) ||
+		(typeof window !== 'undefined' && (localStorage.getItem('teramis_language') as TLang)) ||
 			themeConfig.language,
 	);
 
 	const [dir, setDir] = useState<string>(
-		(typeof window !== 'undefined' && (localStorage.getItem('fyr_dir') as string)) || 'ltr',
+		(typeof window !== 'undefined' && (localStorage.getItem('teramis_dir') as string)) || 'ltr',
 	);
 
 	/**
@@ -81,21 +81,21 @@ export const ThemeContextProvider: FC<IThemeContextProviderProps> = ({ children 
 	 */
 	const { width } = useDeviceScreen();
 	const [asideStatus, setAsideStatus] = useState(
-		typeof window !== 'undefined' && localStorage.getItem('fyr_asideStatus')
-			? localStorage.getItem('fyr_asideStatus') === 'true'
+		typeof window !== 'undefined' && localStorage.getItem('teramis_asideStatus')
+			? localStorage.getItem('teramis_asideStatus') === 'true'
 			: true,
 	);
 	useLayoutEffect(() => {
 		if (Number(theme.screens.md.replace('px', '')) <= Number(width))
-			localStorage.setItem('fyr_asideStatus', asideStatus?.toString());
+			localStorage.setItem('teramis_asideStatus', asideStatus?.toString());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [asideStatus]);
 	useEffect(() => {
 		if (Number(theme.screens.md.replace('px', '')) > Number(width)) setAsideStatus(false);
 		return () => {
 			setAsideStatus(
-				localStorage.getItem('fyr_asideStatus')
-					? localStorage.getItem('fyr_asideStatus') === 'true'
+				localStorage.getItem('teramis_asideStatus')
+					? localStorage.getItem('teramis_asideStatus') === 'true'
 					: true,
 			);
 		};
@@ -105,12 +105,12 @@ export const ThemeContextProvider: FC<IThemeContextProviderProps> = ({ children 
 	 * Font Size
 	 */
 	const [fontSize, setFontSize] = useState<number>(
-		typeof window !== 'undefined' && Number(localStorage.getItem('fyr_fontSize'))
-			? Number(localStorage.getItem('fyr_fontSize'))
+		typeof window !== 'undefined' && Number(localStorage.getItem('teramis_fontSize'))
+			? Number(localStorage.getItem('teramis_fontSize'))
 			: themeConfig.fontSize,
 	);
 	useLayoutEffect(() => {
-		localStorage.setItem('fyr_fontSize', fontSize?.toString());
+		localStorage.setItem('teramis_fontSize', fontSize?.toString());
 	}, [fontSize]);
 
 	const values: IThemeContextProps = useMemo(

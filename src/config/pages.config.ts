@@ -33,7 +33,7 @@ export const appPages = {
 				icon: 'HeroRocketLaunch',
 			},
 			chatPages: {
-				id: 'customerPage',
+				id: 'aiChatPage',
 				to: '/ai/chat',
 				text: 'Chat Pages',
 				icon: 'HeroChatBubbleLeft',
@@ -128,63 +128,63 @@ export const appPages = {
 			},
 		},
 	},
-	crmAppPages: {
-		id: 'crmApp',
-		to: '/crm',
-		text: 'CRM',
+	teramisAppPages: {
+		id: 'teramisApp',
+		to: '/teramis',
+		text: 'Teramis Dashboard',
 		icon: 'HeroUserGroup',
 		subPages: {
-			crmDashboardPage: {
-				id: 'crmDashboardPage',
-				to: '/crm/dashboard',
-				text: 'CRM Dashboard',
+			teramisDashboardPage: {
+				id: 'teramisDashboardPage',
+				to: '/teramis/dashboard',
+				text: 'Teramis Dashboard',
 				icon: 'HeroUserCircle',
 			},
-			customerPage: {
-				id: 'customerPage',
-				to: '/crm/customer',
-				text: 'Customers',
+			agentPage: {
+				id: 'agentPage',
+				to: '/teramis/agent',
+				text: 'Agents',
 				icon: 'HeroUserGroup',
 				subPages: {
 					listPage: {
-						id: 'crmListPage',
-						to: '/crm/customer/list',
-						text: 'Customers List',
+						id: 'agentListPage',
+						to: '/teramis/agent/list',
+						text: 'Agents List',
 						icon: 'HeroQueueList',
 					},
 					editPage: {
-						id: 'customerPage',
-						to: `/crm/customer/${usersDb[0].id}`,
-						text: `Customer @${usersDb[0].id}`,
+						id: 'agentPage',
+						to: `/teramis/agent/${usersDb[0].id}`,
+						text: `Agent @${usersDb[0].id}`,
 						icon: 'HeroUser',
 					},
 					editPageLink: {
 						id: 'editPageLink',
-						to: '/crm/customer',
+						to: '/teramis/agent',
 					},
 				},
 			},
 			rolePage: {
 				id: 'rolePage',
-				to: '/crm/role',
+				to: '/teramis/role',
 				text: 'Roles',
 				icon: 'HeroShieldCheck',
 				subPages: {
 					listPage: {
-						id: 'crmListPage',
-						to: '/crm/role/list',
+						id: 'teramisListPage',
+						to: '/teramis/role/list',
 						text: 'Role List',
 						icon: 'HeroQueueList',
 					},
 					editPage: {
-						id: 'customerPage',
-						to: `/crm/role/${rolesDb[0].id}`,
+						id: 'teramisPage',
+						to: `/teramis/role/${rolesDb[0].id}`,
 						text: `Role @${rolesDb[0].id}`,
 						icon: 'HeroShieldExclamation',
 					},
 					editPageLink: {
 						id: 'editPageLink',
-						to: '/crm/role',
+						to: '/teramis/role',
 					},
 				},
 			},

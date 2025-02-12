@@ -1,10 +1,10 @@
 import React from 'react';
-import CustomerClient from '@/app/[locale]/crm/customer/[slug]/client';
+import CustomerDashboardClient from '@/app/[locale]/teramis/dashboard/client';
 import TranslationsProvider from '@/components/TranslationsProvider';
 
 const i18nNamespaces = ['translation'];
 
-const CustomerPage = async (props: { params: Promise<{ locale: string }> }) => {
+const CustomerDashboardPage = async (props: { params: Promise<{ locale: string }> }) => {
     const params = await props.params;
 
     const {
@@ -13,9 +13,9 @@ const CustomerPage = async (props: { params: Promise<{ locale: string }> }) => {
 
     return (
 		<TranslationsProvider namespaces={i18nNamespaces} locale={locale}>
-			<CustomerClient />
+			<CustomerDashboardClient />
 		</TranslationsProvider>
 	);
 };
 
-export default CustomerPage;
+export default CustomerDashboardPage;

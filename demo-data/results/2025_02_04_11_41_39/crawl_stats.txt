@@ -1,0 +1,13 @@
+Root Directory: C:\Users\Nate\Documents\Convergent\spillage\lib_test_data
+Start Time: 2025-02-04 11:41:39.545638
+End Time: 2025-02-04 11:41:49.900583
+Duration: 0:00:10.354945
+Throughput: 1.79 GB per second
+Root Size: 18.53 GB
+Directories: 43
+Files: 9174
+Unsupported: 28
+Unique Files: 1336
+Largest File: 1.62 GB (C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\zipped\test\data_org.7z)
+Extensions: ['.7z', '.bmp', '.bz2', '.dib', '.doc', '.docx', '.dwg', '.gif', '.gz', '.html', '.jpg', '.msg', '.odp', '.odt', '.pdf', '.png', '.ppt', '.pptx', '.ps1', '.py', '.rtf', '.sh', '.tar', '.tif', '.tiff', '.txt', '.vsdx', '.xls', '.xlsx', '.xml', '.xz', '.zip']
+Errors: 0

@@ -1,0 +1,13 @@
+Root Directory: C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type
+Start Time: 2025-02-05 09:38:06.042421
+End Time: 2025-02-05 09:38:06.200090
+Duration: 0:00:00.157669
+Throughput: 710.09 MB per second
+Root Size: 111.96 MB
+Directories: 1
+Files: 47
+Unsupported: 5
+Unique Files: 40
+Largest File: 22.43 MB (C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\zipper.7z)
+Extensions: ['.7z', '.bmp', '.dib', '.doc', '.docx', '.dwg', '.gif', '.gz', '.html', '.jpg', '.msg', '.odp', '.odt', '.pdf', '.png', '.ppt', '.pptx', '.rtf', '.tar', '.tif', '.tiff', '.txt', '.vsdx', '.xls', '.xlsx', '.xml', '.zip']
+Errors: 0

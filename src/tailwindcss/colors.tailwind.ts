@@ -1,5 +1,7 @@
 import tailwindcssColors from 'tailwindcss/colors';
-import { SupportedColors } from 'tailwindcss/types/generated/colors';
+import { DefaultColors } from 'tailwindcss/types/generated/colors';
+
+export type SupportedColors = Omit<DefaultColors, 'lightBlue'|'warmGray'|'trueGray'|'coolGray'|'blueGray'>;
 
 const supportedColors:any = tailwindcssColors
 delete supportedColors['lightBlue']

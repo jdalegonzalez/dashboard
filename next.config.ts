@@ -15,6 +15,13 @@ const nextConfig = {
 */
 import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
+	async redirects() {
+		return [{
+			source: '/',
+			destination: '/teramis/dashboard',
+			permanent: true
+		}]
+	},
 	experimental: {
 		turbo: {
 		},

@@ -1,0 +1,40 @@
+2025-02-05 09:38:08,545 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\10053.dwg: ["CUI (first 100 chars)"] - Med
+2025-02-05 09:38:08,550 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\10009.vsdx: ["CONTROLLED//DISEM-A/DISSEM- (first 100 chars)"] - High
+2025-02-05 09:38:08,554 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\1525.xlsx: ["SF902 or SF903 hash match"] - High
+2025-02-05 09:38:08,556 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\10175.pdf: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,560 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\10175.zip: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,566 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\2302.msg: ["CUI//SP-CEII (first 100 chars)", "CUI//SP-EXPT (first 250 chars)"] - High
+2025-02-05 09:38:08,570 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\1901.xls: ["CUI (first 100 chars)"] - Med
+2025-02-05 09:38:08,574 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\2401.gz: ["CUI (first 100 chars)"] - Med
+2025-02-05 09:38:08,580 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\2077.pptx: ["CUI"] - Low
+2025-02-05 09:38:08,586 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\2035_tp.odp: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,589 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\2136.ppt: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,594 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\2401.html: ["CUI (first 100 chars)"] - Med
+2025-02-05 09:38:08,597 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\2401_2.odt: ["CUI (first 100 chars)"] - Med
+2025-02-05 09:38:08,601 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\2424.txt: ["CUI//DISSEM-A/DISSEC- (first 100 chars)"] - High
+2025-02-05 09:38:08,601 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\2424_lnk.txt: ["CUI//DISSEM-A/DISSEC- (first 100 chars)"] - High
+2025-02-05 09:38:08,605 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\462.tar: ["CUI", "CUI Designation Indicator match"] - High
+2025-02-05 09:38:08,609 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\855.doc: ["CUI//DISEMA/DISSEMC"] - High
+2025-02-05 09:38:08,616 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\Honu Project Plan for scanning tests xls.xlsx: ["CUI"] - Low
+2025-02-05 09:38:08,625 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\img_zip\cui_cov.dib: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,628 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\img_zip\cui_cov.gif: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,632 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\img_zip\cui_cov.bmp: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,636 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\img_zip\cui_cov.jpg: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,639 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\Honu Project Plan for scanning tests PDF.pdf: ["CUI"] - Low
+2025-02-05 09:38:08,643 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\img_zip\cui_cov.png: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,646 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\img_zip\cui_cov.tif: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,650 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\img_zip\cui_cov.tiff: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,653 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\img_zip.7z: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,657 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\content.xml: ["CUI (first 100 chars)"] - Med
+2025-02-05 09:38:08,660 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\sf_903_tp.docx: ["SF902 or SF903 hash match"] - High
+2025-02-05 09:38:08,664 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\Test 1 False Positive_cont.docx: ["CONTROLLED"] - Low
+2025-02-05 09:38:08,668 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\rtf_test.rtf: ["CUI (first 100 chars)"] - Med
+2025-02-05 09:38:08,668 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\SF 18 Signed – RFQ_70B06C22Q00000320_4S_LLC - Copy.rtf: ["CUI (first 100 chars)"] - Med
+2025-02-05 09:38:08,672 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\Test 1 True Positive_cont.docx: ["CONTROLLED", "CONTROLLED (first 100 chars)"] - Med
+2025-02-05 09:38:08,675 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\Test 2 True Positive Type 1.pdf: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,679 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\Test 3 True Positive Type 1.xlsx: ["SF902 or SF903 hash match", "SF902 Image CV2 detection"] - High
+2025-02-05 09:38:08,682 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\test.pdf: ["SF903 Image CV2 detection", "CUI"] - High
+2025-02-05 09:38:08,686 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\zipper3.zip: ["CUI Coverpage CV2 detection", "CUI//DISEMA/DISSEMC", "CUI", "SF902 or SF903 hash match", "CONTROLLED//DISEM-A/DISSEM- (first 100 chars)"] - High
+2025-02-05 09:38:08,689 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\zipper4.tar.gz: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,693 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\Test 5 True Positive.pdf: ["CUI Coverpage CV2 detection"] - High
+2025-02-05 09:38:08,697 - INFO - C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\zipper.7z: ["SF902 or SF903 hash match", "CUI", "CUI Coverpage CV2 detection"] - High

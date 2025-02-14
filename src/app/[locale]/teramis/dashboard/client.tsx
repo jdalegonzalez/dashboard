@@ -17,7 +17,7 @@ import Mini4Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini4.partia
 import Mini5Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini5.partial';
 import Mini6Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini6.partial';
 import MapPartial from '@/app/[locale]/teramis/dashboard/_partial/Map.partial';
-import ChartPartial from '@/app/[locale]/(home)/_partial/Chart.partial';
+import ChartPartial from '@/app/[locale]/(home)/_partial.deprecated/Chart.partial';
 import ReportsPartial from '@/app/[locale]/teramis/dashboard/_partial/Reports.partial';
 import UserListPartial from '@/app/[locale]/teramis/dashboard/_partial/UserList.partial';
 import CalendarPartial from '@/app/[locale]/teramis/dashboard/_partial/Calendar.partial';
@@ -32,7 +32,7 @@ const TABS: {
 	TASKS: 'Tasks',
 };
 
-const CustomerDashboardClient = () => {
+const TeramisDashboardClient = () => {
 	const [activeTab, setActiveTab] = useState(TABS.OVERVIEW);
 	const [state, setState] = useState({
 		selection: {
@@ -162,4 +162,4 @@ const CustomerDashboardClient = () => {
 	);
 };
 
-export default CustomerDashboardClient;
+export default TeramisDashboardClient;

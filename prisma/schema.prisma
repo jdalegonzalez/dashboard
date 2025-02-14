@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Status {
+  CRAWLING
+  SCANNING
+  IDLE
+  ERRORED
+}
+
+enum Severity {
+  HINT
+  WARNING
+  ERROR
+  FATAL
+}
+
+enum Confidence {
+  HIGH
+  MEDIUM
+  LOW
+  NONE
+}
+
+model Agent {
+  id          String   @id @default(cuid(2))
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  name        String
+  location    String
+  path        String
+  directory   String   @default("")
+  use_history Boolean  @default(true)
+  status      Status   @default(IDLE)
+  crawls      Crawl[]
+  scans       Scan[]
+}
+
+model Crawl {
+  id                 String   @id @default(cuid(2))
+  created_at         DateTime @default(now())
+  updated_at         DateTime @default(now())
+  root_path          String
+  file_count         Int
+  dir_count          Int
+  total_size         BigInt
+  scan_size          BigInt
+  largest_file_size  BigInt
+  largest_file_path  String
+  extensions         String[]
+  start_time         DateTime @default(now())
+  end_time           DateTime
+  duration           Unsupported("interval")?
+  throughput         Float
+  errors             CrawlError[]
+  hashes             CrawlHash[]
+  unsupported_files  String[]
+  agent              Agent @relation(fields: [agentId], references: [id], onDelete: Restrict)
+  agentId            String
+}
+
+model CrawlError {
+  id         String   @id @default(cuid(2))
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  error_name String
+  error_desc String
+  file       String
+  crawl      Crawl    @relation(fields: [crawlId], references: [id], onDelete: Cascade)
+  crawlId    String
+}
+
+model CrawlHash {
+  hash       String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  file_paths String[]
+  bsize      Int
+  format     String
+  crawl      Crawl    @relation(fields: [crawlId], references: [id], onDelete: Cascade)
+  crawlId    String
+  @@id([crawlId, hash])
+}
+
+model Scan {
+  id              String   @id @default(cuid(2))
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now())
+  root_path       String
+  start_time      DateTime @default(now())
+  end_time        DateTime?
+  duration        Unsupported("interval")?
+  matches         Int
+  timeouts        Int
+  gigs_per_second Float
+  errors          ScanError[]
+  results         ScanResult[]
+  agent           Agent @relation(fields: [agentId], references: [id], onDelete: Restrict)
+  agentId         String
+}
+
+model ScanError {
+  id              String   @id @default(cuid(2))
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now())
+  occurred_at     DateTime
+  severity        Severity
+  error_name      String
+  error_desc      String
+  file            String
+  scan            Scan     @relation(fields: [scanId], references: [id], onDelete: Cascade)
+  scanId          String
+}
+
+model ScanResult {
+  id              String   @id @default(cuid(2))
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now())
+  hash            String
+  file_path       String
+  mime_type       String
+  bsize           Int
+  processed       Boolean
+  errored         Boolean
+  match           String[]
+  confidence      Confidence
+  scan            Scan     @relation(fields: [scanId], references: [id], onDelete: Cascade)
+  scanId          String
+}

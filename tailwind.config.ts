@@ -5,6 +5,15 @@ const config: Config = {
 	content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
 	theme: {
 		extend: {
+			keyframes: {
+				'dot-pulse': {
+				'0%, 100%': { transform: 'scale(0.8)' },
+				'50%': { transform: 'scale(1.2)' },
+				},
+			},
+			animation: {
+				'dot-pulse': 'dot-pulse 1.5s linear infinite',
+			},
 			fontFamily: {
 				sans: ['Poppins', ...defaultTheme.fontFamily.sans],
 			},

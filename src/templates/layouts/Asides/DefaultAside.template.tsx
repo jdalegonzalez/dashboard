@@ -16,6 +16,11 @@ import Badge from '../../../components/ui/Badge';
 import UserTemplate from '../User/User.template';
 import usersDb from '../../../mocks/db/users.db';
 
+const removeSubPages = (obj:any)  => {
+	const {['subPages']: unused, ...rest} = obj;
+	return rest
+}
+
 const DefaultAsideTemplate = () => {
 	const router = useRouter();
 
@@ -296,7 +301,7 @@ const DefaultAsideTemplate = () => {
 						text={componentsPages.iconsPage.text}
 						to={componentsPages.iconsPage.to}
 						icon={componentsPages.iconsPage.icon}>
-						<NavItem {...componentsPages.iconsPage} />
+						<NavItem {...removeSubPages(componentsPages.iconsPage)} />
 						<NavItem {...componentsPages.iconsPage.subPages.heroiconsPage}>
 							<Badge
 								variant='outline'

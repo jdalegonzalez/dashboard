@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import dayjs from 'dayjs';
 import PageWrapper from '@/components/layouts/PageWrapper/PageWrapper';
 import Subheader, { SubheaderLeft, SubheaderRight } from '@/components/layouts/Subheader/Subheader';
@@ -107,7 +107,9 @@ const TeramisDashboardClient = () => {
 				{activeTab === TABS.OVERVIEW && (
 					<div className='grid grid-cols-12 gap-4'>
 						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
-							<Mini1Partial />
+							<Suspense>
+								<Mini1Partial />
+							</Suspense>
 						</div>
 						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
 							<Mini2Partial />

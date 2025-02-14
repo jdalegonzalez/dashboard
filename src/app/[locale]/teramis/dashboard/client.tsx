@@ -10,7 +10,7 @@ import { DateRangePicker } from 'react-date-range';
 import colors from '@/tailwindcss/colors.tailwind';
 import themeConfig from '@/config/theme.config';
 import Container from '@/components/layouts/Container/Container';
-import Mini1Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini1.partial';
+import MiniAgent from '@/app/[locale]/teramis/dashboard/_partial/MiniAgent.partial';
 import Mini2Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini2.partial';
 import Mini3Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini3.partial';
 import Mini4Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini4.partial';
@@ -107,9 +107,7 @@ const TeramisDashboardClient = () => {
 				{activeTab === TABS.OVERVIEW && (
 					<div className='grid grid-cols-12 gap-4'>
 						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
-							<Suspense>
-								<Mini1Partial />
-							</Suspense>
+							<MiniAgent />
 						</div>
 						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
 							<Mini2Partial />

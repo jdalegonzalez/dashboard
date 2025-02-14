@@ -6,7 +6,7 @@ import useSWR from 'swr';
 import fetch from '@/app/lib/fetch';
 import AnimatedDots from '@/components/utils/AnimatedDotsTail';
 
-const Mini1Partial = () => {
+const MiniAgent = () => {
 	const { data } = useSWR<{agentCount: number}>('/api/agent', fetch)
 	console.log(data)
 	return (
@@ -34,4 +34,4 @@ const Mini1Partial = () => {
 	);
 };
 
-export default Mini1Partial;
+export default MiniAgent;

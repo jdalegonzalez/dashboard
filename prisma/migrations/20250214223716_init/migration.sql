@@ -121,6 +121,9 @@ CREATE TABLE "ScanResult" (
     CONSTRAINT "ScanResult_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateIndex
+CREATE INDEX "ScanResult_confidence_idx" ON "ScanResult"("confidence");
+
 -- AddForeignKey
 ALTER TABLE "Crawl" ADD CONSTRAINT "Crawl_agentId_fkey" FOREIGN KEY ("agentId") REFERENCES "Agent"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 

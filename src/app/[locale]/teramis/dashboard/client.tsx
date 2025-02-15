@@ -11,8 +11,8 @@ import colors from '@/tailwindcss/colors.tailwind';
 import themeConfig from '@/config/theme.config';
 import Container from '@/components/layouts/Container/Container';
 import MiniAgent from '@/app/[locale]/teramis/dashboard/_partial/MiniAgent.partial';
-import Mini2Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini2.partial';
-import Mini3Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini3.partial';
+import MiniCUIWarnings from '@/app/[locale]/teramis/dashboard/_partial/MiniCUIWarnings.partial';
+import MiniAgentErrors from '@/app/[locale]/teramis/dashboard/_partial/MiniAgentErrors.partial';
 import Mini4Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini4.partial';
 import Mini5Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini5.partial';
 import Mini6Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini6.partial';
@@ -25,10 +25,10 @@ import { useTranslation } from 'react-i18next';
 import useLocale from '@/hooks/useLocale';
 
 const TABS: {
-	[key in 'OVERVIEW' | 'ONLINE_USERS' | 'TASKS']: 'Overview' | 'Online Users' | 'Tasks';
+	[key in 'OVERVIEW' | 'ACTIVE_AGENTS' | 'TASKS']: 'Overview' | 'Active Agents' | 'Tasks';
 } = {
 	OVERVIEW: 'Overview',
-	ONLINE_USERS: 'Online Users',
+	ACTIVE_AGENTS: 'Active Agents',
 	TASKS: 'Tasks',
 };
 
@@ -110,10 +110,10 @@ const TeramisDashboardClient = () => {
 							<MiniAgent />
 						</div>
 						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
-							<Mini2Partial />
+							<MiniCUIWarnings />
 						</div>
 						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
-							<Mini3Partial />
+							<MiniAgentErrors />
 						</div>
 						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
 							<Mini4Partial />
@@ -143,7 +143,7 @@ const TeramisDashboardClient = () => {
 						</div>
 					</div>
 				)}
-				{activeTab === TABS.ONLINE_USERS && (
+				{activeTab === TABS.ACTIVE_AGENTS && (
 					<div className='grid grid-cols-12 gap-4'>
 						<div className='col-span-12'>
 							<MapPartial composableMapClassName='aspect-[2/1]' />

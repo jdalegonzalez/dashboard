@@ -138,4 +138,5 @@ model ScanResult {
   confidence      Confidence
   scan            Scan     @relation(fields: [scanId], references: [id], onDelete: Cascade)
   scanId          String
+  @@index(fields: [confidence])
 }

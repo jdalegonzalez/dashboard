@@ -13,6 +13,10 @@ type TThemeConfigs = {
 	theme: TDarkMode;
 	themeColor: TColors;
 	themeColorShade: TColorIntensity;
+	warningColor: TColors;
+	warningColorShade: TColorIntensity;
+	errorColor: TColors
+	errorColorShade: TColorIntensity;
 	rounded: TRounded;
 	/**
 	 * UI Components
@@ -45,6 +49,10 @@ const themeConfig: TThemeConfigs = {
 	theme: DARK_MODE.DARK,
 	themeColor: 'blue',
 	themeColorShade: '500',
+	warningColor: 'amber',
+	warningColorShade: '600',
+	errorColor: 'red',
+	errorColorShade: '800',
 	rounded: 'rounded-lg',
 	borderWidth: 'border-2',
 	transition: 'transition-all duration-300 ease-in-out',

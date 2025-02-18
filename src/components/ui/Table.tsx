@@ -1,5 +1,6 @@
 import React, {
 	FC,
+	forwardRef,
 	HTMLAttributes,
 	ReactNode,
 	TableHTMLAttributes,
@@ -85,13 +86,15 @@ interface IThProps extends ThHTMLAttributes<HTMLTableHeaderCellElement> {
 	isResizable?: boolean;
 	isColumnBorder?: boolean;
 }
+const paddingClass = 'p-2';
 export const Th: FC<IThProps> = (props) => {
 	const { children, className, isResizable = false, isColumnBorder = true, ...rest } = props;
 
 	const classes = classNames(
 		'bg-zinc-950/10',
 		'dark:bg-zinc-950/90',
-		'p-4',
+		paddingClass,
+		'font-medium',
 		'ltr:group-[&:first-child]/Tr:[&:first-child]:rounded-tl-lg ltr:group-[&:first-child]/Tr:[&:last-child]:rounded-tr-lg',
 		'ltr:group-[&:last-child]/Tr:[&:first-child]:rounded-bl-lg ltr:group-[&:last-child]/Tr:[&:last-child]:rounded-br-lg',
 		'rtl:group-[&:first-child]/Tr:[&:first-child]:rounded-tr-lg rtl:group-[&:first-child]/Tr:[&:last-child]:rounded-tl-lg',
@@ -160,7 +163,7 @@ export const Td: FC<ITdProps> = (props) => {
 		'group-hover/Tr:bg-zinc-500/10',
 		'dark:group-even/Tr:bg-zinc-950/50',
 		'dark:group-hover/Tr:bg-zinc-950/90',
-		'p-4',
+		paddingClass,
 		themeConfig.transition,
 		className,
 	);
@@ -177,17 +180,17 @@ export interface ITableProps extends TableHTMLAttributes<HTMLTableElement> {
 	children: ReactNode;
 	className?: string;
 }
-const Table: FC<ITableProps> = (props) => {
+const Table: React.ForwardRefRenderFunction<HTMLTableElement, ITableProps> = (props, ref) => {
 	const { children, className, ...rest } = props;
 
 	const classes = classNames('w-full', className);
 
 	return (
-		<table data-component-name='Table' className={classes} {...rest}>
+		<table ref={ref} data-component-name='Table' className={classes} {...rest}>
 			{children}
 		</table>
 	);
 };
 Table.displayName = 'Table';
 
-export default Table;
+export default forwardRef(Table);

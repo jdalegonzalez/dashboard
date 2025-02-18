@@ -74,7 +74,7 @@ export const appPages = {
 		subPages: {
 			salesDashboardPage: {
 				id: 'salesDashboardPage',
-				to: '/',
+				to: '/sales/dashboard',
 				text: 'Sales Dashboard',
 				icon: 'HeroRectangleGroup',
 			},

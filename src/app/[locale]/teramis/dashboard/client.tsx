@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import PageWrapper from '@/components/layouts/PageWrapper/PageWrapper';
 import Subheader, { SubheaderLeft, SubheaderRight } from '@/components/layouts/Subheader/Subheader';
@@ -13,13 +13,13 @@ import Container from '@/components/layouts/Container/Container';
 import MiniAgent from '@/app/[locale]/teramis/dashboard/_partial/MiniAgent.partial';
 import MiniCUIWarnings from '@/app/[locale]/teramis/dashboard/_partial/MiniCUIWarnings.partial';
 import MiniAgentErrors from '@/app/[locale]/teramis/dashboard/_partial/MiniAgentErrors.partial';
-import Mini4Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini4.partial';
-import Mini5Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini5.partial';
-import Mini6Partial from '@/app/[locale]/teramis/dashboard/_partial/Mini6.partial';
+import MiniTotalFiles from '@/app/[locale]/teramis/dashboard/_partial/MiniTotalFiles.partial';
+import MiniUniqueFiles from '@/app/[locale]/teramis/dashboard/_partial/MiniUniqueFiles.partial';
+import MiniUnsupporedFiles from '@/app/[locale]/teramis/dashboard/_partial/MiniUnsupportedFiles.partial';
 import MapPartial from '@/app/[locale]/teramis/dashboard/_partial/Map.partial';
-import ChartPartial from '@/app/[locale]/(home)/_partial.deprecated/Chart.partial';
-import ReportsPartial from '@/app/[locale]/teramis/dashboard/_partial/Reports.partial';
-import UserListPartial from '@/app/[locale]/teramis/dashboard/_partial/UserList.partial';
+import ScanSummaryPartial from '@/app/[locale]/teramis/dashboard/_partial/ScanSummary.partial';
+import ErrorListPartial from '@/app/[locale]/teramis/dashboard/_partial/ErrorList.partial';
+import FindingsListPartial from '@/app/[locale]/teramis/dashboard/_partial/FindingsList.partial';
 import CalendarPartial from '@/app/[locale]/teramis/dashboard/_partial/Calendar.partial';
 import { useTranslation } from 'react-i18next';
 import useLocale from '@/hooks/useLocale';
@@ -110,33 +110,30 @@ const TeramisDashboardClient = () => {
 							<MiniAgent />
 						</div>
 						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
+							<MiniTotalFiles />
+						</div>
+						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
+							<MiniUniqueFiles />
+						</div>
+						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
+							<MiniUnsupporedFiles />
+						</div>
+						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
 							<MiniCUIWarnings />
 						</div>
 						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
 							<MiniAgentErrors />
 						</div>
-						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
-							<Mini4Partial />
-						</div>
-						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
-							<Mini5Partial />
-						</div>
-						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
-							<Mini6Partial />
-						</div>
 
-						<div className='col-span-12 2xl:col-span-3'>
-							<MapPartial />
-						</div>
-						<div className='col-span-12 2xl:col-span-3'>
-							<ChartPartial />
+						<div className='col-span-12 2xl:col-span-6'>
+							<ScanSummaryPartial />
 						</div>
 						<div className='col-span-12 2xl:col-span-6'>
-							<ReportsPartial />
+							<FindingsListPartial />
 						</div>
 
 						<div className='col-span-12 2xl:col-span-6'>
-							<UserListPartial />
+							<ErrorListPartial />
 						</div>
 						<div className='col-span-12 2xl:col-span-6'>
 							<CalendarPartial />

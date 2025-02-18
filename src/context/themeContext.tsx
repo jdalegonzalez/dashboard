@@ -64,15 +64,15 @@ export const ThemeContextProvider: FC<IThemeContextProviderProps> = ({ children 
 		localStorage.setItem('theme', darkModeStatus as string);
 
 		if (
-			localStorage.getItem('theme') === DARK_MODE.DARK ||
+			localStorage.getItem('theme') === DARK_MODE.LIGHT ||
 			(localStorage.getItem('theme') === DARK_MODE.SYSTEM &&
-				window.matchMedia(`(prefers-color-scheme: ${DARK_MODE.DARK})`).matches)
+				window.matchMedia(`(prefers-color-scheme: ${DARK_MODE.LIGHT})`).matches)
 		) {
-			document.documentElement.classList.add(DARK_MODE.DARK);
-			setIsDarkTheme(true);
-		} else {
 			document.documentElement.classList.remove(DARK_MODE.DARK);
 			setIsDarkTheme(false);
+		} else {
+			document.documentElement.classList.add(DARK_MODE.DARK);
+			setIsDarkTheme(true);
 		}
 	}, [darkModeStatus]);
 

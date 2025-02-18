@@ -25,7 +25,7 @@ const LoginPage = (
         searchParams?: Promise<Record<'callbackUrl' | 'error', string>>;
     }
 ) => {
-    const searchParams = use(props.searchParams);
+    const searchParams = props.searchParams ? use(props.searchParams) : undefined;
     const router = useRouter();
 
     const [passwordShowStatus, setPasswordShowStatus] = useState<boolean>(false);

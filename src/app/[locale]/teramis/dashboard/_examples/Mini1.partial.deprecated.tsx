@@ -2,19 +2,16 @@ import React from 'react';
 import Card, { CardBody } from '@/components/ui/Card';
 import Icon from '@/components/icon/Icon';
 import themeConfig from '@/config/theme.config';
-import AnimatedDots from '@/components/utils/AnimatedDotsTail';
-import useAgentOverview from '@/hooks/useAgentOverview';
 
-const MiniAgent = () => {
-	const { agentInfo } = useAgentOverview();
+const Mini1Partial = () => {
 	return (
 		<Card className='h-full'>
 			<CardBody>
 				<div className='flex items-center gap-4'>
 					<div className='flex-shrink-0'>
-						<div className='rounded-full bg-stone-950/50 p-4'>
+						<div className='rounded-full bg-blue-500/10 p-4'>
 							<Icon
-								icon='DuoLte1'
+								icon='HeroUserGroup'
 								size='text-5xl'
 								color={themeConfig.themeColor}
 							/>
@@ -22,8 +19,8 @@ const MiniAgent = () => {
 					</div>
 					<div className='flex grow items-center'>
 						<div>
-							<div className='text-zinc-500'>Total Agents</div>
-							<div className='text-3xl font-semibold'>{ agentInfo? agentInfo.agentCount : <AnimatedDots className='mt-4 bg-zinc-500' size={1} /> }</div>
+							<div className='text-zinc-500'>Total Users</div>
+							<div className='text-3xl font-semibold'>1352</div>
 						</div>
 					</div>
 				</div>
@@ -32,4 +29,4 @@ const MiniAgent = () => {
 	);
 };
 
-export default MiniAgent;
+export default Mini1Partial;

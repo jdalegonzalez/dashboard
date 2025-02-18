@@ -13,7 +13,7 @@ import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/compon
 import MdViewer from '@/components/MdViewer';
 import TablePart from '@/app/[locale]/ui/table/_partial/Table.part';
 import Table3Part from '@/app/[locale]/ui/table/_partial/Table3.part';
-import TablePartial from '@/app/[locale]/(home)/_partial/Table.partial';
+import TablePartial from '@/app/[locale]/sales/dashboard/_partial.deprecated/Table.partial';
 import TableInterfaceMD from './_md/TableInterface.md';
 import TableExample1MD from './_md/TableExample1.md';
 import TableExample2MD from './_md/TableExample2.md';

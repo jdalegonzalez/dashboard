@@ -1,6 +1,6 @@
 import React from 'react';
 import TranslationsProvider from '@/components/TranslationsProvider';
-import HomeClient from '@/app/[locale]/teramis/dashboard/client';
+import HomeClient from '@/app/[locale]/sales/dashboard/client.deprecated';
 import PageFallbackTemplate from '@/templates/PageFallback.template';
 // import { getServerSession } from 'next-auth';
 // import { authOptions } from '@/app/api/auth/[...nextauth]';

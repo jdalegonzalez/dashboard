@@ -52,10 +52,10 @@ const RootLayout = async (
 
     dayjs.extend(localizedFormat);
 
-    return (
+	return (
 		<Providers>
 			<html suppressHydrationWarning lang={locale} dir={dir(locale)}>
-				<body className={poppins.className}>
+				<body className={`${poppins.className} bg-zinc-800`}>
 					<div id='root'>
 						<div data-component-name='App' className='flex grow flex-col'>
 							<AsideRouter />

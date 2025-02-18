@@ -1,13 +1,12 @@
 import React from 'react';
 import Card, { CardBody } from '@/components/ui/Card';
 import Icon from '@/components/icon/Icon';
-import priceFormat from '@/utils/priceFormat.util';
 import themeConfig from '@/config/theme.config';
 import AnimatedDots from '@/components/utils/AnimatedDotsTail';
-import useSWR from 'swr';
+import useAgentOverview from '@/hooks/useAgentOverview';
 
 const MiniAgentErrors = () => {
-	const { data } = useSWR<AgentAPIResults>('/api/agent', fetch);
+	const { agentInfo } = useAgentOverview();
 	return (
 		<Card className='h-full'>
 			<CardBody>
@@ -25,7 +24,7 @@ const MiniAgentErrors = () => {
 					<div className='flex grow items-center'>
 						<div>
 							<div className='text-zinc-500'>Agent Errors</div>
-							<div className='text-3xl font-semibold'>{ data? data.errorCount : <AnimatedDots className='mt-4 bg-zinc-500' size={1} />}</div>
+							<div className='text-3xl font-semibold'>{ agentInfo? agentInfo.errorCount : <AnimatedDots className='mt-4 bg-zinc-500' size={1} />}</div>
 						</div>
 					</div>
 				</div>

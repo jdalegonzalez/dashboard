@@ -7,11 +7,23 @@ import arg from 'arg'
 import { parse } from 'date-fns';
 import { UTCDate } from '@date-fns/utc';
 import { parse as csvParse } from 'csv-parse/sync';
+import { exit } from 'process';
 
 const prisma = new PrismaClient();
 
+const fakeMachineName = () => {
+    const ele = (arr:string[]) => {
+        const ndx = Math.floor(Math.random() * arr.length);
+        return arr[ndx]; 
+    }
+    const location = ele(['CLOUD-', 'DATACENTER-', 'LOCAL-', 'US-EAST1C-', 'ZONE-5-', 'CA-WEST-']);
+    const machine = ele(['SERVER-', 'VM-', 'IMAGE-', 'WORKSTATION-']);
+    const id = Math.floor(Math.random() * 65536).toString(16).padStart(4,'0');
+    return `${location}${machine}${id}`
+}
+
 const agentName = () => {
-    return `${faker.word.adjective()}-${faker.animal.type().replace(/ /g,"_")}`;
+    return fakeMachineName();
 }
 
 const agentFromDirectory = (source: string) => {
@@ -292,10 +304,14 @@ async function main() {
         '--help': Boolean,
         '--no-init': Boolean,
         '--no-import': Boolean,
+        '--flarm': Boolean
     })
     const noInit = args['--no-init'] ?? false
     const noImport = args['--no-import'] ?? false
-
+    if (args['--flarm']??false) {
+        console.log(fakeMachineName());
+        exit(1);
+    }
     if (!noInit) {
         await prisma.scan.deleteMany()
         await prisma.crawl.deleteMany()

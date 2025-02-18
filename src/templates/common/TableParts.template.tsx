@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, forwardRef } from 'react';
 import classNames from 'classnames';
-import { flexRender, Table as TTableProps } from '@tanstack/react-table';
+import { flexRender, Table as TTableProps, Column as TColumn } from '@tanstack/react-table';
 import { CardFooter, CardFooterChild } from '@/components/ui/Card';
 import Mounted from '@/components/Mounted';
 import Table, { ITableProps, TBody, Td, TFoot, Th, THead, Tr } from '../../components/ui/Table';
@@ -13,6 +13,17 @@ interface ITableHeaderTemplateProps {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	table: TTableProps<any>;
 }
+
+const columnWidthClass = (column:TColumn<any, unknown>) => {
+	const size = column.getSize();
+	if (size) { return `!w-${size}` }
+	return "";
+}
+const columnWidthStyle = (column:TColumn<any, unknown>) => {
+	const size = column.getSize();
+	if (size && size >= 0) return { width: `${size}%`}
+	return {}
+}
 export const TableHeaderTemplate: FC<ITableHeaderTemplateProps> = ({ table }) => {
 	return (
 		<THead>
@@ -22,7 +33,9 @@ export const TableHeaderTemplate: FC<ITableHeaderTemplateProps> = ({ table }) =>
 						<Th
 							key={header.id}
 							isColumnBorder={false}
-							className={classNames({
+							style={{...columnWidthStyle(header.column)}}
+							className={classNames(
+							{
 								'text-left': header.id !== 'Actions',
 								'text-right': header.id === 'Actions',
 							})}>
@@ -76,7 +89,9 @@ export const TableBodyTemplate: FC<ITableBodyTemplateProps> = ({ table }) => {
 					{row.getVisibleCells().map((cell) => (
 						<Td
 							key={cell.id}
-							className={classNames({
+							style={{...columnWidthStyle(cell.column)}}
+							className={classNames(
+							{
 								'text-left': cell.column.id !== 'Actions',
 								'text-right': cell.column.id === 'Actions',
 							})}>
@@ -150,12 +165,11 @@ interface ITableTemplateProps extends Partial<ITableProps> {
 	hasHeader?: boolean;
 	hasFooter?: boolean;
 }
-const TableTemplate: FC<ITableTemplateProps> = (props) => {
+const TableTemplate: React.ForwardRefRenderFunction<HTMLTableElement, ITableTemplateProps> = (props, ref) => {
 	const { children, hasHeader = true, hasFooter = true, table, ...rest } = props;
-
 	return (
 		<Mounted>
-			<Table {...rest}>
+			<Table ref={ref} {...rest}>
 				{children || (
 					<>
 						{hasHeader && <TableHeaderTemplate table={table} />}
@@ -235,4 +249,4 @@ export const TableCardFooterTemplate: FC<ITableCardFooterTemplateProps> = ({ tab
 	);
 };
 
-export default TableTemplate;
+export default forwardRef(TableTemplate);

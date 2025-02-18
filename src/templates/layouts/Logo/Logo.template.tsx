@@ -1,7 +1,7 @@
 import React, { FC, HTMLAttributes } from 'react';
 
 import Image from 'next/image';
-import logo from '../../../assets/icons/icon4.png'
+import logo from '@/assets/icons/icon4.png'
 type ILogoTemplateProps = HTMLAttributes<HTMLOrSVGElement>;
 const LogoTemplate: FC<ILogoTemplateProps> = (props) => {
 	const { ...rest } = props;

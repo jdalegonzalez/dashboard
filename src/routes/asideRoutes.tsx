@@ -6,10 +6,10 @@ import DefaultAsideTemplate from '../templates/layouts/Asides/DefaultAside.templ
 
 const asideRoutes: TRoute[] = [
 	{ path: authPages.loginPage.to, element: null },
-	{
-		path: `${appPages.mailAppPages.to}/*`,
-		element: <MailAsideTemplate />,
-	},
+	// {
+	// 	path: `${appPages.mailAppPages.to}/*`,
+	// 	element: <MailAsideTemplate />,
+	// },
 	{ path: '/*', element: <DefaultAsideTemplate /> },
 ];
 

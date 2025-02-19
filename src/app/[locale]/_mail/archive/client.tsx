@@ -16,9 +16,9 @@ import Button from '@/components/ui/Button';
 import { appPages } from '@/config/pages.config';
 import Container from '@/components/layouts/Container/Container';
 import Card, { CardBody, CardFooter, CardFooterChild } from '@/components/ui/Card';
-import MailSidebarItemPart from '@/app/[locale]/mail/_parts/MailSidebarItem.part';
+import MailSidebarItemPart from '@/app/[locale]/_mail/_parts/MailSidebarItem.part';
 import Avatar from '@/components/Avatar';
-import MailContentViewerPart from '@/app/[locale]/mail/_parts/MailContentViewer.part';
+import MailContentViewerPart from '@/app/[locale]/_mail/_parts/MailContentViewer.part';
 
 const mails: TMail[] = [
 	{
@@ -84,7 +84,7 @@ const MailArchiveClient = () => {
 						title='New Mail'
 						variant='solid'
 						onClick={() => {
-							router.push(`../${appPages.mailAppPages.subPages.newMailPages.to}`);
+							router.push(''/*`../${appPages.mailAppPages.subPages.newMailPages.to}`*/);
 						}}>
 						New Mail
 					</Button>

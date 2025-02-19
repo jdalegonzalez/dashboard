@@ -16,8 +16,7 @@ import {
 	SortingState,
 	useReactTable,
 } from '@tanstack/react-table';
-import colors from '@/tailwindcss/colors.tailwind';
-import Skeleton from 'react-loading-skeleton' ;
+import Skeleton from '@/components/utils/ThemedSkeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 import { shorten } from '@/app/lib/utils';
@@ -35,21 +34,23 @@ const sizerId = `${path.basename(import.meta.url)}-sizer`;
 
 const textToColor = (txt:Severity) => {
 	switch (txt.trim().toUpperCase()) {
-		case "HINT": return { color: "sky" as const, intensity: "900" as const};
-		case "WARNING": return { color: "amber" as const, intensity: "900" as const};
+		case "HINT": return { color: "sky" as const, intensity: "600" as const};
+		case "WARNING": return { color: "amber" as const, intensity: "600" as const};
 		case "ERROR": return { color: "red" as const, intensity: "700" as const};
-		case "FATAL": return { color: "red" as const, intensity: "950" as const};
+		case "FATAL": return { color: "violet" as const, intensity: "700" as const};
 		default: return { color: "blue" as const, intensity: "600" as const};
 	}
 }
 
 const cap = (val: string) => val.charAt(0).toUpperCase() + val.slice(1);
-const skelBaseColor = colors['zinc']['900'];
-const skelHighlightColor = colors['zinc']['800'];
 const skelClass = 'bg-opacity-5'
 const columns = [
 	columnHelper.accessor('occurred_at', {
-		cell: (info) => new Date(info.getValue()).toLocaleString(),
+		cell: (info) => {
+			return info.row.original.id == 'loading' 
+			? <Skeleton count={2} width='100%' className={`px-2 text-xl ${skelClass}`} /> 
+			: new Date(info.getValue()).toLocaleString()
+		},
 		size: 12,
 		minSize: 12,
 		maxSize: 12,
@@ -62,13 +63,11 @@ const columns = [
 			const {color,intensity} = textToColor(val);
 			return (
 				info.row.original.id == 'loading'
-				? <Skeleton 				
-					baseColor={skelBaseColor}
-					highlightColor={skelHighlightColor}
-					width='60%'
-					className={`inline-flex items-center justify-center px-2 text-4xl ${skelClass}`}
+				? <Skeleton	
+					width='100%'
+					className={`px-2 text-4xl ${skelClass}`}
 				/>
-				: <Badge variant='solid' color={color} colorIntensity={intensity}>{val.length > 5 ? val.slice(0,4) : val}</Badge>
+				: <Badge variant='outline' borderWidth='border' rounded='rounded' color={color} colorIntensity={intensity}>{val.length > 5 ? val.slice(0,4) : val}</Badge>
 			);
 		},
 		size: 10,
@@ -82,8 +81,6 @@ const columns = [
 			info.row.original.id == 'loading'
 			? <Skeleton 
 				width='100%' 
-				baseColor={skelBaseColor}
-				highlightColor={skelHighlightColor}
 				className={`text-sm rtl:mr-0 overflow-clip ${skelClass}`}
 			/>			
 			: 
@@ -103,8 +100,6 @@ const columns = [
 			? 
 			<Skeleton 
 				width='100%' 
-				baseColor={skelBaseColor}
-				highlightColor={skelHighlightColor}
 				className={`text-sm rtl overflow-clip ${skelClass}`}
 			/>
 			: 

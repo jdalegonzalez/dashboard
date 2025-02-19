@@ -10,10 +10,9 @@ import useSWR from 'swr';
 import fetch from '@/app/lib/fetch';
 import { ScanSummaryAPIResults } from '@/app/api/agent/scans/route';
 import { AgentAPIResults } from '@/app/api/agent/route';
-import AnimatedDots from '@/components/utils/AnimatedDotsTail';
 import useAgentOverview from '@/hooks/useAgentOverview';
 import themeConfig from '@/config/theme.config';
-import { zinc } from 'tailwindcss/colors';
+import LoaderDotsCommon from '@/components/LoaderDots.common';
 
 const truncateLeft = (path: any, maxLength = 20) => {
 	if (typeof path != 'string') return String(path);
@@ -29,8 +28,29 @@ const discoveryChart = (data?:ScanSummaryAPIResults) => {
 	const res:IChartOptions = {
 		series: series,
 		options: {
-			chart: { stacked: true },
+			chart: { 
+				stacked: true,
+				dropShadow: {
+					enabled: true,
+					enabledOnSeries: undefined,
+					top: 0,
+					left: 0,
+					blur: 6,
+					color: colors['white']['50'],
+					opacity: 0.25
+				}
+			},
 			colors: chartColors,
+			fill: {
+				type: 'solid',
+				opacity: .4,
+				gradient: {
+					shade: 'dark',
+					type: 'radial',
+					opacityFrom: .5,
+					opacityTo: .8
+				}
+			},				
 			plotOptions: {
 				bar: {
 					borderRadius: 2,
@@ -43,7 +63,10 @@ const discoveryChart = (data?:ScanSummaryAPIResults) => {
 			dataLabels: {
 				enabled: false
 			},
-			stroke: { width: 1, colors: ["#fff"] },
+			stroke: { 
+				width: 1,
+				colors: chartColors 
+			},
 			grid: {
 			  xaxis: { lines: { show: false } }
 			},
@@ -52,7 +75,15 @@ const discoveryChart = (data?:ScanSummaryAPIResults) => {
 				shared: false,
 				y: { formatter: (val: number) => String(Math.abs(val)) }
 			},
-			title: { text: 'Discoveries by Agent' },
+			title: { text: 
+				'Discoveries by Agent',
+				style: {
+					fontSize:  '14px',
+					fontWeight:  'normal',
+					fontFamily:  undefined,
+					color:  colors['zinc']['500']
+				},
+			},
 			xaxis: {
 				categories: categories,
 				title: { text: '' },
@@ -98,7 +129,7 @@ const arrayAverage = (arr:number[]) => {
 }
 
 const durationValue = (data?:ScanSummaryAPIResults ) => {
-	if (!data) return <AnimatedDots className='mt-4 bg-zinc-500' size={1} />
+	if (!data) return  <div className='mt-4'><LoaderDotsCommon /></div>
 	const average = arrayAverage(data.durations);
 	return secondsToString(average);
 }
@@ -123,10 +154,20 @@ const findingsChart = (data?: AgentAPIResults) => {
 					top: 0,
 					left: 0,
 					blur: 6,
-					color: colors['zinc']['100'],
-					opacity: 0.95
+					color: colors['white']['50'],
+					opacity: 0.05
 				}
-			},		
+			},	
+			fill: {
+				type: 'solid',
+				opacity: .4,
+				gradient: {
+					shade: 'dark',
+					type: 'radial',
+					opacityFrom: .5,
+					opacityTo: .8
+				}
+			},				
 			legend: {
 				show: false,
 			},
@@ -134,10 +175,10 @@ const findingsChart = (data?: AgentAPIResults) => {
 				enabled: false
 			},
 			colors: [
-				colors[themeConfig.warningColor]['800'],
-				colors[themeConfig.themeColor]['800'],
-				colors[themeConfig.errorColor]['800'],
-				colors['slate']['700'] 
+				colors[themeConfig.warningColor]['700'],
+				colors['sky']['700'],
+				colors[themeConfig.errorColor]['700'],
+				colors['slate']['600'] 
 			],
 			plotOptions: {
 				pie: {
@@ -157,7 +198,14 @@ const findingsChart = (data?: AgentAPIResults) => {
 				}
 			},
 			stroke: {
-				show: false,
+				show: true,
+				width: 1,
+				colors: [
+					colors[themeConfig.warningColor]['800'],
+					colors['sky']['800'],
+					colors[themeConfig.errorColor]['800'],
+					colors['slate']['700'] 					
+				],
 				lineCap: 'round',
 			},
 			labels: labels,

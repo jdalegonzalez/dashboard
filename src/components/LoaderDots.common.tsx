@@ -13,4 +13,9 @@ const LoaderDotsCommon = () => {
 	);
 };
 
+export function loadingOrProperty<T>(obj: T|undefined, key:keyof T, wrapperClass:string='') {
+	const cname = wrapperClass ? {className: wrapperClass} : {};
+	return obj?.[key] ? obj[key] : <div {...cname} ><LoaderDotsCommon /></div>;
+}
+
 export default LoaderDotsCommon;

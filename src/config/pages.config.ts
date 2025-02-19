@@ -20,52 +20,52 @@ export const examplePages = {
 };
 
 export const appPages = {
-	aiAppPages: {
-		id: 'aiApp',
-		to: '/ai',
-		text: 'AI',
-		icon: 'HeroRocketLaunch',
-		subPages: {
-			aiDashboardPage: {
-				id: 'aiDashboardPage',
-				to: '/ai/dashboard',
-				text: 'AI Dashboard',
-				icon: 'HeroRocketLaunch',
-			},
-			chatPages: {
-				id: 'aiChatPage',
-				to: '/ai/chat',
-				text: 'Chat Pages',
-				icon: 'HeroChatBubbleLeft',
-				subPages: {
-					photoPage: {
-						id: 'photoPage',
-						to: '/ai/chat/photo',
-						text: 'Photo Editing',
-						icon: 'HeroPhoto',
-					},
-					videoPage: {
-						id: 'videoPage',
-						to: '/ai/chat/video',
-						text: 'Video Generation',
-						icon: 'HeroFilm',
-					},
-					audioPage: {
-						id: 'audioPage',
-						to: '/ai/chat/audio',
-						text: 'Audio Generation',
-						icon: 'HeroMusicalNote',
-					},
-					codePage: {
-						id: 'audioPage',
-						to: '/ai/chat/code',
-						text: 'Code Generation',
-						icon: 'HeroCommandLine',
-					},
-				},
-			},
-		},
-	},
+	// aiAppPages: {
+	// 	id: 'aiApp',
+	// 	to: '/ai',
+	// 	text: 'AI',
+	// 	icon: 'HeroRocketLaunch',
+	// 	subPages: {
+	// 		aiDashboardPage: {
+	// 			id: 'aiDashboardPage',
+	// 			to: '/ai/dashboard',
+	// 			text: 'AI Dashboard',
+	// 			icon: 'HeroRocketLaunch',
+	// 		},
+	// 		chatPages: {
+	// 			id: 'aiChatPage',
+	// 			to: '/ai/chat',
+	// 			text: 'Chat Pages',
+	// 			icon: 'HeroChatBubbleLeft',
+	// 			subPages: {
+	// 				photoPage: {
+	// 					id: 'photoPage',
+	// 					to: '/ai/chat/photo',
+	// 					text: 'Photo Editing',
+	// 					icon: 'HeroPhoto',
+	// 				},
+	// 				videoPage: {
+	// 					id: 'videoPage',
+	// 					to: '/ai/chat/video',
+	// 					text: 'Video Generation',
+	// 					icon: 'HeroFilm',
+	// 				},
+	// 				audioPage: {
+	// 					id: 'audioPage',
+	// 					to: '/ai/chat/audio',
+	// 					text: 'Audio Generation',
+	// 					icon: 'HeroMusicalNote',
+	// 				},
+	// 				codePage: {
+	// 					id: 'audioPage',
+	// 					to: '/ai/chat/code',
+	// 					text: 'Code Generation',
+	// 					icon: 'HeroCommandLine',
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// },
 	salesAppPages: {
 		id: 'salesApp',
 		to: '/sales',
@@ -131,7 +131,7 @@ export const appPages = {
 	teramisAppPages: {
 		id: 'teramisApp',
 		to: '/teramis',
-		text: 'Teramis Dashboard',
+		text: 'Teramis',
 		icon: 'HeroUserGroup',
 		subPages: {
 			teramisDashboardPage: {
@@ -214,76 +214,76 @@ export const appPages = {
 			},
 		},
 	},
-	educationAppPages: {
-		id: 'educationApp',
-		to: '/education',
-		text: 'Education',
-		icon: 'HeroBookOpen',
-		subPages: {},
-	},
-	reservationAppPages: {
-		id: 'reservationApp',
-		to: '/reservation',
-		text: 'Reservation',
-		icon: 'HeroCalendarDays',
-		subPages: {},
-	},
-	mailAppPages: {
-		id: 'mailApp',
-		to: '/mail',
-		text: 'Mail',
-		icon: 'HeroEnvelope',
-		subPages: {
-			inboxPages: {
-				id: 'inboxPages',
-				to: '/mail/inbox',
-				text: 'Inbox',
-				icon: 'HeroEnvelope',
-			},
-			draftPages: {
-				id: 'draftPages',
-				to: '/mail/draft',
-				text: 'Draft',
-				icon: 'HeroDocument',
-			},
-			sendPages: {
-				id: 'sendPages',
-				to: '/mail/send',
-				text: 'Send',
-				icon: 'HeroPaperAirplane',
-			},
-			junkPages: {
-				id: 'junkPages',
-				to: '/mail/junk',
-				text: 'Junk',
-				icon: 'HeroArchiveBoxXMark',
-			},
-			trashPages: {
-				id: 'trashPages',
-				to: '/mail/trash',
-				text: 'Trash',
-				icon: 'HeroTrash',
-			},
-			archivePages: {
-				id: 'archivePages',
-				to: '/mail/archive',
-				text: 'Archive',
-				icon: 'HeroArchiveBox',
-			},
-			newMailPages: {
-				id: 'newMailPages',
-				to: '/mail/new',
-				text: 'Inbox',
-				icon: 'HeroEnvelope',
-			},
-		},
-	},
-	chatAppPages: {
-		id: 'chatApp',
-		to: '/chat',
-		text: 'Chat',
-		icon: 'HeroChatBubbleLeftRight',
-	},
+	// educationAppPages: {
+	// 	id: 'educationApp',
+	// 	to: '/education',
+	// 	text: 'Education',
+	// 	icon: 'HeroBookOpen',
+	// 	subPages: {},
+	// },
+	// reservationAppPages: {
+	// 	id: 'reservationApp',
+	// 	to: '/reservation',
+	// 	text: 'Reservation',
+	// 	icon: 'HeroCalendarDays',
+	// 	subPages: {},
+	// },
+	// mailAppPages: {
+	// 	id: 'mailApp',
+	// 	to: '/mail',
+	// 	text: 'Mail',
+	// 	icon: 'HeroEnvelope',
+	// 	subPages: {
+	// 		inboxPages: {
+	// 			id: 'inboxPages',
+	// 			to: '/mail/inbox',
+	// 			text: 'Inbox',
+	// 			icon: 'HeroEnvelope',
+	// 		},
+	// 		draftPages: {
+	// 			id: 'draftPages',
+	// 			to: '/mail/draft',
+	// 			text: 'Draft',
+	// 			icon: 'HeroDocument',
+	// 		},
+	// 		sendPages: {
+	// 			id: 'sendPages',
+	// 			to: '/mail/send',
+	// 			text: 'Send',
+	// 			icon: 'HeroPaperAirplane',
+	// 		},
+	// 		junkPages: {
+	// 			id: 'junkPages',
+	// 			to: '/mail/junk',
+	// 			text: 'Junk',
+	// 			icon: 'HeroArchiveBoxXMark',
+	// 		},
+	// 		trashPages: {
+	// 			id: 'trashPages',
+	// 			to: '/mail/trash',
+	// 			text: 'Trash',
+	// 			icon: 'HeroTrash',
+	// 		},
+	// 		archivePages: {
+	// 			id: 'archivePages',
+	// 			to: '/mail/archive',
+	// 			text: 'Archive',
+	// 			icon: 'HeroArchiveBox',
+	// 		},
+	// 		newMailPages: {
+	// 			id: 'newMailPages',
+	// 			to: '/mail/new',
+	// 			text: 'Inbox',
+	// 			icon: 'HeroEnvelope',
+	// 		},
+	// 	},
+	// },
+	// chatAppPages: {
+	// 	id: 'chatApp',
+	// 	to: '/chat',
+	// 	text: 'Chat',
+	// 	icon: 'HeroChatBubbleLeftRight',
+	// },
 };
 
 export const componentsPages = {

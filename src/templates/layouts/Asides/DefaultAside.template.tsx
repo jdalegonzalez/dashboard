@@ -31,7 +31,7 @@ const DefaultAsideTemplate = () => {
 			</AsideHead>
 			<AsideBody>
 				<Nav>
-					<NavItem {...appPages.teramisAppPages.subPages.teramisDashboardPage}>
+					{/* <NavItem {...appPages.teramisAppPages.subPages.teramisDashboardPage}>
 						<NavButton
 							title='New Agent'
 							icon='HeroPlusCircle'
@@ -41,46 +41,17 @@ const DefaultAsideTemplate = () => {
 								);
 							}}
 						/>
-					</NavItem>
-					<NavItem {...appPages.projectAppPages.subPages.projectDashboardPage}>
+					</NavItem> */}
+					{/* <NavItem {...appPages.projectAppPages.subPages.projectDashboardPage}>
 						<Badge
 							variant='outline'
 							color='emerald'
 							className='border-transparent leading-none'>
 							6
 						</Badge>
-					</NavItem>
-
-					<NavTitle>Apps</NavTitle>
-					<NavCollapse
-						text={appPages.salesAppPages.text}
-						to={appPages.salesAppPages.to}
-						icon={appPages.salesAppPages.icon}>
-						<NavItem {...appPages.salesAppPages.subPages.salesDashboardPage} />
-						<NavCollapse
-							text={appPages.salesAppPages.subPages.productPage.text}
-							to={appPages.salesAppPages.subPages.productPage.to}
-							icon={appPages.salesAppPages.subPages.productPage.icon}>
-							<NavItem
-								{...appPages.salesAppPages.subPages.productPage.subPages.listPage}
-							/>
-							<NavItem
-								{...appPages.salesAppPages.subPages.productPage.subPages.editPage}
-							/>
-						</NavCollapse>
-						<NavCollapse
-							text={appPages.salesAppPages.subPages.categoryPage.text}
-							to={appPages.salesAppPages.subPages.categoryPage.to}
-							icon={appPages.salesAppPages.subPages.categoryPage.icon}>
-							<NavItem
-								{...appPages.salesAppPages.subPages.categoryPage.subPages.listPage}
-							/>
-							<NavItem
-								{...appPages.salesAppPages.subPages.categoryPage.subPages.editPage}
-							/>
-						</NavCollapse>
-					</NavCollapse>
-					<NavCollapse
+					</NavItem> */}
+					{/* <NavTitle>Apps</NavTitle> */}
+					{/* <NavCollapse
 						text={appPages.aiAppPages.text}
 						to={appPages.aiAppPages.to}
 						icon={appPages.aiAppPages.icon}>
@@ -123,7 +94,7 @@ const DefaultAsideTemplate = () => {
 							</NavItem>
 						</NavCollapse>
 					</NavCollapse>
-
+ 					*/}
 					<NavCollapse
 						text={appPages.teramisAppPages.text}
 						to={appPages.teramisAppPages.to}
@@ -153,6 +124,34 @@ const DefaultAsideTemplate = () => {
 						</NavCollapse>
 					</NavCollapse>
 					<NavCollapse
+						text={appPages.salesAppPages.text}
+						to={appPages.salesAppPages.to}
+						icon={appPages.salesAppPages.icon}>
+						<NavItem {...appPages.salesAppPages.subPages.salesDashboardPage} />
+						<NavCollapse
+							text={appPages.salesAppPages.subPages.productPage.text}
+							to={appPages.salesAppPages.subPages.productPage.to}
+							icon={appPages.salesAppPages.subPages.productPage.icon}>
+							<NavItem
+								{...appPages.salesAppPages.subPages.productPage.subPages.listPage}
+							/>
+							<NavItem
+								{...appPages.salesAppPages.subPages.productPage.subPages.editPage}
+							/>
+						</NavCollapse>
+						<NavCollapse
+							text={appPages.salesAppPages.subPages.categoryPage.text}
+							to={appPages.salesAppPages.subPages.categoryPage.to}
+							icon={appPages.salesAppPages.subPages.categoryPage.icon}>
+							<NavItem
+								{...appPages.salesAppPages.subPages.categoryPage.subPages.listPage}
+							/>
+							<NavItem
+								{...appPages.salesAppPages.subPages.categoryPage.subPages.editPage}
+							/>
+						</NavCollapse>
+					</NavCollapse>
+					<NavCollapse
 						text={appPages.projectAppPages.text}
 						to={appPages.projectAppPages.to}
 						icon={appPages.projectAppPages.icon}>
@@ -176,7 +175,7 @@ const DefaultAsideTemplate = () => {
 							</Badge>
 						</NavItem>
 					</NavCollapse>
-					<NavItem
+					{/* <NavItem
 						text={appPages.mailAppPages.text}
 						to={appPages.mailAppPages.subPages.inboxPages.to}
 						icon={appPages.mailAppPages.icon}>
@@ -209,7 +208,7 @@ const DefaultAsideTemplate = () => {
 						<Badge variant='outline' className='border-transparent leading-none'>
 							Soon
 						</Badge>
-					</NavItem>
+					</NavItem> */}
 
 					<NavSeparator />
 
@@ -320,7 +319,7 @@ const DefaultAsideTemplate = () => {
 						</NavItem>
 					</NavCollapse>
 
-					<NavSeparator />
+					{/* <NavSeparator />
 					<NavTitle>Members</NavTitle>
 					<NavUser
 						text={`${usersDb[0].firstName} ${usersDb[0].lastName}`}
@@ -364,13 +363,13 @@ const DefaultAsideTemplate = () => {
 							iconColor='emerald'
 							onClick={() => {}}
 						/>
-					</NavUser>
+					</NavUser> */}
 				</Nav>
 			</AsideBody>
 			<AsideFooter>
 				<Nav>
 					<NavSeparator />
-					<NavCollapse text='Nav Collapse' to='/' icon='HeroQueueList'>
+					{/* <NavCollapse text='Nav Collapse' to='/' icon='HeroQueueList'>
 						<NavItem text='Nav item' icon='HeroPencil' />
 						<NavItem text='With badge'>
 							<Badge variant='solid' className='leading-none'>
@@ -394,7 +393,7 @@ const DefaultAsideTemplate = () => {
 							</NavCollapse>
 							<NavItem text='Nav Item' />
 						</NavCollapse>
-					</NavCollapse>
+					</NavCollapse> */}
 				</Nav>
 
 				<UserTemplate />

@@ -71,7 +71,9 @@ const TeramisDashboardClient = () => {
 					))}
 				</SubheaderLeft>
 				<SubheaderRight>
-					<Dropdown>
+					&nbsp;
+					{/* TODO: Bring back date filtering
+						<Dropdown>
 						<DropdownToggle>
 							<Button icon='HeroCalendarDays'>{`${dayjs(state.selection.startDate)
 								.locale(i18n.language)
@@ -100,7 +102,7 @@ const TeramisDashboardClient = () => {
 								locale={activeLocale}
 							/>
 						</DropdownMenu>
-					</Dropdown>
+					</Dropdown> */}
 				</SubheaderRight>
 			</Subheader>
 			<Container breakpoint={null} className='h-full w-full'>

@@ -11,8 +11,6 @@ import {
 } from '@tanstack/react-table';
 import path from 'path';
 
-import colors from '@/tailwindcss/colors.tailwind';
-import Skeleton from 'react-loading-skeleton' ;
 import 'react-loading-skeleton/dist/skeleton.css';
 
 import useElementSize from '@/hooks/useElementSize';
@@ -26,69 +24,44 @@ import Input from '@/components/form/Input';
 import Icon from '@/components/icon/Icon';
 import MimeIcon from '@/components/icon/MimetypeIcons';
 import Badge from '@/components/ui/Badge';
+import Skeleton from '@/components/utils/ThemedSkeleton';
 import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/components/ui/Card';
 import Tooltip from '@/components/ui/Tooltip';
-
+import { shorten } from '@/app/lib/utils';
 import TableTemplate, { TableCardFooterTemplate } from '@/templates/common/TableParts.template';
 
 const columnHelper = createColumnHelper<ScanResult>();
 const fileColumnSize = 50;
-const fileColumnPercent = .48; // Close to 50% with a little fudge.
+const fileColumnPercent = .47; // Close to 50% with a little fudge.
 const sizerId = `${path.basename(import.meta.url)}-sizer`;
 
 const textToColor = (txt:string) => {
 	switch (txt.trim().toLowerCase()) {
-		case "low": return { color: "sky" as const, intensity: "900" as const};
-		case "medium": return { color: "amber" as const, intensity: "800" as const};
-		case "high": return { color: "red" as const, intensity: "950" as const};
+		case "low": return { color: "sky" as const, intensity: "600" as const};
+		case "medium": return { color: "amber" as const, intensity: "600" as const};
+		case "high": return { color: "red" as const, intensity: "700" as const};
 		default: return { color: "blue" as const, intensity: "600" as const};
 	}
 }
 
-const shorten = (val:string, len:number = 20) => {
-	if (!val) return val;
-	const ele = document.getElementById(sizerId);
-	if (!ele) return val.length < len ? val : val.slice(-len);
-	
-	ele.textContent = "..." + val
-	if (!ele|| ele.scrollWidth < ele.offsetWidth) return val;
-	
-	let remainder = val.length;
-	let chars = val.length;
-
-	while (remainder > 0) {
-		const offset = remainder > 1 ? Math.floor(remainder / 2) : 1;
-		remainder -= offset;
-		chars += ((ele.scrollWidth > ele.offsetWidth) ? -offset : offset);
-		ele.textContent = "..." + val.slice(-chars);
-	}
-
-	return "..." + val.slice(-chars);
-}
-
-// {info.row.original.id
-const skelBaseColor = colors['zinc']['900'];
-const skelHighlightColor = colors['zinc']['800'];
-const skelClass = 'bg-opacity-5'
+const skelClass = 'bg-opacity-5 p-0'
 const circleStyle = {margin:'auto'};
-const circleClass = '!w-20 !h-20 !p-2';
+const circleClass = '!w-16 !h-18';
 const columns = [
 	columnHelper.accessor('mime_type', {
 		cell: (info) => (
 			info.row.original.id == 'loading'
-			? <Skeleton
-				circle
-				baseColor={skelBaseColor}
-				highlightColor={skelHighlightColor}
-				className={`${circleClass} ${skelClass}`}
-				style={circleStyle}
-			/>
+			? <div className={`${circleClass} rounded p-2 pl-4 pr-4`} style={circleStyle}>
+				<Skeleton
+				 className={`${skelClass} text-4xl`}
+				 style={circleStyle}
+				/>
+			  </div>
 			: <MimeIcon
 				mimeType={info.getValue()}
 				style={circleStyle}
-				className={circleClass}
-				size='text-6xl'
-				rounded='rounded-full'
+				className={`${circleClass} p-2`}
+				size='text-4xl'
 			/>
 			
 		),
@@ -106,13 +79,11 @@ const columns = [
 			? 
 			<Skeleton 
 				width='100%' 
-				baseColor={skelBaseColor}
-				highlightColor={skelHighlightColor}
 				className={`text-sm rtl overflow-clip ${skelClass}`}
 			/>
 			: 
 			<Tooltip text={info.getValue()}>
-				<div className='text-sm rtl overflow-clip'>{shorten(info.getValue(), 60)}</div>
+				<div className='text-sm rtl overflow-clip'>{shorten(sizerId, info.getValue(), 60)}</div>
 			</Tooltip>
 		),
 		size: fileColumnSize,
@@ -123,9 +94,7 @@ const columns = [
 		cell: (info) => (
 			info.row.original.id == 'loading'
 			? <Skeleton 
-				width='100%' 
-				baseColor={skelBaseColor}
-				highlightColor={skelHighlightColor}
+				width='100%'
 				className={`text-sm rtl:mr-0 overflow-clip ${skelClass}`}
 			/>			
 			: <div className='overflow-hidden text-nowrap text-ellipsis'>{info.getValue()}</div>
@@ -142,13 +111,17 @@ const columns = [
 			const {color,intensity} = textToColor(val);
 			return (
 				info.row.original.id == 'loading'
-				? <Skeleton 				
-					baseColor={skelBaseColor}
-					highlightColor={skelHighlightColor}
+				? <Skeleton
 					width='60%'
 					className={`inline-flex items-center justify-center px-2 text-4xl ${skelClass}`}
 				/>
-				: <Badge variant='solid' color={color} colorIntensity={intensity}>{val}</Badge>
+				: <Badge 
+					variant='outline' 
+					borderWidth='border' 
+					rounded='rounded' 
+					color={color} 
+					colorIntensity={intensity}>{val}
+				</Badge>
 			);
 		},
 		size: 15,

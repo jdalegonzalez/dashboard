@@ -55,7 +55,7 @@ const RootLayout = async (
 	return (
 		<Providers>
 			<html suppressHydrationWarning lang={locale} dir={dir(locale)}>
-				<body className={`${poppins.className} bg-zinc-800`}>
+				<body className={poppins.className}>
 					<div id='root'>
 						<div data-component-name='App' className='flex grow flex-col'>
 							<AsideRouter />

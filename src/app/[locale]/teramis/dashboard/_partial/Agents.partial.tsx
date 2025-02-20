@@ -4,6 +4,8 @@ import useSWR from 'swr';
 import fetch from '@/app/lib/fetch';
 import { AgentAPIDetailResults } from '@/app/api/agent/route';
 import AgentDetails from './AgentCard.partial';
+import NewAgentButton from './NewAgentButton.partial';
+
 interface IAgentsPartialProps extends HTMLAttributes<HTMLDivElement> {
 
 }
@@ -19,6 +21,7 @@ const AgentsPartial: FC<IAgentsPartialProps> = (props) => {
                 :
                 ''
             }
+            <NewAgentButton size='5em' className='absolute bottom-5 right-5'/>
 		</div>
 	);
 };

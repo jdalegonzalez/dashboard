@@ -106,7 +106,7 @@ const TeramisDashboardClient = () => {
 					</Dropdown> */}
 				</SubheaderRight>
 			</Subheader>
-			<Container breakpoint={null} className='h-full w-full'>
+			<Container breakpoint={null} className='relative h-full w-full'>
 				{activeTab === TABS.OVERVIEW && (
 					<div className='grid grid-cols-12 gap-4'>
 						<div className='col-span-12 sm:col-span-6 2xl:col-span-2'>
@@ -144,7 +144,7 @@ const TeramisDashboardClient = () => {
 					</div>
 				)}
 				{activeTab === TABS.AGENTS && (
-					<AgentsPartial />
+					<AgentsPartial className='w-full'/>
 				)}
 				{activeTab === TABS.TASKS && (
 					<div className='grid h-full grid-cols-12 gap-4'>

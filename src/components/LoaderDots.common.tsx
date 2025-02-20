@@ -13,9 +13,12 @@ const LoaderDotsCommon = () => {
 	);
 };
 
-export function loadingOrProperty<T>(obj: T|undefined, key:keyof T, wrapperClass:string='') {
+type TFormatter = (val: any) => string;
+export function loadingOrProperty<T>(obj: T|undefined, key:keyof T, wrapperClass:string='', formatter?:TFormatter) {
 	const cname = wrapperClass ? {className: wrapperClass} : {};
-	return obj?.[key] ? obj[key] : <div {...cname} ><LoaderDotsCommon /></div>;
+	return obj?.[key] 
+		? formatter ? formatter(obj[key]) : obj[key] 
+		: <div {...cname} ><LoaderDotsCommon /></div>;
 }
 
 export default LoaderDotsCommon;

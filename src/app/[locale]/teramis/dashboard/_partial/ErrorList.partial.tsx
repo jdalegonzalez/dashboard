@@ -16,11 +16,11 @@ import {
 	SortingState,
 	useReactTable,
 } from '@tanstack/react-table';
+
+import { shorten, formatDate } from '@/utils/dataDisplay.util';
+
 import Skeleton from '@/components/utils/ThemedSkeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-
-import { shorten } from '@/app/lib/utils';
-
 import Badge from '@/components/ui/Badge';
 import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/components/ui/Card';
 import Tooltip from '@/components/ui/Tooltip';
@@ -49,7 +49,7 @@ const columns = [
 		cell: (info) => {
 			return info.row.original.id == 'loading' 
 			? <Skeleton count={2} width='100%' className={`px-2 text-xl ${skelClass}`} /> 
-			: new Date(info.getValue()).toLocaleString()
+			: formatDate(info.getValue())
 		},
 		size: 12,
 		minSize: 12,

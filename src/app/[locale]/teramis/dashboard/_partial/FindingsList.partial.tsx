@@ -27,7 +27,7 @@ import Badge from '@/components/ui/Badge';
 import Skeleton from '@/components/utils/ThemedSkeleton';
 import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/components/ui/Card';
 import Tooltip from '@/components/ui/Tooltip';
-import { shorten } from '@/app/lib/utils';
+import { shorten } from '@/utils/dataDisplay.util';
 import TableTemplate, { TableCardFooterTemplate } from '@/templates/common/TableParts.template';
 
 const columnHelper = createColumnHelper<ScanResult>();
@@ -97,7 +97,7 @@ const columns = [
 				width='100%'
 				className={`text-sm rtl:mr-0 overflow-clip ${skelClass}`}
 			/>			
-			: <div className='overflow-hidden text-nowrap text-ellipsis'>{info.getValue()}</div>
+			: <div className='truncate'>{info.getValue()}</div>
 		),
 		size: -1,
 		maxSize: -1,

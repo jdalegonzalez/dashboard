@@ -4,8 +4,10 @@ import {
     getCUIFileCount,
     getDeDuplicateFileCount,
     getTotalFileCount,
-    getUnsupportedFileCount
+    getUnsupportedFileCount,
+    getAgentDetails
 } from '@prisma/client/sql'
+import { booleanParam } from '@/app/lib/fetch';
 
 export interface AgentAPIResults {
     agentCount: number;
@@ -16,7 +18,9 @@ export interface AgentAPIResults {
     dedupedFilesCount: number;
 }
 
-export async function GET(request: NextRequest) {
+export type AgentAPIDetailResults = getAgentDetails.Result[];
+
+const summaryJson = async () => {
     const [agentCount, warningInfo, errorCount, unsupportedInfo, totalFilesInfo, deDupedFilesInfo] = await Promise.all([
         prisma.agent.count(),
         prisma.$queryRawTyped(getCUIFileCount()),
@@ -25,15 +29,26 @@ export async function GET(request: NextRequest) {
         prisma.$queryRawTyped(getTotalFileCount()),
         prisma.$queryRawTyped(getDeDuplicateFileCount())
       ]);
-
-    const res: AgentAPIResults = {
+    return ({
         agentCount: agentCount,
         warningCount: resultCount(warningInfo),
         errorCount: errorCount,
         unsupportedFilesCount: resultCount(unsupportedInfo),
         totalFilesCount: resultCount(totalFilesInfo),
         dedupedFilesCount: resultCount(deDupedFilesInfo)
-    }
+    });
+}
 
+(BigInt.prototype as any).toJSON = function() {
+    return Number(this);
+}
+
+const detailsJson = async () => {
+    return await prisma.$queryRawTyped(getAgentDetails());
+}
+
+export async function GET(req: NextRequest) {
+    const showDetails = booleanParam(req,'details');    
+    const res = showDetails ? await detailsJson() : await summaryJson();
     return NextResponse.json(res);
 }

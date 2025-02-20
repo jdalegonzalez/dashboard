@@ -157,29 +157,13 @@ const findingsChart = (data?: AgentAPIResults) => {
 					color: colors['white']['50'],
 					opacity: 0.05
 				}
-			},	
-			fill: {
-				type: 'solid',
-				opacity: .4,
-				gradient: {
-					shade: 'dark',
-					type: 'radial',
-					opacityFrom: .5,
-					opacityTo: .8
-				}
-			},				
+			},
 			legend: {
 				show: false,
 			},
 			tooltip: {
 				enabled: false
 			},
-			colors: [
-				colors[themeConfig.warningColor]['700'],
-				colors['sky']['700'],
-				colors[themeConfig.errorColor]['700'],
-				colors['slate']['600'] 
-			],
 			plotOptions: {
 				pie: {
 					donut: {
@@ -197,6 +181,22 @@ const findingsChart = (data?: AgentAPIResults) => {
 					},
 				}
 			},
+			colors: [
+				colors[themeConfig.warningColor]['700'],
+				colors['sky']['700'],
+				colors[themeConfig.errorColor]['700'],
+				colors['slate']['600'] 
+			],
+			fill: {
+				type: 'solid',
+				opacity: .4,
+				gradient: {
+					shade: 'dark',
+					type: 'radial',
+					opacityFrom: .5,
+					opacityTo: .8
+				}
+			},				
 			stroke: {
 				show: true,
 				width: 1,

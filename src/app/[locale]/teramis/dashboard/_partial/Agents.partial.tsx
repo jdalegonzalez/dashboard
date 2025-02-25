@@ -1,8 +1,7 @@
 import React, { FC, HTMLAttributes } from 'react';
 import classNames from 'classnames';
-import useSWR from 'swr';
-import fetch from '@/app/lib/fetch';
-import { AgentAPIDetailResults } from '@/app/api/agent/route';
+import {useAgentDetails} from '@/hooks/useAgent';
+
 import AgentDetails from './AgentCard.partial';
 import NewAgentButton from './NewAgentButton.partial';
 
@@ -11,7 +10,8 @@ interface IAgentsPartialProps extends HTMLAttributes<HTMLDivElement> {
 }
 const AgentsPartial: FC<IAgentsPartialProps> = (props) => {
 	const { className, ...rest } = props;
-    const { data } = useSWR<AgentAPIDetailResults>('/api/agent?details=true', fetch);
+    const { data } = useAgentDetails();
+    console.log(data);
     const cname = classNames('grid grid-cols-12 gap-4', className);
 	return (
 		<div data-component-name='AgentsPart' className={cname} {...rest}>

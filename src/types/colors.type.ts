@@ -17,7 +17,7 @@ export type TColors =
 	// | 'cyan'
 	| 'sky'
 	| 'blue'
-	// | 'indigo'
+	| 'indigo'
 	| 'violet';
 // | 'purple'
 // | 'fuchsia'

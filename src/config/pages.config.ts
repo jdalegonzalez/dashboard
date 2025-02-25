@@ -137,20 +137,22 @@ export const appPages = {
 			teramisDashboardPage: {
 				id: 'teramisDashboardPage',
 				to: '/teramis/dashboard',
-				text: 'Teramis Dashboard',
-				icon: 'HeroUserCircle',
+				text: 'Dashboard',
+				icon: 'HeroChartPie',
+				description: 'An overview of the results from the agents scanning your system for Controlled Unclassified Information.'
 			},
 			agentPage: {
 				id: 'agentPage',
 				to: '/teramis/agent',
 				text: 'Agents',
-				icon: 'HeroUserGroup',
+				icon: 'HeroSignal',
 				subPages: {
 					listPage: {
 						id: 'agentListPage',
 						to: '/teramis/agent/list',
-						text: 'Agents List',
-						icon: 'HeroQueueList',
+						text: 'Agent List',
+						icon: 'HeroSignal',
+						description: 'A list of all of the agents currently configured to scan for Controlled Unclassified Information.'
 					},
 					editPage: {
 						id: 'agentPage',
@@ -164,56 +166,56 @@ export const appPages = {
 					},
 				},
 			},
-			rolePage: {
-				id: 'rolePage',
-				to: '/teramis/role',
-				text: 'Roles',
-				icon: 'HeroShieldCheck',
-				subPages: {
-					listPage: {
-						id: 'teramisListPage',
-						to: '/teramis/role/list',
-						text: 'Role List',
-						icon: 'HeroQueueList',
-					},
-					editPage: {
-						id: 'teramisPage',
-						to: `/teramis/role/${rolesDb[0].id}`,
-						text: `Role @${rolesDb[0].id}`,
-						icon: 'HeroShieldExclamation',
-					},
-					editPageLink: {
-						id: 'editPageLink',
-						to: '/teramis/role',
-					},
-				},
-			},
+			// rolePage: {
+			// 	id: 'rolePage',
+			// 	to: '/teramis/role',
+			// 	text: 'Roles',
+			// 	icon: 'HeroShieldCheck',
+			// 	subPages: {
+			// 		listPage: {
+			// 			id: 'teramisListPage',
+			// 			to: '/teramis/role/list',
+			// 			text: 'Role List',
+			// 			icon: 'HeroQueueList',
+			// 		},
+			// 		editPage: {
+			// 			id: 'teramisPage',
+			// 			to: `/teramis/role/${rolesDb[0].id}`,
+			// 			text: `Role @${rolesDb[0].id}`,
+			// 			icon: 'HeroShieldExclamation',
+			// 		},
+			// 		editPageLink: {
+			// 			id: 'editPageLink',
+			// 			to: '/teramis/role',
+			// 		},
+			// 	},
+			// },
 		},
 	},
-	projectAppPages: {
-		id: 'projectApp',
-		to: '/project',
-		text: 'Project',
-		icon: 'HeroClipboardDocumentCheck',
-		subPages: {
-			projectDashboardPage: {
-				id: 'projectDashboardPage',
-				to: '/project/dashboard',
-				text: 'Projects Dashboard',
-				icon: 'HeroClipboardDocumentCheck',
-			},
-			projectBoardPage: {
-				id: 'projectBoardPage',
-				to: `/project/board/${projectsDb[0].id}`,
-				text: `Board ${projectsDb[0].name}`,
-				icon: 'HeroQrCode',
-			},
-			projectBoardPageLink: {
-				id: 'projectBoardPageLink',
-				to: '/project/board',
-			},
-		},
-	},
+	// projectAppPages: {
+	// 	id: 'projectApp',
+	// 	to: '/project',
+	// 	text: 'Project',
+	// 	icon: 'HeroClipboardDocumentCheck',
+	// 	subPages: {
+	// 		projectDashboardPage: {
+	// 			id: 'projectDashboardPage',
+	// 			to: '/project/dashboard',
+	// 			text: 'Projects Dashboard',
+	// 			icon: 'HeroClipboardDocumentCheck',
+	// 		},
+	// 		projectBoardPage: {
+	// 			id: 'projectBoardPage',
+	// 			to: `/project/board/${projectsDb[0].id}`,
+	// 			text: `Board ${projectsDb[0].name}`,
+	// 			icon: 'HeroQrCode',
+	// 		},
+	// 		projectBoardPageLink: {
+	// 			id: 'projectBoardPageLink',
+	// 			to: '/project/board',
+	// 		},
+	// 	},
+	// },
 	// educationAppPages: {
 	// 	id: 'educationApp',
 	// 	to: '/education',

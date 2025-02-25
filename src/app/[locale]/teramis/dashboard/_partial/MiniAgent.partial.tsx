@@ -5,7 +5,7 @@ import themeConfig from '@/config/theme.config';
 import {loadingOrProperty} from '@/components/LoaderDots.common';
 import {AgentAPIResults} from '@/app/api/agent/route';
 
-import useAgentOverview from '@/hooks/useAgentOverview';
+import useAgentOverview from '@/hooks/useAgent';
 import useDarkMode from '@/hooks/useDarkMode';
 
 const MiniAgent = () => {

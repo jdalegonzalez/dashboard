@@ -18,45 +18,22 @@ import MiniUniqueFiles from '@/app/[locale]/teramis/dashboard/_partial/MiniUniqu
 import MiniUnsupporedFiles from '@/app/[locale]/teramis/dashboard/_partial/MiniUnsupportedFiles.partial';
 import AgentsPartial from '@/app/[locale]/teramis/dashboard/_partial/Agents.partial';
 import ScanSummaryPartial from '@/app/[locale]/teramis/dashboard/_partial/ScanSummary.partial';
-import ErrorListPartial from '@/app/[locale]/teramis/dashboard/_partial/ErrorList.partial';
+import ScanErrorListPartial from '@/app/[locale]/teramis/dashboard/_partial/ScanErrorList.partial';
+import CrawlErrorListPartial from '@/app/[locale]/teramis/dashboard/_partial/CrawlErrorList.partial';
 import FindingsListPartial from '@/app/[locale]/teramis/dashboard/_partial/FindingsList.partial';
-import CalendarPartial from '@/app/[locale]/teramis/dashboard/_partial/Calendar.partial';
 
 //import { useTranslation } from 'react-i18next';
 //import useLocale from '@/hooks/useLocale';
 
 const TABS: {
-	[key in 'OVERVIEW' | 'AGENTS' | 'TASKS']: 'Overview' | 'Agents' | 'Tasks';
+	[key in 'OVERVIEW' | 'AGENTS' ] : 'Overview' | 'Agents';
 } = {
 	OVERVIEW: 'Overview',
 	AGENTS: 'Agents',
-	TASKS: 'Tasks',
 };
 
 const TeramisDashboardClient = () => {
 	const [activeTab, setActiveTab] = useState(TABS.OVERVIEW);
-	// const [state, setState] = useState({
-	// 	selection: {
-	// 		startDate: dayjs().startOf('week').add(-1, 'week').toDate(),
-	// 		endDate: dayjs().endOf('week').toDate(),
-	// 		key: 'selection',
-	// 	},
-	// 	selection2: {
-	// 		startDate: dayjs().startOf('week').add(-1, 'week').add(2, 'day').toDate(),
-	// 		endDate: dayjs().endOf('week').add(-4, 'day').toDate(),
-	// 		key: 'selection2',
-	// 	},
-	// 	selection3: {
-	// 		startDate: dayjs().startOf('week').add(2, 'week').add(2, 'day').toDate(),
-	// 		endDate: dayjs().startOf('week').add(3, 'week').add(5, 'day').toDate(),
-	// 		key: 'selection3',
-	// 	},
-	// });
-
-	// const { i18n } = useTranslation();
-
-	// const activeLocale = useLocale();
-
 	return (
 		<PageWrapper>
 			<Subheader>
@@ -136,22 +113,15 @@ const TeramisDashboardClient = () => {
 						</div>
 
 						<div className='col-span-12 2xl:col-span-6'>
-							<ErrorListPartial />
+							<ScanErrorListPartial />
 						</div>
 						<div className='col-span-12 2xl:col-span-6'>
-							<CalendarPartial />
+							<CrawlErrorListPartial />
 						</div>
 					</div>
 				)}
 				{activeTab === TABS.AGENTS && (
 					<AgentsPartial className='w-full'/>
-				)}
-				{activeTab === TABS.TASKS && (
-					<div className='grid h-full grid-cols-12 gap-4'>
-						<div className='col-span-12 h-full'>
-							<CalendarPartial height='100%' />
-						</div>
-					</div>
 				)}
 			</Container>
 		</PageWrapper>

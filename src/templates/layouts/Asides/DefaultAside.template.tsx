@@ -10,11 +10,11 @@ import Nav, {
 	NavItem,
 	NavSeparator,
 	NavTitle,
-	NavUser,
+	// NavUser,
 } from '../../../components/layouts/Navigation/Nav';
 import Badge from '../../../components/ui/Badge';
-import UserTemplate from '../User/User.template';
-import usersDb from '../../../mocks/db/users.db';
+// import UserTemplate from '../User/User.template';
+// import usersDb from '../../../mocks/db/users.db';
 
 const removeSubPages = (obj:any)  => {
 	const {['subPages']: unused, ...rest} = obj;
@@ -95,12 +95,15 @@ const DefaultAsideTemplate = () => {
 						</NavCollapse>
 					</NavCollapse>
  					*/}
-					<NavCollapse
+					{/* <NavCollapse
 						text={appPages.teramisAppPages.text}
 						to={appPages.teramisAppPages.to}
-						icon={appPages.teramisAppPages.icon}>
+						icon={appPages.teramisAppPages.icon}> */}
 						<NavItem {...appPages.teramisAppPages.subPages.teramisDashboardPage} />
-						<NavCollapse
+						<NavItem
+								{...appPages.teramisAppPages.subPages.agentPage.subPages.listPage}
+							/>
+						{/* <NavCollapse
 							text={appPages.teramisAppPages.subPages.agentPage.text}
 							to={appPages.teramisAppPages.subPages.agentPage.to}
 							icon={appPages.teramisAppPages.subPages.agentPage.icon}>
@@ -110,20 +113,9 @@ const DefaultAsideTemplate = () => {
 							<NavItem
 								{...appPages.teramisAppPages.subPages.agentPage.subPages.editPage}
 							/>
-						</NavCollapse>
-						<NavCollapse
-							text={appPages.teramisAppPages.subPages.rolePage.text}
-							to={appPages.teramisAppPages.subPages.rolePage.to}
-							icon={appPages.teramisAppPages.subPages.rolePage.icon}>
-							<NavItem
-								{...appPages.teramisAppPages.subPages.rolePage.subPages.listPage}
-							/>
-							<NavItem
-								{...appPages.teramisAppPages.subPages.rolePage.subPages.editPage}
-							/>
-						</NavCollapse>
-					</NavCollapse>
-					<NavCollapse
+						</NavCollapse> */}
+					{/* </NavCollapse> */}
+					{/* <NavCollapse
 						text={appPages.salesAppPages.text}
 						to={appPages.salesAppPages.to}
 						icon={appPages.salesAppPages.icon}>
@@ -174,7 +166,7 @@ const DefaultAsideTemplate = () => {
 								6
 							</Badge>
 						</NavItem>
-					</NavCollapse>
+					</NavCollapse> */}
 					{/* <NavItem
 						text={appPages.mailAppPages.text}
 						to={appPages.mailAppPages.subPages.inboxPages.to}
@@ -209,7 +201,8 @@ const DefaultAsideTemplate = () => {
 							Soon
 						</Badge>
 					</NavItem> */}
-
+					{  (process.env.DOC_UI) ?
+					<>
 					<NavSeparator />
 
 					<NavTitle>Components & Templates</NavTitle>
@@ -318,6 +311,10 @@ const DefaultAsideTemplate = () => {
 							</Badge>
 						</NavItem>
 					</NavCollapse>
+					</>
+					:
+					undefined
+					}
 
 					{/* <NavSeparator />
 					<NavTitle>Members</NavTitle>
@@ -396,7 +393,7 @@ const DefaultAsideTemplate = () => {
 					</NavCollapse> */}
 				</Nav>
 
-				<UserTemplate />
+				{/* <UserTemplate /> */}
 				<DarkModeSwitcherPart />
 			</AsideFooter>
 		</Aside>

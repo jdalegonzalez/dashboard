@@ -12,10 +12,10 @@ const DefaultHeaderRightCommon = () => {
 			{/* <MessagesPartial />
 			<NotificationPartial /> */}
 			<SettingsPartial />
-			<Mounted
+			{/* <Mounted
 				fallback={<Button icon='HeroLanguage' aria-label='Select Language' isDisable />}>
 				<LanguageSelectorPartial />
-			</Mounted>
+			</Mounted> */}
 		</>
 	);
 };

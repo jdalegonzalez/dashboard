@@ -80,7 +80,7 @@ export const Tr: FC<ITrProps> = (props) => {
 };
 Tr.displayName = 'Tr';
 
-interface IThProps extends ThHTMLAttributes<HTMLTableHeaderCellElement> {
+interface IThProps extends ThHTMLAttributes<HTMLTableCellElement> {
 	children: ReactNode;
 	className?: string;
 	isResizable?: boolean;

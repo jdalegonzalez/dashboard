@@ -2,7 +2,7 @@ import React from 'react';
 import Card, { CardBody } from '@/components/ui/Card';
 import Icon from '@/components/icon/Icon';
 import themeConfig from '@/config/theme.config';
-import useAgentOverview from '@/hooks/useAgentOverview';
+import useAgentOverview from '@/hooks/useAgent';
 import useDarkMode from '@/hooks/useDarkMode';
 import { loadingOrProperty } from '@/components/LoaderDots.common';
 import { AgentAPIResults } from '@/app/api/agent/route';

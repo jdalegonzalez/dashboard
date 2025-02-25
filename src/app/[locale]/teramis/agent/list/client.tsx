@@ -2,6 +2,10 @@
 
 import React, { useState } from 'react';
 import PageWrapper from '@/components/layouts/PageWrapper/PageWrapper';
+import { getAgentDetails } from '@prisma/client/sql';
+import useDarkMode from '@/hooks/useDarkMode';
+
+import { formatDate, statusToColor, bytesToGigs } from '@/utils/dataDisplay.util';
 import {
 	SortingState,
 	createColumnHelper,
@@ -10,11 +14,12 @@ import {
 	getFilteredRowModel,
 	getSortedRowModel,
 	getPaginationRowModel,
+	CellContext,
+	ColumnMeta,
+	RowData
 } from '@tanstack/react-table';
-import usersDb, { TUser } from '@/mocks/db/users.db';
 import { appPages } from '@/config/pages.config';
 import Link from 'next/link';
-import Avatar from '@/components/Avatar';
 import Icon from '@/components/icon/Icon';
 import Tooltip from '@/components/ui/Tooltip';
 import Subheader, { SubheaderLeft, SubheaderRight } from '@/components/layouts/Subheader/Subheader';
@@ -31,84 +36,300 @@ import Dropdown, {
 	DropdownToggle,
 } from '@/components/ui/Dropdown';
 import TableTemplate, { TableCardFooterTemplate } from '@/templates/common/TableParts.template';
+import Skeleton from '@/components/utils/ThemedSkeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { TColorIntensity } from '@/types/colorIntensities.type';
+import { useAgentDetails, blankResult } from '@/hooks/useAgent';
 
-const columnHelper = createColumnHelper<TUser>();
+const columnHelper = createColumnHelper<getAgentDetails.Result>();
 
 const editLinkPath = `${appPages.teramisAppPages.subPages.agentPage.subPages.editPageLink.to}/`;
 
-const columns = [
-	columnHelper.accessor('image', {
-		cell: (info) => (
-			<Link href={`${editLinkPath}${info.row.original.id}`}>
-				<Avatar
-					src={info.getValue()?.thumb}
-					name={`${info.row.original.firstName} ${info.row.original.lastName}`}
-					className='!aspect-[9/12] !w-14 2xl:!w-20'
-					rounded='rounded'
-				/>
-			</Link>
-		),
-		header: 'Image',
-		footer: 'Image',
-		enableGlobalFilter: false,
-		enableSorting: false,
-	}),
-	columnHelper.accessor('username', {
-		cell: (info) => (
-			<Link href={`${editLinkPath}${info.row.original.id}`}>
-				<div className='font-bold'>{`${info.row.original.firstName} ${info.row.original.lastName}`}</div>
-				<div className='text-sm'>@{info.getValue()}</div>
-			</Link>
-		),
-		header: 'Username',
-		footer: 'Username',
-	}),
-	columnHelper.accessor('email', {
-		cell: (info) => (
-			<a href={`mailto:${info.getValue()}`} className='flex items-center gap-2'>
-				{info.getValue()}
-				{info.row.original.isVerified && <Icon icon='HeroCheckBadge' color='blue' />}
-			</a>
-		),
-		header: 'Email',
-		footer: 'Email',
-	}),
-	columnHelper.accessor('position', {
-		cell: (info) => <span>{info.getValue()}</span>,
-		header: 'Position',
-		footer: 'Position',
-	}),
-	columnHelper.display({
-		cell: (info) => (
-			<div className='flex items-center gap-2'>
-				{info.row.original.socialAuth?.google && (
-					<Tooltip text='Google'>
-						<Icon size='text-xl' icon='CustomGoogle' />
-					</Tooltip>
-				)}
-				{info.row.original.socialAuth?.facebook && (
-					<Tooltip text='Facebook'>
-						<Icon size='text-xl' icon='CustomFacebook' />
-					</Tooltip>
-				)}
-				{info.row.original.socialAuth?.apple && (
-					<Tooltip text='Apple'>
-						<Icon size='text-xl' icon='CustomApple' />
-					</Tooltip>
-				)}
-			</div>
-		),
-		header: 'Social Account',
-		footer: 'Social Account',
-	}),
-];
+const darkCircleColor = 'bg-stone-950/50'; 
+const darkIconIntensity = '500';
 
-const CustomerListClient = () => {
+const lightCircleColor = 'bg-sky-800'; 
+const lightIconIntensity = '100';
+const skelClass = 'bg-opacity-5 p-0'
+
+const isLoading = (info:CellContext<getAgentDetails.Result, any>) => info.row.original.agent_id === 'loading';
+
+declare module '@tanstack/react-table' {
+	interface ColumnMeta<TData extends RowData, TValue> {
+	  addLeftBorder: boolean
+	}
+}
+
+// I don't know which columns are ultimately going to be in the list.
+// So, I've got defines for all of them and have commented out the
+// ones I'm deprioritizing for now.
+const columnBuilder = (iconIntensity:TColorIntensity) => {
+	return [
+		columnHelper.accessor('agent_id', {
+			cell: (info) => {
+				const statVal = info.row.original.status;
+				const {color,intensity} = statusToColor(statVal);
+				return (
+				isLoading(info) ?
+				<Skeleton />
+				: 				
+				<Link href={`${editLinkPath}${info.row.original.agent_id}`}>
+					<div className='flex items-center pr-4'>
+						<div className='flex-shrink-0 w-[60px] mr-2'>
+						<Badge 
+							variant='outline' 
+							borderWidth='border' 
+							rounded='rounded' 
+							color={color} 
+							colorIntensity={intensity}>{statVal}
+						</Badge>
+						</div>
+						<div className='flex-grow truncate'>
+							<div className='text-sm text-nowrap'>{info.row.original.name}</div>
+							<div className='text-sm truncate text-nowrap text-zinc-500'>{info.row.original.path}</div>
+						</div>
+					</div>
+				</Link>
+			)},
+			size: 280,
+			header: 'Agent',
+			footer: 'Agent',
+			enableGlobalFilter: false,
+			enableSorting: false,
+		}),
+		// columnHelper.accessor('status', {
+		// 	cell: (info) => {
+		// 		const val = info.getValue();
+		// 		const {color,intensity} = statusToColor(val);
+		// 		return (
+		// 			isLoading(info)
+		// 			? <Skeleton
+		// 				width='60%'
+		// 				className={`inline-flex items-center justify-center px-2 text-4xl ${skelClass}`}
+		// 			/>
+		// 			: <Badge 
+		// 				variant='outline' 
+		// 				borderWidth='border' 
+		// 				rounded='rounded' 
+		// 				color={color} 
+		// 				colorIntensity={intensity}>{val}
+		// 			</Badge>
+		// 		);
+		// 	},
+		// 	size: 60,
+		// 	header: 'Status',
+		// 	footer: 'Status',
+		// }),
+		// columnHelper.accessor('use_history', {
+		// 	cell: (info) => (
+		// 		isLoading(info) ?
+		// 		<Skeleton />
+		// 		:
+		// 		<span>{info.getValue()}</span>
+		// 	),
+		// 	header: 'Using History',
+		// 	footer: 'Using History',
+		// }),
+		columnHelper.accessor('scan_start_time', {
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<span>{formatDate(info.getValue())}</span>
+			),
+			header: 'Scan Start',
+			footer: 'Scan Start',
+			meta: {addLeftBorder: true}
+		}),
+		columnHelper.accessor('scan_end_time', {
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<span>{formatDate(info.getValue())}</span>
+			),
+			header: 'Scan End',
+			footer: 'Scan End',
+		}),
+		columnHelper.accessor('scan_size', {
+			size: 90,
+			header: () => <div className='flex flex-row w-full items-center justify-center gap-1'><span className='text-center'>Size</span><span className='text-center text-zinc-500 text-xs pt-1'> (Gb)</span></div>,		
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<div className='w-full text-center'>{bytesToGigs(info.getValue(),"")}</div>
+			),
+			footer: 'Scan Size',
+		}),
+		columnHelper.accessor('matches', {
+			size: 70,
+			header: () => <div className='text-center w-full mr-4'>CUI</div>,
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<div className='w-full text-center'>{info.getValue()}</div>
+			),
+			footer: 'CUI',
+		}),
+		columnHelper.accessor('scan_errors', {
+			size: 90,
+			header: () => <div className='text-center w-full'>Errors</div>,
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<div className='text-center w-full'>{info.getValue()}</div>
+			),
+			footer: 'Scan Errors',
+		}),
+		columnHelper.accessor('timeouts', {
+			size: 100,
+			header: () => <div className='text-center w-full'>Timeouts</div>,
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<div className='text-center w-full'>{info.getValue()}</div>
+			),
+			footer: 'Timeouts',
+		}),
+		columnHelper.accessor('gigs_per_second', {
+			size: 120,
+			header: () => <div className='flex-col w-full align-center justify-center'><div className='text-center'>Speed</div><div className='text-center text-zinc-500 text-xs pt-1'> (Gbps)</div></div>,
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<div className='w-full text-center'>{info.getValue()}</div>
+			),
+			footer: 'Speed',
+		}),
+		columnHelper.accessor('crawl_start_time', {
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<span>{formatDate(info.getValue())}</span>
+			),
+			header: 'Crawl Start',
+			footer: 'Crawl Start',
+			meta: {addLeftBorder: true}
+		}),
+		columnHelper.accessor('crawl_end_time', {
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<span>{formatDate(info.getValue())}</span>
+			),
+			header: 'Crawl End',
+			footer: 'Crawl End',
+		}),
+		// columnHelper.accessor('root_path', {
+		// 	cell: (info) => (
+		// 		isLoading(info) ?
+		// 		<Skeleton />
+		// 		:
+		// 		info.getValue()
+		// 	),
+		// 	header: 'Crawl Path',
+		// 	footer: 'Crawl Path',
+		// }),
+		columnHelper.accessor('total_size', {
+			size: 90,
+			header: () => <div className='flex flex-row w-full items-center justify-center gap-1'><span className='text-center'>Size</span><span className='text-center text-zinc-500 text-xs pt-1'> (Gb)</span></div>,		
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<div className='w-full text-center'>{bytesToGigs(info.getValue(),"")}</div>
+			),
+			footer: 'Crawl Size',
+		}),
+		columnHelper.accessor('dir_count', {
+			size: 90,
+			header: () => <div className='w-full text-center'>Directories</div>,
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<div className='w-full text-center'>{info.getValue()}</div>
+			),
+			footer: 'Directories',
+		}),
+		columnHelper.accessor('file_count', {
+			size: 90,
+			header: () => <div className='w-full text-center'>Files</div>,
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<div className='w-full text-center'>{info.getValue()}</div>
+			),
+			footer: 'Files',
+		}),
+		columnHelper.accessor('crawl_errors', {
+			size: 90,
+			header: () => <div className='text-center w-full'>Errors</div>,
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<div className='text-center w-full'>{info.getValue()}</div>
+			),
+			footer: 'Errors',
+		}),
+		columnHelper.accessor('throughput', {
+			size: 120,
+			header: () => <div className='flex-col w-full align-center justify-center'><div className='text-center'>Speed</div><div className='text-center text-zinc-500 text-xs pt-1'> (Gbps)</div></div>,
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<div className='w-full text-center'>{bytesToGigs(info.getValue(),"")}</div>
+			),
+			footer: 'Speed',
+		}),
+		columnHelper.accessor('largest_file_size', {
+			size: 90,
+			header: () => <div className='flex flex-col w-full items-center justify-center gap-1'><span className='text-center text-nowrap'>Largest File</span><span className='text-center text-zinc-500 text-xs pt-1'> (Gb)</span></div>,		
+			cell: (info) => (
+				isLoading(info) ?
+				<Skeleton />
+				:
+				<div className='w-full text-center'>{bytesToGigs(info.getValue(),"")}</div>
+			),
+			footer: 'Largest File',
+		}),
+		// columnHelper.accessor('largest_file_path', {
+		// 	cell: (info) => (
+		// 		isLoading(info) ?
+		// 		<Skeleton />
+		// 		:
+		// 		<span>{info.getValue()}</span>
+		// 	),
+		// 	header: 'Largest File',
+		// 	footer: 'Largest File',
+		// }),
+	];
+	
+}
+
+const pageSize = 5;
+const darkColumns = columnBuilder(darkIconIntensity);
+const lightColumns = columnBuilder(lightIconIntensity);
+const blankResults =  Array.from({length: pageSize}, (v, i) => blankResult);
+
+const AgentListClient = () => {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [globalFilter, setGlobalFilter] = useState<string>('');
+	const {isDarkTheme} = useDarkMode();
+	const columns = isDarkTheme ? darkColumns : lightColumns
 
-	const [data] = useState<TUser[]>(() => [...usersDb]);
-
+	const response = useAgentDetails();
+	const data = response.isLoading ? blankResults : response.data;
 	const table = useReactTable({
 		data,
 		columns,
@@ -131,7 +352,7 @@ const CustomerListClient = () => {
 
 	return (
 		<PageWrapper>
-			<Subheader>
+			{/* Bring back when we want to support adding an agent and searching <Subheader>
 				<SubheaderLeft>
 					<FieldWrap
 						firstSuffix={<Icon className='mx-2' icon='HeroMagnifyingGlass' />}
@@ -159,68 +380,37 @@ const CustomerListClient = () => {
 				<SubheaderRight>
 					<Link href={`${editLinkPath}new`}>
 						<Button variant='solid' icon='HeroPlus'>
-							New Customer
+							New Agent
 						</Button>
 					</Link>
 				</SubheaderRight>
-			</Subheader>
-			<Container>
-				<Card className='h-full'>
-					<CardHeader>
+			</Subheader> */}
+			<Container className='h-full max-w-full'>
+				<Card className='h-full p-4'>
+					<CardHeader className='mb-4'>
 						<CardHeaderChild>
-							<CardTitle>All Customers</CardTitle>
+							<CardTitle>All Agents</CardTitle>
+							{response.isLoading ? undefined
+							:
 							<Badge
 								variant='outline'
 								className='border-transparent px-4'
 								rounded='rounded-full'>
-								{table.getFilteredRowModel().rows.length} items
+								{table.getFilteredRowModel().rows.length} agents
 							</Badge>
-						</CardHeaderChild>
-						<CardHeaderChild>
-							<Dropdown>
-								<DropdownToggle>
-									<Button icon='HeroRocketLaunch'>Actions</Button>
-								</DropdownToggle>
-								<DropdownMenu placement='bottom-end'>
-									<div className='grid grid-cols-12 gap-4 divide-zinc-200 dark:divide-zinc-800 md:divide-x'>
-										<div className='col-span-12 gap-4 md:col-span-3'>
-											<DropdownNavLinkItem to='/' icon='HeroLink'>
-												Home Page
-											</DropdownNavLinkItem>
-											<DropdownNavLinkItem to='/ui/dropdown' icon='HeroLink'>
-												Dropdown
-											</DropdownNavLinkItem>
-											<DropdownItem icon='HeroSquare2Stack'>
-												Item 3
-											</DropdownItem>
-										</div>
-										<div className='col-span-12 gap-4 md:col-span-3'>
-											<DropdownItem icon='HeroSquare2Stack'>
-												Item 4
-											</DropdownItem>
-											<DropdownItem icon='HeroSquare2Stack'>
-												Item 5
-											</DropdownItem>
-											<DropdownItem icon='HeroSquare2Stack'>
-												Item 6
-											</DropdownItem>
-										</div>
-										<div className='col-span-12 gap-4 px-4 md:col-span-6'>
-											Lorem ipsum dolor sit amet.
-										</div>
-									</div>
-								</DropdownMenu>
-							</Dropdown>
+							}
 						</CardHeaderChild>
 					</CardHeader>
-					<CardBody className='overflow-auto'>
-						<TableTemplate className='table-fixed max-md:min-w-[70rem]' table={table} />
-					</CardBody>
-					<TableCardFooterTemplate table={table} />
+					<div className='mr-2 ml-2 h-full'>
+						<CardBody className='h-full w-full overflow-auto mb-4 scrollbar-thin !p-0'>
+							<TableTemplate className='table-fixed max-md:min-w-[70rem]' table={table} hasFooter={false} sizeUnits='px'/>
+						</CardBody>
+						{/* Bring back if we go paged.<TableCardFooterTemplate table={table} /> */}
+					</div>
 				</Card>
 			</Container>
 		</PageWrapper>
 	);
 };
 
-export default CustomerListClient;
+export default AgentListClient;

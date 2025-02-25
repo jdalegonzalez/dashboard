@@ -27,22 +27,13 @@ import Badge from '@/components/ui/Badge';
 import Skeleton from '@/components/utils/ThemedSkeleton';
 import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/components/ui/Card';
 import Tooltip from '@/components/ui/Tooltip';
-import { shorten } from '@/utils/dataDisplay.util';
+import { shorten, confidenceToColor } from '@/utils/dataDisplay.util';
 import TableTemplate, { TableCardFooterTemplate } from '@/templates/common/TableParts.template';
 
 const columnHelper = createColumnHelper<ScanResult>();
 const fileColumnSize = 50;
 const fileColumnPercent = .47; // Close to 50% with a little fudge.
 const sizerId = `${path.basename(import.meta.url)}-sizer`;
-
-const textToColor = (txt:string) => {
-	switch (txt.trim().toLowerCase()) {
-		case "low": return { color: "sky" as const, intensity: "600" as const};
-		case "medium": return { color: "amber" as const, intensity: "600" as const};
-		case "high": return { color: "red" as const, intensity: "700" as const};
-		default: return { color: "blue" as const, intensity: "600" as const};
-	}
-}
 
 const skelClass = 'bg-opacity-5 p-0'
 const circleStyle = {margin:'auto'};
@@ -108,7 +99,7 @@ const columns = [
 	columnHelper.accessor('confidence', {
 		cell: (info) => {
 			const val = info.getValue();
-			const {color,intensity} = textToColor(val);
+			const {color,intensity} = confidenceToColor(val);
 			return (
 				info.row.original.id == 'loading'
 				? <Skeleton

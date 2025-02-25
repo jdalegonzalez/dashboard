@@ -33,7 +33,25 @@ export const pagingParams = (req: NextRequest, defaultRows: number) => {
   })  
 }
 
-export const pagedUrl = (urlbase: string, rows: number, page: number) => {
-  const base = urlbase.replace(/^.*\/api\//, '/api/').replace(/\/route.ts$/,'');
-  return `${base}?rows=${rows}&page=${page}`;
+export const DEFAULT_ROWS = 25
+
+export const metaToUrl = (meta:string) => meta.replace(/^.*\/api\//, '/api/').replace(/\/route.ts$/,'');
+
+export const argsUrl = (meta:string, args?:Record<string, any>, rows?:number, page?:number, defaultRows = DEFAULT_ROWS) => {
+  const extraArgs = (args === undefined) ? {} : args;
+  if (page === undefined && rows !== undefined) page = 0;
+  if (rows === undefined && page !== undefined) rows = defaultRows;
+  const allParams:Record<string, any> = {...extraArgs, ...{page, rows}};
+  const queryString = new URLSearchParams(allParams).toString();
+  const q = queryString ? "?" + queryString : ""
+  const base = metaToUrl(meta);
+  return `${base}${q}`
+}
+
+export const unpagedUrl = (urlbase: string, args?:Record<string,any>) => {
+  return argsUrl(urlbase, args)
+}
+
+export const pagedUrl = (urlbase: string, rows: number, page: number, extraArgs?:Record<string, any>) => {
+  return argsUrl(urlbase, extraArgs, rows=rows, page=page)
 }

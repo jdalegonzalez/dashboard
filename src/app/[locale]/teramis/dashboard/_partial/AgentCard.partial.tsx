@@ -2,7 +2,6 @@
 
 import React, {FC} from 'react';
 import { getAgentDetails } from '@prisma/client/sql';
-import { Status } from '@prisma/client';
 
 import Card, {
 	CardBody,
@@ -19,7 +18,7 @@ import useDarkMode from '@/hooks/useDarkMode';
 import colors from '@/tailwindcss/colors.tailwind';
 import textColorUtil from '@/utils/textColor.util';
 
-import { plural, formatDate } from '@/utils/dataDisplay.util';
+import { plural, formatDate, statusToColor, bytesToGigs, bytesToGigRatio } from '@/utils/dataDisplay.util';
 
 import Badge from '@/components/ui/Badge';
 import Chart from '@/components/Chart';
@@ -30,12 +29,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { TAllColors } from '@/types/colors.type';
 import { TColorIntensity } from '@/types/colorIntensities.type';
 
-
-const bytesToGigRatio       = 1.25e+8
-const monsterThroughput = 20 * bytesToGigRatio;
-
-const bytesToGigs = (val: number | string | bigint, suffix: string = " Gb") => 
-    ( Number(val) / bytesToGigRatio ).toLocaleString(undefined, {maximumFractionDigits: 2}) + suffix;
+const monsterThroughput = 2 * bytesToGigRatio;
 
 const speedometer = (agent: getAgentDetails.Result) => {
     const v1 = (agent.throughput / monsterThroughput) * 100;
@@ -115,17 +109,6 @@ const speedometer = (agent: getAgentDetails.Result) => {
 
 const skelClass = 'bg-opacity-5'
 
-const textToColor = (txt:Status) => {
-    if (!txt) return {color:"zinc" as const, intensity: "500" as const}
-    switch (txt.trim().toUpperCase()) {
-        case "CRAWLING": return { color: "emerald" as const, intensity: "600" as const};
-        case "SCANNING": return { color: "indigo" as const, intensity: "600" as const};
-        case "IDLE": return { color: "sky" as const, intensity: "600" as const};
-        case "ERRORED": return { color: "red" as const, intensity: "700" as const};
-        default: return { color: "blue" as const, intensity: "600" as const};
-    }
-}
-
 interface IAgentItemProps {
 	agent: getAgentDetails.Result;
     className?: string;
@@ -139,10 +122,11 @@ const AgentDetails: FC<IAgentItemProps> = ({ agent, className }) => {
     const {isDarkTheme} = useDarkMode();
 
     const circleColor = isDarkTheme ? 'bg-stone-950/50' : 'bg-sky-800'; 
-    const iconIntensity = isDarkTheme ? '500' : '100';
+    const iconIntensity: TColorIntensity  = isDarkTheme ? '500' : '100';
     const speedoDef = speedometer(agent);
 
-    const {color,intensity} = textToColor(agent?.status);
+    const loading = agent.agent_id === 'loading';
+    const {color,intensity} = loading ?  {color: circleColor, intensity: iconIntensity } :  statusToColor(agent.status);
 
     return (
         <div className={className} >
@@ -161,7 +145,7 @@ const AgentDetails: FC<IAgentItemProps> = ({ agent, className }) => {
                                 </div>
                             </div>
                             <div className='flex grow items-center'>
-                                <CardTitle>{agent?.name ? agent.name : <div className='w-96'><Skeleton /></div>}</CardTitle>
+                                <CardTitle>{!loading ? agent.name : <div className='w-96'><Skeleton /></div>}</CardTitle>
                             </div>
                         </div>
                     </CardHeaderChild>
@@ -201,22 +185,22 @@ const AgentDetails: FC<IAgentItemProps> = ({ agent, className }) => {
                                     {loadingOrProperty(agent, 'crawl_end_time', '', formatDate) as string}
                                 </div>
                                 <div className='mt-2 flex flex-wrap text-sm items-start justify-start gap-1 whitespace-nowrap'>
-                                    {agent?.scan_size ?
+                                    {!loading ?
                                         <div className={statStyle(themeConfig.themeColor, "500")}>
                                             <Icon icon='Harddrive' /><div>{bytesToGigs(agent.scan_size)}</div>
                                         </div>
                                         : undefined
                                     }
-                                    {agent?.file_count ?
+                                    {!loading ?
                                         <div className={statStyle(themeConfig.themeColor, "500")}>
                                             <Icon icon='HeroDocument' /><div>{plural(agent.file_count,"file")}</div>
                                         </div>
                                         :
                                         undefined
                                     }
-                                    {agent?.crawl_errors ?
+                                    {!loading ?
                                         <div className={statStyle(themeConfig.errorColor, '500')}>
-                                            <Icon icon='HeroExclamationCircle' /><div>{plural(agent.crawl_errors,'crawl error')}</div>
+                                            <Icon icon='HeroExclamationCircle' /><div>{plural(agent.crawl_errors??0,'crawl error')}</div>
                                         </div>
                                         : undefined
                                     }
@@ -226,19 +210,19 @@ const AgentDetails: FC<IAgentItemProps> = ({ agent, className }) => {
                                     {loadingOrProperty(agent, 'scan_end_time', '', formatDate) as string}
                                 </div> 
                                 <div className='mt-2 mb-8 flex flex-wrap text-sm items-start justify-start gap-1 whitespace-nowrap'>
-                                    {agent?.scan_errors ?
+                                    {!loading ?
                                         <div className={statStyle(themeConfig.errorColor, '500')}>
-                                            <Icon icon='HeroExclamationTriangle' /><div>{plural(agent.scan_errors,"scan error")}</div>
+                                            <Icon icon='HeroExclamationTriangle' /><div>{plural(agent.scan_errors??0,"scan error")}</div>
                                         </div>
                                         : undefined
                                     }
-                                    {agent?.matches ?
+                                    {!loading ?
                                         <div className={statStyle(themeConfig.warningColor, '500')}>
                                             <Icon icon='HeroShieldExclamation' /><div>{plural(agent.matches,"CUI file")}</div>
                                         </div>
                                         : undefined
                                     }
-                                    {agent?.timeouts ? 
+                                    {!loading ? 
                                         <div className={statStyle(themeConfig.themeColor, '500')}>
                                             <Icon icon='HeroClock' /><div>{plural(agent.timeouts,"timeout")}</div>
                                         </div>

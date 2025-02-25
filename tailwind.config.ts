@@ -86,7 +86,10 @@ const config: Config = {
 			variants: ['hover', 'active', 'dark:hover'],
 		},
 	],
-	plugins: [require('@tailwindcss/typography')],
+	plugins: [
+		require('@tailwindcss/typography'),
+		require('tailwind-scrollbar')
+	],
 	darkMode: 'class',
 };
 export default config;

@@ -1,6 +1,6 @@
 import React, { FC, forwardRef } from 'react';
 import classNames from 'classnames';
-import { flexRender, Table as TTableProps, Column as TColumn } from '@tanstack/react-table';
+import { flexRender, Table as TTableProps, Column as TColumn, ColumnMeta, RowData } from '@tanstack/react-table';
 import { CardFooter, CardFooterChild } from '@/components/ui/Card';
 import Mounted from '@/components/Mounted';
 import Table, { ITableProps, TBody, Td, TFoot, Th, THead, Tr } from '../../components/ui/Table';
@@ -12,19 +12,28 @@ import Select from '../../components/form/Select';
 interface ITableHeaderTemplateProps {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	table: TTableProps<any>;
+	sizeUnits?: string
 }
 
-const columnWidthClass = (column:TColumn<any, unknown>) => {
+const columnWidthStyle = (column:TColumn<any, unknown>, argUnits?: string) => {
 	const size = column.getSize();
-	if (size) { return `!w-${size}` }
-	return "";
-}
-const columnWidthStyle = (column:TColumn<any, unknown>) => {
-	const size = column.getSize();
-	if (size && size >= 0) return { width: `${size}%`}
+	const units = argUnits ?? '%';
+	if (size && size >= 0) return { width: `${size}${units}`}
 	return {}
 }
-export const TableHeaderTemplate: FC<ITableHeaderTemplateProps> = ({ table }) => {
+
+declare module '@tanstack/react-table' {
+	interface ColumnMeta<TData extends RowData, TValue> {
+	  addLeftBorder: boolean
+	}
+}
+
+const leftBorderClass = classNames(
+	'shadow-[inset_0.5px_0_0_0_rgba(0,0,0,0.15)]',
+	'dark:shadow-[inset_0.5px_0_0_0_rgba(255,255,255,0.15)]',	
+);
+
+export const TableHeaderTemplate: FC<ITableHeaderTemplateProps> = ({ table, sizeUnits }) => {
 	return (
 		<THead>
 			{table.getHeaderGroups().map((headerGroup) => (
@@ -33,11 +42,12 @@ export const TableHeaderTemplate: FC<ITableHeaderTemplateProps> = ({ table }) =>
 						<Th
 							key={header.id}
 							isColumnBorder={false}
-							style={{...columnWidthStyle(header.column)}}
+							style={{...columnWidthStyle(header.column, sizeUnits)}}
 							className={classNames(
 							{
 								'text-left': header.id !== 'Actions',
 								'text-right': header.id === 'Actions',
+								[leftBorderClass]: header.column.columnDef.meta?.addLeftBorder
 							})}>
 							{header.isPlaceholder ? null : (
 								<div
@@ -78,10 +88,11 @@ export const TableHeaderTemplate: FC<ITableHeaderTemplateProps> = ({ table }) =>
 };
 
 interface ITableBodyTemplateProps {
+	sizeUnits?: string;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	table: TTableProps<any>;
 }
-export const TableBodyTemplate: FC<ITableBodyTemplateProps> = ({ table }) => {
+export const TableBodyTemplate: FC<ITableBodyTemplateProps> = ({ table, sizeUnits }) => {
 	return (
 		<TBody>
 			{table.getRowModel().rows.map((row) => (
@@ -89,11 +100,12 @@ export const TableBodyTemplate: FC<ITableBodyTemplateProps> = ({ table }) => {
 					{row.getVisibleCells().map((cell) => (
 						<Td
 							key={cell.id}
-							style={{...columnWidthStyle(cell.column)}}
+							style={{...columnWidthStyle(cell.column, sizeUnits)}}
 							className={classNames(
 							{
 								'text-left': cell.column.id !== 'Actions',
 								'text-right': cell.column.id === 'Actions',
+								[leftBorderClass]: cell.column.columnDef.meta?.addLeftBorder
 							})}>
 							{flexRender(cell.column.columnDef.cell, cell.getContext())}
 						</Td>
@@ -107,8 +119,9 @@ export const TableBodyTemplate: FC<ITableBodyTemplateProps> = ({ table }) => {
 interface ITableFooterTemplateProps {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	table: TTableProps<any>;
+	sizeUnits?: string;
 }
-export const TableFooterTemplate: FC<ITableFooterTemplateProps> = ({ table }) => {
+export const TableFooterTemplate: FC<ITableFooterTemplateProps> = ({ table, sizeUnits }) => {
 	return (
 		<TFoot>
 			{table.getFooterGroups().map((footerGroup) => (
@@ -117,6 +130,7 @@ export const TableFooterTemplate: FC<ITableFooterTemplateProps> = ({ table }) =>
 						<Th
 							key={header.id}
 							isColumnBorder={false}
+							style={{...columnWidthStyle(header.column, sizeUnits)}}
 							className={classNames({
 								'text-left': header.id !== 'Actions',
 								'text-right': header.id === 'Actions',
@@ -162,19 +176,20 @@ export const TableFooterTemplate: FC<ITableFooterTemplateProps> = ({ table }) =>
 interface ITableTemplateProps extends Partial<ITableProps> {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	table: TTableProps<any>;
+	sizeUnits?: string;
 	hasHeader?: boolean;
 	hasFooter?: boolean;
 }
 const TableTemplate: React.ForwardRefRenderFunction<HTMLTableElement, ITableTemplateProps> = (props, ref) => {
-	const { children, hasHeader = true, hasFooter = true, table, ...rest } = props;
+	const { children, hasHeader = true, hasFooter = true, sizeUnits, table, ...rest } = props;
 	return (
 		<Mounted>
 			<Table ref={ref} {...rest}>
 				{children || (
 					<>
-						{hasHeader && <TableHeaderTemplate table={table} />}
-						<TableBodyTemplate table={table} />
-						{hasFooter && <TableFooterTemplate table={table} />}
+						{hasHeader && <TableHeaderTemplate table={table} sizeUnits={sizeUnits} />}
+						<TableBodyTemplate table={table} sizeUnits={sizeUnits} />
+						{hasFooter && <TableFooterTemplate table={table} sizeUnits={sizeUnits} />}
 					</>
 				)}
 			</Table>

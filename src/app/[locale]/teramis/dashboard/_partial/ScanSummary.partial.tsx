@@ -10,7 +10,7 @@ import useSWR from 'swr';
 import fetch from '@/app/lib/fetch';
 import { ScanSummaryAPIResults } from '@/app/api/agent/scans/route';
 import { AgentAPIResults } from '@/app/api/agent/route';
-import useAgentOverview from '@/hooks/useAgentOverview';
+import useAgentOverview from '@/hooks/useAgent';
 import themeConfig from '@/config/theme.config';
 import LoaderDotsCommon from '@/components/LoaderDots.common';
 

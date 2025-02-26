@@ -15,9 +15,12 @@
 * Install NodeJs
     - You'll find a windows binary for NodeJs here: [node-v22.14.0-x64.msi](https://nodejs.org/en)
     - Again, for ease of install, I've included the msi in this directory
-    - 
-Or install and configure Python and Visual Studio tools manually:
+    - You can select the option to auto-install dependencies, but it will likely fail as well because of our restricted access.
+    - To install the dependencies manually:
+        - Install the current version of Python Here is [3.13](https://www.python.org/ftp/python/3.13.0/python-3.13.0-amd64.exe). As per usual, I've put the file in this folder.
+        - Install Visual C++ Build Environment: For Visual Studio 2019 or later, use the Desktop development with C++ workload from Visual Studio Community. For a version older than Visual Studio 2019, install Visual Studio Build Tools with the Visual C++ build tools option.
+    - For what it's worth, installing the dependencies may not be necessary since we're not going to be building on the box.
 
-Install the current version of Python from the Microsoft Store.
-
-Install Visual C++ Build Environment: For Visual Studio 2019 or later, use the Desktop development with C++ workload from Visual Studio Community. For a version older than Visual Studio 2019, install Visual Studio Build Tools with the Visual C++ build tools option.
+* Get the build bundle and unzip it in the desired directory.
+    - Once we have a repository for this, we can just assume it will always live there.  Perhaps sharepoint.  We'll configure github to build and deploy.
+    - HOWEVER, for now, I'm manually building, moving to sharepoint, then downloading to this folder.

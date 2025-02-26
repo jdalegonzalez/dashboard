@@ -274,7 +274,7 @@ const DefaultAsideTemplate = () => {
 							<Badge variant='outline'>Formik</Badge>
 						</NavItem>
 					</NavCollapse>
-					<NavCollapse
+					{/* <NavCollapse
 						text={componentsPages.integratedPages.text}
 						to={componentsPages.integratedPages.to}
 						icon={componentsPages.integratedPages.icon}>
@@ -287,7 +287,7 @@ const DefaultAsideTemplate = () => {
 						<NavItem {...componentsPages.integratedPages.subPages.waveSurferPage} />
 						<NavItem {...componentsPages.formPages.subPages.richTextPage} />
 						<NavItem {...componentsPages.formPages.subPages.selectReactPage} />
-					</NavCollapse>
+					</NavCollapse> */}
 
 					<NavCollapse
 						text={componentsPages.iconsPage.text}

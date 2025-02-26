@@ -6,18 +6,18 @@ import ComponentAndTemplateHeaderTemplate from '../templates/layouts/Headers/Com
 
 const headerRoutes: TRoute[] = [
 	{ path: authPages.loginPage.to, element: null },
-	{
-		path: `${componentsPages.uiPages.to}/*`,
-		element: <ComponentAndTemplateHeaderTemplate />,
-	},
-	{
-		path: `${componentsPages.formPages.to}/*`,
-		element: <ComponentAndTemplateHeaderTemplate />,
-	},
-	{
-		path: `${componentsPages.integratedPages.to}/*`,
-		element: <ComponentAndTemplateHeaderTemplate />,
-	},
+	// {
+	// 	path: `${componentsPages.uiPages.to}/*`,
+	// 	element: <ComponentAndTemplateHeaderTemplate />,
+	// },
+	// {
+	// 	path: `${componentsPages.formPages.to}/*`,
+	// 	element: <ComponentAndTemplateHeaderTemplate />,
+	// },
+	// {
+	// 	path: `${componentsPages.integratedPages.to}/*`,
+	// 	element: <ComponentAndTemplateHeaderTemplate />,
+	// },
 	{
 		path: appPages.teramisAppPages.subPages.agentPage.subPages.listPage.to,
 		element: <DefaultHeaderTemplate desc={appPages.teramisAppPages.subPages.agentPage.subPages.listPage.description}  />,

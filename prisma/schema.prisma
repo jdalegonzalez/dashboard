@@ -38,7 +38,7 @@ enum Confidence {
 model Agent {
   id          String   @id @default(cuid(2))
   created_at  DateTime @default(now())
-  updated_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
   name        String
   location    String
   path        String
@@ -52,7 +52,7 @@ model Agent {
 model Crawl {
   id                 String   @id @default(cuid(2))
   created_at         DateTime @default(now())
-  updated_at         DateTime @default(now())
+  updated_at         DateTime @default(now()) @updatedAt
   root_path          String
   file_count         Int
   dir_count          Int
@@ -63,7 +63,6 @@ model Crawl {
   extensions         String[]
   start_time         DateTime @default(now())
   end_time           DateTime
-  duration           Unsupported("interval")?
   throughput         Float
   errors             CrawlError[]
   hashes             CrawlHash[]
@@ -75,7 +74,7 @@ model Crawl {
 model CrawlError {
   id         String   @id @default(cuid(2))
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   error_name String
   error_desc String
   file       String
@@ -86,7 +85,7 @@ model CrawlError {
 model CrawlHash {
   hash       String
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   file_paths String[]
   bsize      Int
   format     String
@@ -98,11 +97,10 @@ model CrawlHash {
 model Scan {
   id              String   @id @default(cuid(2))
   created_at      DateTime @default(now())
-  updated_at      DateTime @default(now())
+  updated_at      DateTime @default(now()) @updatedAt
   root_path       String
   start_time      DateTime @default(now())
   end_time        DateTime?
-  duration        Unsupported("interval")?
   matches         Int
   timeouts        Int
   gigs_per_second Float
@@ -115,7 +113,7 @@ model Scan {
 model ScanError {
   id              String   @id @default(cuid(2))
   created_at      DateTime @default(now())
-  updated_at      DateTime @default(now())
+  updated_at      DateTime @default(now()) @updatedAt
   occurred_at     DateTime
   severity        Severity
   error_name      String
@@ -128,7 +126,7 @@ model ScanError {
 model ScanResult {
   id              String   @id @default(cuid(2))
   created_at      DateTime @default(now())
-  updated_at      DateTime @default(now())
+  updated_at      DateTime @default(now()) @updatedAt
   hash            String
   file_path       String
   mime_type       String

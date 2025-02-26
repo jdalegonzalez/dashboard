@@ -20,10 +20,10 @@ const useSaveBtn = ({
 	const saveBtnText: TSaveBtnStatusValue = textFn();
 
 	const colorFn = () => {
-		if (isSaving) return 'blue';
+		if (isSaving) return 'sky';
 		if (!isSaving && isNewItem) return 'emerald';
-		if (!isSaving && !isNewItem && !isDirty) return 'blue';
-		return 'blue';
+		if (!isSaving && !isNewItem && !isDirty) return 'sky';
+		return 'sky';
 	};
 	const saveBtnColor: TColors = colorFn();
 

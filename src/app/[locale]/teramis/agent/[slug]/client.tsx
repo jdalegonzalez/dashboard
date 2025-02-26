@@ -4,12 +4,11 @@ import React, { useState } from 'react';
 import PageWrapper from '@/components/layouts/PageWrapper/PageWrapper';
 import { useParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import usersDb, { TUser } from '@/mocks/db/users.db';
 import { useFormik } from 'formik';
 import useSaveBtn from '@/hooks/useSaveBtn';
 import Subheader, {
 	SubheaderLeft,
-	SubheaderRight,
+	// SubheaderRight,
 	SubheaderSeparator,
 } from '@/components/layouts/Subheader/Subheader';
 import Link from 'next/link';
@@ -25,60 +24,66 @@ import Card, {
 	CardHeaderChild,
 	CardTitle,
 } from '@/components/ui/Card';
-import Avatar from '@/components/Avatar';
+import themeConfig from '@/config/theme.config';
 import Label from '@/components/form/Label';
 import Input from '@/components/form/Input';
-import Select from '@/components/form/Select';
-import rolesDb from '@/mocks/db/roles.db';
-import FieldWrap from '@/components/form/FieldWrap';
 import Icon from '@/components/icon/Icon';
 import Checkbox from '@/components/form/Checkbox';
 import dayjs from 'dayjs';
+import { useAgent } from '@/hooks/useAgent';
+import { statusToColor } from '@/utils/dataDisplay.util';
+import useDarkMode from '@/hooks/useDarkMode';
+import { TColorIntensity } from '@/types/colorIntensities.type';
+import Skeleton from '@/components/utils/ThemedSkeleton';
+import LoaderDotsCommon from '@/components/LoaderDots.common';
+import FindingsListPartial from '../../dashboard/_partial/FindingsList.partial';
 
-const CustomerClient = () => {
+const TABS: {
+	[key in 'SCANRESULTS' | 'SCANERRORS' | 'CRAWLRESULTS' | 'CRAWLERRORS' ] : 
+	'Scan Results' | 'Scan Errors' | 'Crawl Results' | 'Crawl Errors';
+} = {
+	SCANRESULTS: 'Scan Results',
+	SCANERRORS: 'Scan Errors',
+	CRAWLRESULTS: 'Crawl Results',
+	CRAWLERRORS: 'Crawl Errors',
+};
+
+const AgentDetails = () => {
+	const [activeTab, setActiveTab] = useState(TABS.SCANRESULTS);
 	const { slug: id } = useParams();
-
 	const { i18n } = useTranslation();
+	const {isDarkTheme} = useDarkMode();
 
-	const isNewItem = id === 'new';
+	const agentId: string | undefined = Array.isArray(id)?id[0]:id
+
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isSaving, setIsSaving] = useState<boolean>(false);
-
-	const userDb: TUser | undefined = usersDb.find((i) => i.id === id);
+	const { data: agent, isLoading, performUpdate } = useAgent(agentId, setIsSaving);
+	const scanId = isLoading ? '' : agent.scans[0]?.id
+	const crawlId = isLoading ? '' : agent.crawls[0]?.id
 
 	const formik = useFormik({
+		enableReinitialize: true,
 		initialValues: {
-			username: userDb?.username,
-			email: userDb?.email,
-			firstName: userDb?.firstName,
-			lastName: userDb?.lastName,
-			position: userDb?.position,
-			role: userDb?.role,
-			oldPassword: '',
-			newPassword: '',
-			newPasswordConfirmation: '',
-			twitter: userDb?.socialProfiles?.twitter,
-			facebook: userDb?.socialProfiles?.facebook,
-			instagram: userDb?.socialProfiles?.instagram,
-			github: userDb?.socialProfiles?.github,
-			twoFactorAuth: userDb?.twoFactorAuth,
-			weeklyNewsletter: userDb?.newsletter?.weeklyNewsletter || false,
-			lifecycleEmails: userDb?.newsletter?.lifecycleEmails || false,
-			promotionalEmails: userDb?.newsletter?.promotionalEmails || false,
-			productUpdates: userDb?.newsletter?.productUpdates || false,
+			name: agent?.name,
+			path: agent?.path,
+			use_history: agent?.use_history,
+			location: agent?.location
 		},
-		onSubmit: () => {},
+		onSubmit: (values) => { performUpdate(values) },
 	});
 
-	const [passwordShowStatus, setPasswordShowStatus] = useState<boolean>(false);
-	const [passwordNewShowStatus, setPasswordNewShowStatus] = useState<boolean>(false);
-	const [passwordNewConfShowStatus, setPasswordNewConfShowStatus] = useState<boolean>(false);
-
+	const isNewItem = agentId === 'new';
 	const { saveBtnText, saveBtnColor, saveBtnDisable } = useSaveBtn({
 		isNewItem,
 		isSaving,
 		isDirty: formik.dirty,
 	});
+
+	const {color, intensity} = statusToColor(agent?.status)
+	const circleColor = isDarkTheme ? 'bg-stone-950/50' : 'bg-sky-800'; 
+	const iconIntensity: TColorIntensity  = isDarkTheme ? '500' : '100';
+
 	return (
 		<PageWrapper>
 			<Subheader>
@@ -91,56 +96,61 @@ const CustomerClient = () => {
 					</Link>
 					<SubheaderSeparator />
 					{isNewItem ? (
-						'Add New User'
+						'Add New Agent'
 					) : (
 						<>
 							{}
-							{`${userDb?.firstName} ${userDb?.lastName}`}{' '}
+							{`${agent?.name}`}{' '}
 							<Badge
 								color='blue'
 								variant='outline'
 								rounded='rounded-full'
 								className='border-transparent'>
-								Edit User
+								Edit Agent
 							</Badge>
 						</>
 					)}
 				</SubheaderLeft>
-				<SubheaderRight>
-					<Button
-						icon='HeroServer'
-						variant='solid'
-						color={saveBtnColor}
-						isDisable={saveBtnDisable}
-						onClick={() => formik.handleSubmit()}>
-						{saveBtnText}
-					</Button>
-				</SubheaderRight>
 			</Subheader>
 			<Container className='flex shrink-0 grow basis-auto flex-col pb-0'>
 				<div className='flex h-full flex-wrap content-start'>
 					<div className='mb-4 grid w-full grid-cols-12 gap-4'>
-						<div className='col-span-12 flex flex-col gap-4 xl:col-span-6'>
+						<div className='col-span-12 flex flex-col gap-4 '>
 							<Card>
 								<CardBody>
 									<div className='flex w-full gap-4'>
 										<div className='flex-shrink-0'>
-											<Avatar
-												src={userDb?.image?.thumb}
-												className='!w-24'
-												name={`${userDb?.firstName} ${userDb?.lastName}`}
-											/>
+											<div className={`rounded-full ${circleColor} p-4`}>
+												<Icon
+													icon='DuoLte1'
+													size='text-5xl'
+													color={themeConfig.themeColor}
+													colorIntensity={iconIntensity}
+												/>
+											</div>
 										</div>
 										<div className='flex grow items-center'>
 											<div>
 												<div className='w-full text-2xl font-semibold'>
-													{userDb?.firstName} {userDb?.lastName}
+													{!isLoading ? agent?.name : <Skeleton />}
 												</div>
-
 												<div className='w-full text-zinc-500'>
-													{userDb?.email}
+													{!isLoading ? agent?.path : <Skeleton />}
 												</div>
 											</div>
+										</div>
+										<div className='flex-shrink-0'>
+											{isLoading ? 
+											<Skeleton />
+											:	
+											<Badge 
+												variant='outline' 
+												borderWidth='border' 
+												rounded='rounded' 
+												color={color} 
+												colorIntensity={intensity}>{agent?.status}
+											</Badge>
+											}
 										</div>
 									</div>
 								</CardBody>
@@ -150,7 +160,7 @@ const CustomerClient = () => {
 									<CardHeaderChild>
 										<CardTitle>
 											<div>
-												<div>Account Settings</div>
+												<div>Agent Settings</div>
 												<div className='text-lg font-normal text-zinc-500'>
 													Here you can change user account information
 												</div>
@@ -161,597 +171,49 @@ const CustomerClient = () => {
 								<CardBody>
 									<div className='grid grid-cols-12 gap-4'>
 										<div className='col-span-12 lg:col-span-6'>
-											<Label htmlFor='username'>Username</Label>
+											<Label htmlFor='name'>Name</Label>
 											<Input
-												id='username'
-												name='username'
+												id='name'
+												name='name'
 												onChange={formik.handleChange}
-												value={formik.values.username}
-												autoComplete='username'
+												value={formik.values.name}
+												autoComplete='agentname'
 											/>
 										</div>
 										<div className='col-span-12 lg:col-span-6'>
-											<Label htmlFor='email'>Email</Label>
+											<Label htmlFor='path'>Path</Label>
 											<Input
-												id='email'
-												name='email'
+												id='path'
+												name='path'
 												onChange={formik.handleChange}
-												value={formik.values.email}
+												value={formik.values.path}
 												autoComplete='email'
 											/>
 										</div>
 										<div className='col-span-12 lg:col-span-6'>
-											<Label htmlFor='firstName'>First Name</Label>
+											<Label htmlFor='location'>Location</Label>
 											<Input
-												id='firstName'
-												name='firstName'
+												id='location'
+												name='location'
 												onChange={formik.handleChange}
-												value={formik.values.firstName}
-												autoComplete='given-name'
-												autoCapitalize='words'
+												value={formik.values.location}
+												autoComplete='location'
 											/>
 										</div>
-										<div className='col-span-12 lg:col-span-6'>
-											<Label htmlFor='lastName'>Last Name</Label>
-											<Input
-												id='lastName'
-												name='lastName'
+										<div className='col-span-12 lg:col-span-6 relative'>
+											<Checkbox
+												id='use_history'
+												name='use_history'
+												label='Use History'
+												className='absolute bottom-0'
 												onChange={formik.handleChange}
-												value={formik.values.lastName}
-												autoComplete='family-name'
-												autoCapitalize='words'
-											/>
-										</div>
-
-										<div className='col-span-12'>
-											<Label htmlFor='position'>Role</Label>
-											<Select
-												name='role'
-												onChange={formik.handleChange}
-												value={formik.values.role}
-												placeholder='Select role'>
-												{rolesDb.map((role) => (
-													<option key={role.id} value={role.id}>
-														{role.name}
-													</option>
-												))}
-											</Select>
-										</div>
-										<div className='col-span-12'>
-											<Label htmlFor='position'>Position</Label>
-											<Input
-												id='position'
-												name='position'
-												onChange={formik.handleChange}
-												value={formik.values.position}
+												checked={formik.values.use_history}
 											/>
 										</div>
 									</div>
 								</CardBody>
-							</Card>
-							<Card>
-								<CardHeader>
-									<CardHeaderChild>
-										<CardTitle>
-											<div>
-												<div>Social Profiles</div>
-												<div className='text-lg font-normal text-zinc-500'>
-													Here you can set user social profiles
-												</div>
-											</div>
-										</CardTitle>
-									</CardHeaderChild>
-								</CardHeader>
-								<CardBody>
-									<div className='grid grid-cols-12 gap-4'>
-										<div className='col-span-12'>
-											<Label htmlFor='twitter'>Twitter</Label>
-											<FieldWrap firstSuffix='https://twitter.com/'>
-												<Input
-													id='twitter'
-													name='twitter'
-													onChange={formik.handleChange}
-													value={formik.values.twitter}
-													placeholder='username'
-												/>
-											</FieldWrap>
-										</div>
-
-										<div className='col-span-12'>
-											<Label htmlFor='facebook'>Facebook</Label>
-											<FieldWrap firstSuffix='https://facebook.com/'>
-												<Input
-													id='facebook'
-													name='facebook'
-													onChange={formik.handleChange}
-													value={formik.values.facebook}
-													placeholder='username'
-												/>
-											</FieldWrap>
-										</div>
-
-										<div className='col-span-12'>
-											<Label htmlFor='instagram'>Instagram</Label>
-											<FieldWrap firstSuffix='https://instagram.com/'>
-												<Input
-													id='instagram'
-													name='instagram'
-													onChange={formik.handleChange}
-													value={formik.values.instagram}
-													placeholder='username'
-												/>
-											</FieldWrap>
-										</div>
-
-										<div className='col-span-12'>
-											<Label htmlFor='github'>GitHub</Label>
-											<FieldWrap firstSuffix='https://github.com/'>
-												<Input
-													id='github'
-													name='github'
-													onChange={formik.handleChange}
-													value={formik.values.github}
-													placeholder='username'
-												/>
-											</FieldWrap>
-										</div>
-									</div>
-								</CardBody>
-							</Card>
-							<Card>
-								<CardHeader>
-									<CardHeaderChild>
-										<CardTitle>
-											<div>
-												<div>Change password</div>
-												<div className='text-lg font-normal text-zinc-500'>
-													Here you can set your new password
-												</div>
-											</div>
-										</CardTitle>
-									</CardHeaderChild>
-								</CardHeader>
-								<CardBody>
-									<div className='grid grid-cols-12 gap-4'>
-										<div className='col-span-12'>
-											<Label htmlFor='oldPassword'>Old Password</Label>
-											<FieldWrap
-												lastSuffix={
-													<Icon
-														className='mx-2'
-														icon={
-															passwordShowStatus
-																? 'HeroEyeSlash'
-																: 'HeroEye'
-														}
-														onClick={() => {
-															setPasswordShowStatus(
-																!passwordShowStatus,
-															);
-														}}
-													/>
-												}>
-												<Input
-													type={passwordShowStatus ? 'text' : 'password'}
-													id='oldPassword'
-													name='oldPassword'
-													onChange={formik.handleChange}
-													value={formik.values.oldPassword}
-													autoComplete='current-password'
-												/>
-											</FieldWrap>
-										</div>
-										<div className='col-span-12'>
-											<Label htmlFor='newPassword'>New Password</Label>
-											<FieldWrap
-												lastSuffix={
-													<Icon
-														className='mx-2'
-														icon={
-															passwordNewShowStatus
-																? 'HeroEyeSlash'
-																: 'HeroEye'
-														}
-														onClick={() => {
-															setPasswordNewShowStatus(
-																!passwordNewShowStatus,
-															);
-														}}
-													/>
-												}>
-												<Input
-													type={
-														passwordNewShowStatus ? 'text' : 'password'
-													}
-													id='newPassword'
-													name='newPassword'
-													onChange={formik.handleChange}
-													value={formik.values.newPassword}
-													autoComplete='new-password'
-												/>
-											</FieldWrap>
-										</div>
-										<div className='col-span-12'>
-											<Label htmlFor='newPasswordConfirmation'>
-												New Password Confirmation
-											</Label>
-											<FieldWrap
-												lastSuffix={
-													<Icon
-														className='mx-2'
-														icon={
-															passwordNewConfShowStatus
-																? 'HeroEyeSlash'
-																: 'HeroEye'
-														}
-														onClick={() => {
-															setPasswordNewConfShowStatus(
-																!passwordNewConfShowStatus,
-															);
-														}}
-													/>
-												}>
-												<Input
-													type={
-														passwordNewConfShowStatus
-															? 'text'
-															: 'password'
-													}
-													id='newPasswordConfirmation'
-													name='newPasswordConfirmation'
-													onChange={formik.handleChange}
-													value={formik.values.newPasswordConfirmation}
-													autoComplete='new-password'
-												/>
-											</FieldWrap>
-										</div>
-									</div>
-								</CardBody>
-							</Card>
-						</div>
-						<div className='col-span-12 flex flex-col gap-4 xl:col-span-6'>
-							<Card>
-								<CardHeader>
-									<CardHeaderChild>
-										<CardTitle>Two-Factor Authentication</CardTitle>
-									</CardHeaderChild>
-									<CardHeaderChild>
-										{formik.values.twoFactorAuth ? (
-											<Badge
-												variant='outline'
-												className='border-transparent'
-												color='emerald'>
-												Enabled
-											</Badge>
-										) : (
-											<Badge
-												variant='outline'
-												className='border-transparent'
-												color='red'>
-												Disabled
-											</Badge>
-										)}
-										<Checkbox
-											variant='switch'
-											id='twoFactorAuth'
-											name='twoFactorAuth'
-											onChange={formik.handleChange}
-											checked={formik.values.twoFactorAuth}
-										/>
-									</CardHeaderChild>
-								</CardHeader>
-								<CardBody>
-									<div className='flex flex-wrap divide-y divide-dashed divide-zinc-500/50 [&>*]:py-4'>
-										<div className='flex basis-full gap-4'>
-											<div className='flex grow items-center'>
-												<div className='w-full text-xl font-semibold'>
-													Authenticator App
-												</div>
-											</div>
-											<div className='flex-shrink-0'>
-												<Button
-													variant='outline'
-													isDisable={!formik.values.twoFactorAuth}>
-													Set up
-												</Button>
-											</div>
-										</div>
-										<div className='flex basis-full gap-4'>
-											<div className='flex grow items-center'>
-												<div className='w-full text-xl font-semibold'>
-													Security Keys
-												</div>
-											</div>
-											<div className='flex-shrink-0'>
-												<Button
-													color='red'
-													className='!px-0'
-													isDisable={!formik.values.twoFactorAuth}>
-													Deactivate
-												</Button>
-											</div>
-										</div>
-										<div className='flex basis-full gap-4'>
-											<div className='flex grow items-center'>
-												<div className='w-full text-xl font-semibold'>
-													Telephone Number
-												</div>
-											</div>
-											<div className='flex flex-shrink-0 items-center gap-4'>
-												<span className='text-zinc-500'>
-													{userDb?.phone}
-												</span>
-												<Button
-													variant='outline'
-													color='zinc'
-													isDisable={!formik.values.twoFactorAuth}>
-													Edit
-												</Button>
-											</div>
-										</div>
-									</div>
-								</CardBody>
-							</Card>
-							<Card>
-								<CardHeader>
-									<CardHeaderChild>
-										<CardTitle>Newsletter</CardTitle>
-									</CardHeaderChild>
-								</CardHeader>
-								<CardBody>
-									<div className='flex flex-wrap divide-y divide-dashed divide-zinc-500/50 [&>*]:py-4'>
-										<div className='flex basis-full gap-4'>
-											<div className='flex grow items-center'>
-												<Label htmlFor='weeklyNewsletter' className='!mb-0'>
-													<div className='text-xl font-semibold'>
-														Weekly newsletter
-													</div>
-													<div className='text-zinc-500'>
-														Get notified about articles, discounts and
-														new products.
-													</div>
-												</Label>
-											</div>
-											<div className='flex flex-shrink-0 items-center'>
-												<Checkbox
-													variant='switch'
-													id='weeklyNewsletter'
-													name='weeklyNewsletter'
-													onChange={formik.handleChange}
-													checked={formik.values.weeklyNewsletter}
-												/>
-											</div>
-										</div>
-										<div className='flex basis-full gap-4'>
-											<div className='flex grow items-center'>
-												<Label htmlFor='lifecycleEmails' className='!mb-0'>
-													<div className='text-xl font-semibold'>
-														Lifecycle emails
-													</div>
-													<div className='text-zinc-500'>
-														Get personalized offers and emails based on
-														your activity.
-													</div>
-												</Label>
-											</div>
-											<div className='flex flex-shrink-0 items-center'>
-												<Checkbox
-													variant='switch'
-													id='lifecycleEmails'
-													name='lifecycleEmails'
-													onChange={formik.handleChange}
-													checked={formik.values.lifecycleEmails}
-												/>
-											</div>
-										</div>
-										<div className='flex basis-full gap-4'>
-											<div className='flex grow items-center'>
-												<Label
-													htmlFor='promotionalEmails'
-													className='!mb-0'>
-													<div className='text-xl font-semibold'>
-														Promotional emails
-													</div>
-													<div className='text-zinc-500'>
-														Get personalized offers and emails based on
-														your orders & preferences.
-													</div>
-												</Label>
-											</div>
-											<div className='flex flex-shrink-0 items-center'>
-												<Checkbox
-													variant='switch'
-													id='promotionalEmails'
-													name='promotionalEmails'
-													onChange={formik.handleChange}
-													checked={formik.values.promotionalEmails}
-												/>
-											</div>
-										</div>
-										<div className='flex basis-full gap-4'>
-											<div className='flex grow items-center'>
-												<Label htmlFor='productUpdates' className='!mb-0'>
-													<div className='text-xl font-semibold'>
-														Product updates
-													</div>
-													<div className='text-zinc-500'>
-														Checking this will allow us to notify you
-														when we make updates to products you have
-														downloaded/purchased.
-													</div>
-												</Label>
-											</div>
-											<div className='flex flex-shrink-0 items-center'>
-												<Checkbox
-													variant='switch'
-													id='productUpdates'
-													name='productUpdates'
-													onChange={formik.handleChange}
-													checked={formik.values.productUpdates}
-												/>
-											</div>
-										</div>
-									</div>
-								</CardBody>
-							</Card>
-							<Card>
-								<CardHeader>
-									<CardHeaderChild>
-										<CardTitle>Sessions</CardTitle>
-									</CardHeaderChild>
-								</CardHeader>
-								<CardBody>
-									<div className='flex flex-wrap divide-y divide-dashed divide-zinc-500/50 [&>*]:py-4'>
-										<div className='group flex basis-full gap-4'>
-											<div className='flex grow items-center'>
-												<div>
-													<div className='text-xl font-semibold'>
-														Chrome
-													</div>
-													<div className='text-zinc-500'>
-														MacOS 13.4.1
-													</div>
-												</div>
-												<Button
-													className='invisible group-hover:visible'
-													color='red'>
-													Delete
-												</Button>
-											</div>
-											<div className='flex flex-shrink-0 items-center gap-4'>
-												<Icon icon='CustomUSA' size='text-3xl' />
-												<Badge
-													variant='outline'
-													rounded='rounded-full'
-													className='border-transparent'>
-													3 hours ago
-												</Badge>
-											</div>
-										</div>
-										<div className='group flex basis-full gap-4'>
-											<div className='flex grow items-center'>
-												<div>
-													<div className='text-xl font-semibold'>
-														Safari
-													</div>
-													<div className='text-zinc-500'>
-														MacOS 13.4.1
-													</div>
-												</div>
-												<Button
-													className='invisible group-hover:visible'
-													color='red'>
-													Delete
-												</Button>
-											</div>
-											<div className='flex flex-shrink-0 items-center gap-4'>
-												<Icon icon='CustomUSA' size='text-3xl' />
-												<Badge
-													variant='outline'
-													rounded='rounded-full'
-													className='border-transparent'>
-													1 day ago
-												</Badge>
-											</div>
-										</div>
-										<div className='group flex basis-full gap-4'>
-											<div className='flex grow items-center'>
-												<div>
-													<div className='text-xl font-semibold'>App</div>
-													<div className='text-zinc-500'>iOS 16.5.1</div>
-												</div>
-												<Button
-													className='invisible group-hover:visible'
-													color='red'>
-													Delete
-												</Button>
-											</div>
-											<div className='flex flex-shrink-0 items-center gap-4'>
-												<Icon icon='CustomUSA' size='text-3xl' />
-												<Badge
-													variant='outline'
-													rounded='rounded-full'
-													className='border-transparent'>
-													3 days ago
-												</Badge>
-											</div>
-										</div>
-										<div className='group flex basis-full gap-4'>
-											<div className='flex grow items-center'>
-												<div>
-													<div className='text-xl font-semibold'>
-														Safari
-													</div>
-													<div className='text-zinc-500'>
-														iPadOS 16.5.1
-													</div>
-												</div>
-												<Button
-													className='invisible group-hover:visible'
-													color='red'>
-													Delete
-												</Button>
-											</div>
-											<div className='flex flex-shrink-0 items-center gap-4'>
-												<Icon icon='CustomUSA' size='text-3xl' />
-												<Badge
-													variant='outline'
-													rounded='rounded-full'
-													color='red'
-													className='border-transparent'>
-													Expired
-												</Badge>
-											</div>
-										</div>
-									</div>
-								</CardBody>
-							</Card>
-							<Card>
-								<CardHeader>
-									<CardHeaderChild>
-										<CardTitle>Connected</CardTitle>
-									</CardHeaderChild>
-								</CardHeader>
-								<CardBody>
-									<div className='flex flex-wrap divide-y divide-dashed divide-zinc-500/50 [&>*]:py-4'>
-										{userDb?.socialAuth &&
-											Object.keys(userDb?.socialAuth).map((i) => {
-												// @ts-ignore
-
-												const status = userDb?.socialAuth[i];
-												return (
-													<div key={i} className='flex basis-full gap-4'>
-														<div className='flex grow items-center'>
-															<div className='text-xl font-semibold capitalize'>
-																{i}
-															</div>
-														</div>
-														<div className='flex flex-shrink-0 items-center gap-4'>
-															<Button
-																icon={
-																	status
-																		? 'HeroTrash'
-																		: 'HeroCog8Tooth'
-																}
-																color={status ? 'red' : 'blue'}>
-																{status ? 'Delete' : 'Set up'}
-															</Button>
-														</div>
-													</div>
-												);
-											})}
-									</div>
-								</CardBody>
-							</Card>
-						</div>
-					</div>
-				</div>
-				<div className='flex'>
-					<div className='grid w-full grid-cols-12 gap-4'>
-						<div className='col-span-12'>
-							<Card>
 								<CardFooter>
-									<CardFooterChild>
+									<CardFooterChild className='mt-12'>
 										{isNewItem && (
 											<div className='flex items-center gap-2 text-amber-500'>
 												<Icon
@@ -765,7 +227,7 @@ const CustomerClient = () => {
 											<div className='flex items-center gap-2'>
 												<Icon icon='HeroDocumentCheck' size='text-2xl' />
 												<span className='text-zinc-500'>Last saved:</span>
-												<b>{dayjs().locale(i18n.language).format('LLL')}</b>
+												<b>{isLoading ? <LoaderDotsCommon /> : dayjs(agent?.updated_at).locale(i18n.language).format('LLL')}</b>
 											</div>
 										)}
 									</CardFooterChild>
@@ -783,10 +245,34 @@ const CustomerClient = () => {
 							</Card>
 						</div>
 					</div>
+					<div className='w-full col-span-12 flex flex-col gap-4 '>
+						<Card>
+							<CardHeader>
+								<CardHeaderChild>
+									{Object.values(TABS).map((i) => (
+										<Button
+											key={i}
+											className='!p-0'
+											isActive={i === activeTab}
+											onClick={() => setActiveTab(i)}>
+											{i}
+										</Button>
+									))}
+								</CardHeaderChild>
+							</CardHeader>
+							<CardBody>
+								<div className='w-full'>
+								{activeTab === TABS.SCANRESULTS && !isLoading && (
+									<FindingsListPartial showTitle={false} scanId={scanId} allResults={true} />
+								)}
+								</div>
+							</CardBody>
+						</Card>
+					</div>
 				</div>
 			</Container>
 		</PageWrapper>
 	);
 };
 
-export default CustomerClient;
+export default AgentDetails;

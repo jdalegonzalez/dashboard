@@ -17,14 +17,22 @@ interface ITableHeaderTemplateProps {
 
 const columnWidthStyle = (column:TColumn<any, unknown>, argUnits?: string) => {
 	const size = column.getSize();
-	const units = argUnits ?? '%';
-	if (size && size >= 0) return { width: `${size}${units}`}
+	const columnUnits = column.columnDef.meta?.sizeUnits
+	const units = columnUnits ?? argUnits ?? '%';
+	if (size && size >= 0 && units !== 'spacing') return { width:  `${size}${units}`}
 	return {}
+}
+
+const columnWidthClass = (column: TColumn<any, unknown>) => {
+	const size = column.getSize();
+	const columnUnits = column.columnDef.meta?.sizeUnits
+	if (size && size >=0 && columnUnits === 'spacing') return `!w-${size}`
 }
 
 declare module '@tanstack/react-table' {
 	interface ColumnMeta<TData extends RowData, TValue> {
-	  addLeftBorder: boolean
+		addLeftBorder?: boolean,
+		sizeUnits?: string
 	}
 }
 
@@ -34,6 +42,7 @@ const leftBorderClass = classNames(
 );
 
 export const TableHeaderTemplate: FC<ITableHeaderTemplateProps> = ({ table, sizeUnits }) => {
+	
 	return (
 		<THead>
 			{table.getHeaderGroups().map((headerGroup) => (
@@ -44,10 +53,11 @@ export const TableHeaderTemplate: FC<ITableHeaderTemplateProps> = ({ table, size
 							isColumnBorder={false}
 							style={{...columnWidthStyle(header.column, sizeUnits)}}
 							className={classNames(
+							columnWidthClass(header.column),
 							{
 								'text-left': header.id !== 'Actions',
 								'text-right': header.id === 'Actions',
-								[leftBorderClass]: header.column.columnDef.meta?.addLeftBorder
+								[leftBorderClass]: header.column.columnDef.meta?.addLeftBorder,
 							})}>
 							{header.isPlaceholder ? null : (
 								<div
@@ -102,6 +112,7 @@ export const TableBodyTemplate: FC<ITableBodyTemplateProps> = ({ table, sizeUnit
 							key={cell.id}
 							style={{...columnWidthStyle(cell.column, sizeUnits)}}
 							className={classNames(
+							columnWidthClass(cell.column),
 							{
 								'text-left': cell.column.id !== 'Actions',
 								'text-right': cell.column.id === 'Actions',

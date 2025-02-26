@@ -2,7 +2,23 @@ import { NextRequest } from 'next/server';
 
 export default async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Promise<JSON> {
   const res = await fetch(input, init)
+  if (!res.ok) {
+    // TODO: Need to manage error handling
+  }
   return res.json()
+}
+
+export async function updater<T = any>(url: RequestInfo, data:Partial<T>): Promise<JSON> {
+  // TODO: There will need to be CORS and credentials added here.
+  const options = {
+    headers: new Headers({
+      'Content-Type': 'application/json'
+    }),
+    method: 'POST',
+    body: JSON.stringify(data)
+  }
+  console.log(options);
+  return fetcher(url, options)
 }
 
 const isNumeric = (str:string) => Number.isFinite(+str);
@@ -18,6 +34,17 @@ export const booleanParam = (req: NextRequest, paramName: string) => {
   const params = req.nextUrl.searchParams;
   const stringValue = (params.get(paramName) ?? "").trim().toLowerCase();    
   return stringValue && (stringValue === 'true' || stringValue === '1'); 
+}
+
+export const idParam = (req: NextRequest, paramName: string) => {
+  const params = req.nextUrl.searchParams;
+  const val = params.get(paramName);
+  return val ? val.replace(/[^0-9a-zA-Z]/g,'') : val;    
+}
+export const stringParam = (req: NextRequest, paramName: string) => {
+  const params = req.nextUrl.searchParams;
+  const val = params.get(paramName);
+  return val ? val.trim() : val;    
 }
 
 export const pagingParams = (req: NextRequest, defaultRows: number) => {

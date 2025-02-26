@@ -8,6 +8,7 @@ import {
 	getSortedRowModel,
 	SortingState,
 	useReactTable,
+	RowData
 } from '@tanstack/react-table';
 import path from 'path';
 
@@ -17,11 +18,12 @@ import useElementSize from '@/hooks/useElementSize';
 import usePagedResponse from '@/hooks/usePagedResponse';
 
 import { FindingsAPIResults, fetchPath } from '@/app/api/agent/findings/route';
-import { type ScanResult } from '@prisma/client';
+import { Confidence, type ScanResult } from '@prisma/client';
 
-import FieldWrap from '@/components/form/FieldWrap';
-import Input from '@/components/form/Input';
-import Icon from '@/components/icon/Icon';
+// import FieldWrap from '@/components/form/FieldWrap';
+// import Input from '@/components/form/Input';
+// import Icon from '@/components/icon/Icon';
+
 import MimeIcon from '@/components/icon/MimetypeIcons';
 import Badge from '@/components/ui/Badge';
 import Skeleton from '@/components/utils/ThemedSkeleton';
@@ -29,6 +31,16 @@ import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/compon
 import Tooltip from '@/components/ui/Tooltip';
 import { shorten, confidenceToColor } from '@/utils/dataDisplay.util';
 import TableTemplate, { TableCardFooterTemplate } from '@/templates/common/TableParts.template';
+import Dropdown, { DropdownMenu, DropdownToggle } from '@/components/ui/Dropdown';
+import Checkbox from '@/components/form/Checkbox';
+import Button from '@/components/ui/Button';
+
+declare module '@tanstack/react-table' {
+	interface ColumnMeta<TData extends RowData, TValue> {
+	  addLeftBorder?: boolean,
+	  sizeUnits?: string
+	}
+}
 
 const columnHelper = createColumnHelper<ScanResult>();
 const fileColumnSize = 50;
@@ -53,13 +65,13 @@ const columns = [
 				style={circleStyle}
 				className={`${circleClass} p-2`}
 				size='text-4xl'
-			/>
-			
+			/>			
 		),
-		size: 10,
-		maxSize: 10,
-		minSize: 10,
-		header: () => <div className='text-center w-full'>Type</div>,
+		meta: {sizeUnits: 'rem'},
+		size: 5,
+		maxSize: 5,
+		minSize: 5,
+		header: () => <div className='text-center ml-2'>Type</div>,
 		footer: 'Type',
 		enableGlobalFilter: false,
 		enableSorting: false,
@@ -146,12 +158,31 @@ const blankResponse: FindingsAPIResults = {
 	results: Array.from({length: pageSize}, (v, i) => blankResult)
 }
 
-const FindingsListPartial = () => {
+export interface IFindingsListProps {
+	scanId?: string,
+	allResults?: boolean,
+	title?: string,
+	showTitle?: boolean
+}
+
+const defProps:Partial<IFindingsListProps> = {
+	title: 'Discovered CUI',
+	showTitle: true
+}
+
+const availableConf = Object.values(Confidence);
+
+const FindingsListPartial = (props:IFindingsListProps) => {
 	const [pagination, setPagination] = useState({pageIndex: 0, pageSize});
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [globalFilter, setGlobalFilter] = useState<string>('');
-
-	const response = usePagedResponse<FindingsAPIResults>(fetchPath, pagination, blankResponse);
+	const [filteredConf, setFilteredConf] = useState<string[]>(availableConf);
+	
+	const {scanId, allResults, title, showTitle } = {...defProps, ...props} 
+	const extraArgs = {
+		scanId, allResults
+	}
+	const response = usePagedResponse<FindingsAPIResults>(fetchPath, pagination, blankResponse, extraArgs);
 
 	const table = useReactTable({
 		data: response.results,
@@ -176,14 +207,55 @@ const FindingsListPartial = () => {
 
 	const [setEleRef, size] = useElementSize();
 
+	const filtered = availableConf
+	const checkboxes = availableConf.map((conf) => (
+		<Checkbox
+			key={conf}
+			className='ms-4'
+			dimension='sm'
+			id={conf}
+			name='projects'
+			label={conf}
+			onChange={()=>{}}
+			checked={filtered.includes(conf)}
+		/>
+	));
+	console.log(checkboxes)
 	return (
 		<Card className='h-full'>
+			<div style={{color:'rgba(0,0,0,0)', width: Math.floor(size.width * fileColumnPercent), left: -99999, top: -99999 }} id={sizerId} className='fixed -z-10 select-none text-sm h-0 pt-0 pb-0 text-opacity-0 bg-opacity-0'></div>
 			<CardHeader>
-				<div style={{color:'rgba(0,0,0,0)', width: Math.floor(size.width * fileColumnPercent), left: -99999, top: -99999 }} id={sizerId} className='fixed -z-10 select-none text-sm h-0 pt-0 pb-0 text-opacity-0 bg-opacity-0'></div>
 				<CardHeaderChild>
-					<CardTitle>Discovered CUI</CardTitle>
+				{showTitle && (
+					<CardTitle>{title}</CardTitle>
+				)}
 				</CardHeaderChild>
 				<CardHeaderChild>
+					<Dropdown>
+						<DropdownToggle hasIcon={false}>
+							<Button
+								icon='DuoFilter'
+								variant='outline'
+								rounded='rounded'
+								color='zinc'
+								colorIntensity='500'
+								>
+								Confidence Level
+							</Button>
+						</DropdownToggle>
+						<DropdownMenu className='p-4'>
+							<Checkbox
+								dimension='sm'
+								name='selectAll'
+								label='Select All'
+								onChange={() => {}}
+								checked={filtered.length === availableConf.length}
+							/>
+							{checkboxes}
+						</DropdownMenu>
+					</Dropdown>
+				</CardHeaderChild>					
+				{/* TODO: Bring back when I have time to implement search <CardHeaderChild>
 					<FieldWrap
 						firstSuffix={<Icon className='mx-2' icon='HeroMagnifyingGlass' />}
 						lastSuffix={
@@ -206,7 +278,7 @@ const FindingsListPartial = () => {
 							onChange={(e) => setGlobalFilter(e.target.value)}
 						/>
 					</FieldWrap>
-				</CardHeaderChild>
+				</CardHeaderChild> */}
 			</CardHeader>
 			<CardBody className='overflow-auto'>
 				<TableTemplate

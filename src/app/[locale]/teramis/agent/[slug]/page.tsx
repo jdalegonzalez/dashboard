@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomerClient from '@/app/[locale]/teramis/agent/[slug]/client';
+import AgentDetails from '@/app/[locale]/teramis/agent/[slug]/client';
 import TranslationsProvider from '@/components/TranslationsProvider';
 
 const i18nNamespaces = ['translation'];
@@ -13,7 +13,7 @@ const CustomerPage = async (props: { params: Promise<{ locale: string }> }) => {
 
     return (
 		<TranslationsProvider namespaces={i18nNamespaces} locale={locale}>
-			<CustomerClient />
+			<AgentDetails />
 		</TranslationsProvider>
 	);
 };

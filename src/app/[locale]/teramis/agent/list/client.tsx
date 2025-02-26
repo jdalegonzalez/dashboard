@@ -56,7 +56,8 @@ const isLoading = (info:CellContext<getAgentDetails.Result, any>) => info.row.or
 
 declare module '@tanstack/react-table' {
 	interface ColumnMeta<TData extends RowData, TValue> {
-	  addLeftBorder: boolean
+	  addLeftBorder?: boolean,
+	  sizeUnits?: string
 	}
 }
 

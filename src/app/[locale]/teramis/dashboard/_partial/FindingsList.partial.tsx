@@ -228,7 +228,7 @@ const FindingsListPartial = (props:IFindingsListProps) => {
 				console.log('Turning on the filter');
 			}
 		}
-	}, [isFilterOpen]);
+	}, [isFilterOpen, confidences.length, filteredConf]);
 
 	const ref = useRef<HTMLInputElement>(null);
 	useEffect(() => {

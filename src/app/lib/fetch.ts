@@ -38,7 +38,7 @@ export const booleanParam = (req: NextRequest, paramName: string) => {
   return stringValue && (stringValue === 'true' || stringValue === '1'); 
 }
 
-export const enumParam = (req: NextRequest, paramName: string, vals: Object) => {
+export const enumParam = (req: NextRequest, paramName: string, vals: object) => {
   const params = req.nextUrl.searchParams;
   const paramArray = (params.get(paramName)??"").split(',');
   const values = Object.values(vals);

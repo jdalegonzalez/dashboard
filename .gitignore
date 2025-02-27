@@ -40,3 +40,6 @@ yarn.lock
 
 .idea
 .env-orig
+
+# deploy folder
+deploy/

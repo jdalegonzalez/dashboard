@@ -1,9 +1,9 @@
 import useSWR from 'swr';
 import fetch, { updater } from '@/app/lib/fetch';
-import {AgentAPIResults, AgentAPIDetailResults} from '@/app/api/agent/route';
+import {AgentAPIResults, AgentAPIDetailResults} from '@/app/lib/fetch';
 import { unpagedUrl } from '@/app/lib/fetch';
 import { getAgentDetails } from '@prisma/client/sql';
-import { IAgentResult } from '@/app/api/agent/[agent]/route';
+import { IAgentResult } from '@/app/lib/fetch';
 
 const emptyDate = new Date(0)
 
@@ -52,8 +52,9 @@ const apiPath = '/api/agent';
 
 export const useAgentDetails = () => {
   const { data, error, isLoading } = useSWR<AgentAPIDetailResults>(unpagedUrl(apiPath, {'details': true}), fetch);
+  const res: AgentAPIDetailResults = data ?? blankResults;
   return {
-    data: data ?? blankResults,
+    data: res,
     isLoading,
     isError: error
   }

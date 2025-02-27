@@ -47,7 +47,7 @@ const Dropdown: FC<IDropdownProps> = (props) => {
 	const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 
 	const setRefs = useCallback((node: HTMLElement | null) => {
-		// @ts-ignore
+		// @ts-expect-error This is fine
 		dropdownRef.current = node;
 		setReferenceElement(node);
 	}, []);
@@ -62,7 +62,7 @@ const Dropdown: FC<IDropdownProps> = (props) => {
 			setState(false);
 		}
 	}, [isOpen, setIsOpen]);
-	// @ts-ignore
+	// @ts-expect-error This is fine
 	useOnClickOutside(dropdownRef, closeMenu);
 
 	return (
@@ -71,10 +71,10 @@ const Dropdown: FC<IDropdownProps> = (props) => {
 			ref={setRefs}
 			className={classNames(classes, className)}>
 			{children.map((child: ReactElement, index: number) =>
-				// @ts-expect-error
+				// @ts-expect-error This is fine
 				['DropdownMenu', 'DropdownToggle'].includes(child.type.displayName as string)
 					? cloneElement(child, {
-							// @ts-ignore
+							// @ts-expect-error This is fine
 							isOpen: isOpen !== null && !!setIsOpen ? isOpen : state,
 							setIsOpen: isOpen !== null && !!setIsOpen ? setIsOpen : setState,
 							referenceElement: referenceElement,
@@ -99,11 +99,11 @@ export const DropdownToggle: FC<IDropdownToggleProps> = (props) => {
 	const { children, isOpen = false, setIsOpen, hasIcon = true, setReferenceElement } = props;
 
 	return cloneElement(children, {
-		// @ts-expect-error
+		// @ts-expect-error This is fine
 		'data-component-name': `Dropdown/DropdownToggle [${children.type.displayName}]`,
 		ref: setReferenceElement,
 		onClick: () => {
-			// @ts-expect-error
+			// @ts-expect-error This is fine
 			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 			children?.props?.onClick ? children.props.onClick() : null;
 			if (setIsOpen) {
@@ -111,7 +111,7 @@ export const DropdownToggle: FC<IDropdownToggleProps> = (props) => {
 			}
 		},
 		rightIcon: hasIcon
-			? // @ts-expect-error
+			? // @ts-expect-error This is fine
 				(children.type.displayName === 'Button' && 'HeroChevronDown') || 'HeroChevronRight'
 			: undefined,
 		isActive: isOpen,

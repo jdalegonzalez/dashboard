@@ -6,9 +6,9 @@ import { useParams } from 'next/navigation';
 import usersDb, { TUser } from '@/mocks/db/users.db';
 import { useFormik } from 'formik';
 import Container from '@/components/layouts/Container/Container';
-import ChatContainerCommon from '@/app/[locale]/chat/[slug]/_common/ChatContainer.common';
-import ChatItemContainerCommon from '@/app/[locale]/chat/[slug]/_common/ChatItemContainer.common';
-import ChatInputContainerCommon from '@/app/[locale]/chat/[slug]/_common/ChatInputContainer.common';
+import ChatContainerCommon from '@/app/[locale]/_chat.deprecated/[slug]/_common/ChatContainer.common';
+import ChatItemContainerCommon from '@/app/[locale]/_chat.deprecated/[slug]/_common/ChatItemContainer.common';
+import ChatInputContainerCommon from '@/app/[locale]/_chat.deprecated/[slug]/_common/ChatInputContainer.common';
 import FieldWrap from '@/components/form/FieldWrap';
 import Button from '@/components/ui/Button';
 import Input from '@/components/form/Input';
@@ -39,7 +39,7 @@ const ChatClient = () => {
 					<ChatItemContainerCommon
 						userName={usersDb[5].username}
 						userImage={usersDb[5].image?.thumb}>
-						I don't know but it must be 14:00.
+						I don&apos;t know but it must be 14:00.
 					</ChatItemContainerCommon>
 					<ChatItemContainerCommon
 						userName={currentUserData.username}

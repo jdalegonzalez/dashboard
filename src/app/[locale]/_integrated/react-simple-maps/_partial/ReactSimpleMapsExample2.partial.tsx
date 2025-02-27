@@ -115,10 +115,10 @@ const ReactSimpleMapsExample2Partial = () => {
 										) : (
 											<Annotation
 												subject={centroid}
-												// @ts-ignore
+												// @ts-expect-error This is fine
 
 												dx={offsets[cur.id][0]}
-												// @ts-ignore
+												// @ts-expect-error This is fine
 
 												dy={offsets[cur.id][1]}
 												connectorProps={{}}>

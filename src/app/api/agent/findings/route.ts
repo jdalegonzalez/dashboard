@@ -1,16 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import { Confidence } from '@prisma/client';
-import { type ScanResult } from '@prisma/client';
-import { pagingParams, pagedUrl, type PagedAPIResults, booleanParam, idParam } from '@/app/lib/fetch';
-
-export const defaultRows = 25;
-
-export type FindingsAPIResults = PagedAPIResults<ScanResult>;
-
-export const fetchPath = (rows: number = defaultRows, page: number = 1, extraArgs?:{}) => {
-    return pagedUrl(import.meta.url, rows, page, extraArgs)
-}
+import { pagingParams, defaultRows, booleanParam, idParam } from '@/app/lib/fetch';
 
 export async function GET(request: NextRequest) {
     const { skip, rowsPerPage } = pagingParams(request, defaultRows);

@@ -69,11 +69,9 @@ const RichText: FC<IRichTextProps> = (props) => {
 		invalidFeedback,
 		isTouched = false,
 		isValid = false,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		isValidMessage = true,
+			isValidMessage = true,
 		rounded = themeConfig.rounded,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		validFeedback,
+			validFeedback,
 		variant = 'solid',
 		value,
 		handleChange,
@@ -117,10 +115,10 @@ const RichText: FC<IRichTextProps> = (props) => {
 	};
 	const richTextVariantClasses = richTextVariants[variant as TRichTextVariants].general;
 
-	// @ts-ignore
+	// @ts-expect-error This is fine
 
 	const renderElement = useCallback((props) => <Element {...props} />, []);
-	// @ts-ignore
+	// @ts-expect-error This is fine
 
 	const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
 	const editor = useMemo(() => withHistory(withReact(createEditor())), []);
@@ -190,7 +188,7 @@ const RichText: FC<IRichTextProps> = (props) => {
 						for (const hotkey in HOTKEYS) {
 							if (isHotkey(hotkey, event as never)) {
 								event.preventDefault();
-								// @ts-ignore
+								// @ts-expect-error This is fine
 
 								const mark = HOTKEYS[hotkey];
 								toggleMark(editor, mark);

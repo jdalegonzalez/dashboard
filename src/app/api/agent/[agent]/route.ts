@@ -1,13 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from '@/app/lib/prisma';
-import { Agent } from '@prisma/client';
+import { IAgentResult } from '@/app/lib/fetch';
 
 export const dynamic = "force-dynamic";
-
-export interface IAgentResult extends Agent {
-    crawls: {id: string}[],
-    scans: {id: string}[]
-}
 
 export async function GET(req: NextRequest) {
 

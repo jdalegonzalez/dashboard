@@ -36,9 +36,9 @@ const ColumnCardWrapperPartial: FC<IColumnCardWrapperPartialProps> = ({
 								'border border-blue-500': snapshotDraggable.isDragging,
 							})}
 							ref={providedDraggable.innerRef}
-							// eslint-disable-next-line react/jsx-props-no-spreading
+
 							{...providedDraggable.draggableProps}
-							// eslint-disable-next-line react/jsx-props-no-spreading
+
 							{...providedDraggable.dragHandleProps}
 							style={providedDraggable.draggableProps.style}>
 							<ColumnCardPartial

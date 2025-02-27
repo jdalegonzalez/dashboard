@@ -10,21 +10,19 @@ const i18nNamespaces = ['translation'];
 const Home = async (props: { params: Promise<{ locale: string }> }) => {
     const params = await props.params;
 
-    const {
-        locale
-    } = params;
+    const { locale } = params;
 
     // const session = await getServerSession(authOptions);
     // console.log(session);
 
     return (
-		<TranslationsProvider
-			namespaces={i18nNamespaces}
-			locale={locale}
-			fallback={<PageFallbackTemplate />}>
-			<HomeClient />
-		</TranslationsProvider>
-	);
+        <TranslationsProvider
+            namespaces={i18nNamespaces}
+            locale={locale}
+            fallback={<PageFallbackTemplate />}>
+            <HomeClient />
+        </TranslationsProvider>
+    );
 };
 
 export default Home;

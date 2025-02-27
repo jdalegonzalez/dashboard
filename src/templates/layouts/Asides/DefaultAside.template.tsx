@@ -1,6 +1,6 @@
 import React from 'react';
 import { appPages, componentsPages } from '@/config/pages.config';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import Aside, { AsideBody, AsideFooter, AsideHead } from '../../../components/layouts/Aside/Aside';
 import LogoAndAsideTogglePart from './_parts/LogoAndAsideToggle.part';
 import DarkModeSwitcherPart from './_parts/DarkModeSwitcher.part';
@@ -16,13 +16,13 @@ import Badge from '../../../components/ui/Badge';
 // import UserTemplate from '../User/User.template';
 // import usersDb from '../../../mocks/db/users.db';
 
-const removeSubPages = (obj:any)  => {
+const removeSubPages = (obj: any) => {
 	const {['subPages']: unused, ...rest} = obj;
-	return rest
+	return rest as { text : string, to : string, icon : string };
 }
 
 const DefaultAsideTemplate = () => {
-	const router = useRouter();
+	// const router = useRouter();
 
 	return (
 		<Aside>

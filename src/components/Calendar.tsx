@@ -138,7 +138,7 @@ export const useCalendarView = (ref: React.RefObject<FullCalendar | null>) => {
 
 	const [title, setTitle] = useState<string | null>(null);
 	useEffect(() => {
-		// @ts-ignore
+		// @ts-expect-error This is fine
 
 		setTitle(ref?.current?.calendar?.currentData.viewTitle as string);
 		return () => {};

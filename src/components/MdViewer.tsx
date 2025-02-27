@@ -51,21 +51,20 @@ const MdViewer: FC<IMdViewerProps> = (props) => {
 					components={{
 						// pre: CopyButton,
 
-						// eslint-disable-next-line @typescript-eslint/no-unused-vars
-						code({ node, className, children, ...rest }) {
+											code({ node, className, children, ...rest }) {
 							const match = /language-(\w+)/.exec(className || '');
 							return match ? (
 								<Prism
 									// eslint-disable-next-line react/no-children-prop
 									children={String(children).replace(/\n$/, '')}
-									// @ts-ignore
+									// @ts-expect-error This is fine
 
 									style={isDarkTheme ? oneDark : oneLight}
 									customStyle={{
 										background: 'transparent',
 									}}
 									language={match[1]}
-									// eslint-disable-next-line react/jsx-props-no-spreading
+		
 									{...rest}
 								/>
 							) : (

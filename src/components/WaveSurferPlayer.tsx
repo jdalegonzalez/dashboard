@@ -3,6 +3,7 @@ import WaveSurfer, { WaveSurferOptions } from 'wavesurfer.js';
 import colors from '@/tailwindcss/colors.tailwind';
 import Button from './ui/Button';
 import themeConfig from '../config/theme.config';
+import { tsv } from 'd3-fetch';
 
 const useWavesurfer = (containerRef: RefObject<HTMLDivElement>, options: WaveSurferOptions) => {
 	const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
@@ -10,13 +11,10 @@ const useWavesurfer = (containerRef: RefObject<HTMLDivElement>, options: WaveSur
 	// Initialize wavesurfer when the container mounts
 	// or any of the props change
 	useEffect(() => {
-		// @ts-ignore
 		if (!containerRef?.current) return;
 
 		const ws: WaveSurfer = WaveSurfer.create({
 			...options,
-			// @ts-ignore
-
 			container: containerRef.current,
 		});
 
@@ -35,7 +33,7 @@ const WaveSurferPlayer = (props: WaveSurferOptions) => {
 	const [isPlaying, setIsPlaying] = useState<boolean>(false);
 	const [currentTime, setCurrentTime] = useState<number>(0);
 	const [duration, setDuration] = useState<number>(0);
-	// @ts-ignore
+	// @ts-expect-error This is fine
 	const wavesurfer = useWavesurfer(containerRef, props);
 
 	// On play button click

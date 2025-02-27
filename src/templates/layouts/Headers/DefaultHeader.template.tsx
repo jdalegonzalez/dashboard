@@ -6,7 +6,7 @@ import DefaultHeaderTitleCommon from './_common/DefaultHeaderTitle.common';
 
 const defaultDesc = 'The results from the agents scanning your system for Controlled Unclassified Information.'
 
-const DefaultHeaderTemplate = ({desc}:{desc?:any}) => {
+const DefaultHeaderTemplate = ({desc}:{desc?:string}) => {
 	const displayDesc = desc ?? defaultDesc
 	return (
 		<Header>

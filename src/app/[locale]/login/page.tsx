@@ -47,7 +47,6 @@ const LoginPage = (
 
 			return errors;
 		},
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		onSubmit: async (values: TValues, { setFieldError }) => {
 			const res = await signIn('credentials', {
 				username: values.username,

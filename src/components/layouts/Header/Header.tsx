@@ -70,7 +70,7 @@ const Header: FC<IHeaderProps> = (props) => {
 	const { children, className, ...rest } = props;
 
 	const divRef = useRef<HTMLDivElement>(null);
-	// @ts-ignore
+	// @ts-expect-error This is fine
 	const [domRect] = useDomRect(divRef);
 
 	return (

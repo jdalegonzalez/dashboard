@@ -5,7 +5,7 @@ import themeConfig from '@/config/theme.config';
 import useAgentOverview from '@/hooks/useAgent';
 import useDarkMode from '@/hooks/useDarkMode';
 import { loadingOrProperty } from '@/components/LoaderDots.common';
-import { AgentAPIResults } from '@/app/api/agent/route';
+import { AgentAPIResults } from '@/app/lib/fetch';
 
 const MiniUnsupported = () => {
 	const { agentInfo } = useAgentOverview();

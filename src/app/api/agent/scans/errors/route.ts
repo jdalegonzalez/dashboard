@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { type ScanError } from '@prisma/client';
-import { pagingParams, pagedUrl, type PagedAPIResults, booleanParam } from '@/app/lib/fetch';
-
-export const defaultRows = 25;
-
-export type ErrorAPIResults = PagedAPIResults<ScanError>;
-
-export const fetchPath = (rows: number = defaultRows, page: number = 1) => {
-    return pagedUrl(import.meta.url, rows, page)
-}
+import { pagingParams, defaultRows } from '@/app/lib/fetch';
 
 export async function GET(req: NextRequest) {
     const { skip, rowsPerPage } = pagingParams(req, defaultRows);

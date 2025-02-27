@@ -1,19 +1,19 @@
 'use client';
 
 import React from 'react';
-import { componentsPages } from '@/config/pages.config';
-import { usePathname } from 'next/navigation';
-import Header, { HeaderLeft, HeaderRight } from '../../../components/layouts/Header/Header';
-import Button from '../../../components/ui/Button';
-import Dropdown, {
-	DropdownMenu,
-	DropdownNavLinkItem,
-	DropdownToggle,
-} from '../../../components/ui/Dropdown';
-import DefaultHeaderRightCommon from './_common/DefaultHeaderRight.common';
+//import { componentsPages } from '@/config/pages.config';
+//import { usePathname } from 'next/navigation';
+//import Header, { HeaderLeft, HeaderRight } from '../../../components/layouts/Header/Header';
+//import Button from '../../../components/ui/Button';
+//import Dropdown, {
+//	DropdownMenu,
+//	DropdownNavLinkItem,
+//	DropdownToggle,
+//} from '../../../components/ui/Dropdown';
+//import DefaultHeaderRightCommon from './_common/DefaultHeaderRight.common';
 
 const ComponentAndTemplateHeaderTemplate = () => {
-	const pathname = usePathname();
+	//const pathname = usePathname();
 
 	return (
 		<></>

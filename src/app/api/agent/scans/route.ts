@@ -1,15 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import { getScansSummary } from '@prisma/client/sql'
-
-
-export interface ScanSummaryAPIResults {
-  series: {name: string, data: number[]}[];
-  paths: string [];
-  agents: string [];
-  durations: number[];
-  gigs_per_second: number[];
-}
+import { ScanSummaryAPIResults } from '@/app/lib/fetch';
 
 export async function GET(request: NextRequest) {
     const summaryData = await prisma.$queryRawTyped(getScansSummary());

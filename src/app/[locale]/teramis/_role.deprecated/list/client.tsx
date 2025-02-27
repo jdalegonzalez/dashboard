@@ -12,7 +12,7 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import rolesDb, { TRole } from '@/mocks/db/roles.db';
-import { appPages } from '@/config/pages.config';
+// import { appPages } from '@/config/pages.config';
 import Link from 'next/link';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
@@ -27,8 +27,8 @@ import Input from '@/components/form/Input';
 
 const columnHelper = createColumnHelper<TRole>();
 
-const editLinkPath = `${appPages.teramisAppPages.subPages.rolePage.subPages.editPageLink.to}/`;
-
+// const editLinkPath = `${appPages.teramisAppPages.subPages.rolePage.subPages.editPageLink.to}/`;
+const editLinkPath = '/teramis/role/edit/';
 const columns = [
 	columnHelper.accessor('name', {
 		cell: (info) => (
@@ -50,8 +50,7 @@ const columns = [
 						key={m}>
 						<span className='me-2'>
 							{
-								// @ts-ignore
-
+								// @ts-expect-error This is fine
 								modulesDbList[`${m}`].name
 							}
 						</span>

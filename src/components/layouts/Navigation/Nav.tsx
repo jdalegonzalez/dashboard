@@ -51,13 +51,13 @@ const navItemChildCheck = (
 		| undefined
 		| INavButtonProps,
 ): boolean => {
-	// @ts-ignore
+	// @ts-expect-error This is fine
 
 	return children?.length > 1
-		? // @ts-ignore
+		? // @ts-expect-error This is fine
 
 			children?.map((child) => child.type.displayName).includes('NavButton')
-		: // @ts-ignore
+		: // @ts-expect-error This is fine
 
 			children?.type?.displayName === 'NavButton';
 };
@@ -178,7 +178,7 @@ export const NavItem: FC<INavItemProps> = (props) => {
 
 	const { asideStatus, setAsideStatus } = useAsideStatus();
 
-	// @ts-ignore
+	// @ts-expect-error This is fine
 	const isChildrenNavButton = navItemChildCheck(children);
 
 	const CONTENT = (
@@ -401,7 +401,7 @@ export const NavUser: FC<INavUserProps> = (props) => {
 
 	const { asideStatus, setAsideStatus } = useAsideStatus();
 
-	// @ts-ignore
+	// @ts-expect-error This is fine
 	const isChildrenNavButton = navItemChildCheck(children);
 
 	const CONTENT = (

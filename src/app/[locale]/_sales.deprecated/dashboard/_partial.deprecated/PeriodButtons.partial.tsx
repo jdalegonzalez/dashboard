@@ -27,7 +27,6 @@ const PeriodButtonsPartial: FC<IPeriodButtonsPartialProps> = (props) => {
 			{Object.values(PERIOD).map((i) => (
 				<Button
 					key={i.text}
-					// eslint-disable-next-line react/jsx-props-no-spreading
 					{...(activeTab.text === i.text ? { ...activeProps } : { ...defaultProps })}
 					onClick={() => {
 						setActiveTab(i);

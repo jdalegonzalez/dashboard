@@ -44,13 +44,11 @@ const Checkbox = forwardRef<HTMLInputElement, ICheckboxProps>((props, ref) => {
 		id,
 		inputClassName,
 		isInline = false,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		isValidMessage,
+			isValidMessage,
 		label,
 		rounded = themeConfig.rounded,
 		dimension = 'default',
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		validFeedback,
+			validFeedback,
 		variant = 'default',
 		isValid,
 		isTouched,
@@ -197,8 +195,7 @@ export const CheckboxGroup: FC<ICheckboxGroupProps> = (props) => {
 		isInline = false,
 		isTouched = false,
 		isValid = false,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		isValidMessage = true,
+			isValidMessage = true,
 		validFeedback,
 		...rest
 	} = props;

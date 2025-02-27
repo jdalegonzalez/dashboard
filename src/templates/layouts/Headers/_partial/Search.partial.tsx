@@ -14,7 +14,7 @@ import Modal, { ModalBody, ModalHeader } from '../../../../components/ui/Modal';
 
 const SearchPartial = () => {
 	const ref = useRef<HTMLDivElement>(null);
-	// @ts-ignore
+	// @ts-expect-error This is fine - DOMRect
 	const [domRect] = useDomRect(ref);
 
 	const formik = useFormik({
@@ -56,10 +56,10 @@ const SearchPartial = () => {
 			...i,
 			category: 'Form',
 		})),
-		...Object.values(componentsPages.integratedPages.subPages).map((i) => ({
-			...i,
-			category: 'Other',
-		})),
+		// ...Object.values(componentsPages.integratedPages.subPages).map((i) => ({
+		// 	...i,
+		// 	category: 'Other',
+		// })),
 	];
 	const result = list.filter(
 		(key) =>

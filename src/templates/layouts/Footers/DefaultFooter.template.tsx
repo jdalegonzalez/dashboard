@@ -1,5 +1,4 @@
 import React from 'react';
-import dayjs from 'dayjs';
 import Footer, { FooterLeft, FooterRight } from '../../../components/layouts/Footer/Footer';
 
 const DefaultFooterTemplate = () => {

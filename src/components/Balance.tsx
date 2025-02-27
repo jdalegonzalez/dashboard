@@ -15,7 +15,6 @@ export const BalanceIcon: FC<IBalanceIconProps> = (props) => {
 				(status === 'positive' && 'emerald') || (status === 'negative' && 'red') || 'blue'
 			}
 			size='text-2xl'
-			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...rest}
 			icon={
 				(status === 'positive' && 'HeroArrowTrendingUp') ||

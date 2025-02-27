@@ -10,7 +10,7 @@ import Container from '@/components/layouts/Container/Container';
 import Doc, { DocContent, DocNav } from '@/templates/for-demo/Doc';
 import ExampleView from '@/templates/for-demo/ExampleView';
 import Card, { CardBody } from '@/components/ui/Card';
-import FullCalendarExample1Partial from '@/app/[locale]/integrated/full-calendar/_partial/FullCalendarExample1.partial';
+import FullCalendarExample1Partial from '@/app/[locale]/_integrated/full-calendar/_partial/FullCalendarExample1.partial';
 import FullCalendarPageExample1MD from './_md/FullCalendarPageExample1.md';
 
 const FullCalendarClient = () => {
@@ -26,7 +26,7 @@ const FullCalendarClient = () => {
 		useRef(null),
 	];
 	const activeSection = useScrollSpy({
-		// @ts-ignore
+		// @ts-expect-error This is fine
 		sectionElementRefs: sectionRefs,
 		offsetPx: -90,
 	});

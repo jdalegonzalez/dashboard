@@ -107,7 +107,7 @@ const NewMailClient = () => {
 		<PageWrapper>
 			<Subheader>
 				<SubheaderLeft>
-					<Link href={`../${appPages.mailAppPages.subPages.inboxPages.to}`}>
+					<Link href={'./*' /*`../${appPages.mailAppPages.subPages.inboxPages.to}`*/}>
 						<Button icon='HeroArrowLeft' className='!px-0'>
 							Back to List
 						</Button>
@@ -140,7 +140,7 @@ const NewMailClient = () => {
 														isMulti
 														menuIsOpen={false}
 														onChange={(newValue) =>
-															// @ts-ignore
+															// @ts-expect-error This is fine
 															setValueTo(newValue)
 														}
 														onInputChange={(newValue) =>
@@ -167,7 +167,7 @@ const NewMailClient = () => {
 														isMulti
 														menuIsOpen={false}
 														onChange={(newValueCc) =>
-															// @ts-ignore
+															// @ts-expect-error This is fine
 															setValueCc(newValueCc)
 														}
 														onInputChange={(newValueCc) =>
@@ -194,7 +194,7 @@ const NewMailClient = () => {
 														isMulti
 														menuIsOpen={false}
 														onChange={(newValueBcc) =>
-															// @ts-ignore
+															// @ts-expect-error This is fine
 															setValueCc(newValueBcc)
 														}
 														onInputChange={(newValueBcc) =>

@@ -3,7 +3,7 @@ import Card, { CardBody } from '@/components/ui/Card';
 import Icon from '@/components/icon/Icon';
 import themeConfig from '@/config/theme.config';
 import {loadingOrProperty} from '@/components/LoaderDots.common';
-import {AgentAPIResults} from '@/app/api/agent/route';
+import {AgentAPIResults} from '@/app/lib/fetch';
 
 import useAgentOverview from '@/hooks/useAgent';
 import useDarkMode from '@/hooks/useDarkMode';

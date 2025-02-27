@@ -7,21 +7,7 @@ import {
     getUnsupportedFileCount,
     getAgentDetails
 } from '@prisma/client/sql'
-import { booleanParam, unpagedUrl } from '@/app/lib/fetch';
-
-export interface AgentAPIResults {
-    agentCount: number;
-    warningCount: number;
-    errorCount: number;
-    unsupportedFilesCount: number;
-    totalFilesCount: number;
-    dedupedFilesCount: number;
-}
-
-export type AgentAPIDetailResults = getAgentDetails.Result[];
-export const fetchPath = (details:boolean = false) => {
-    return unpagedUrl(import.meta.url, details ? {details} : undefined)
-}
+import { booleanParam } from '@/app/lib/fetch';
 
 const summaryJson = async () => {
     const [agentCount, warningInfo, errorCount, unsupportedInfo, totalFilesInfo, deDupedFilesInfo] = await Promise.all([

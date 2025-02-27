@@ -4,20 +4,17 @@ import {useAgentDetails} from '@/hooks/useAgent';
 
 import AgentDetails from './AgentCard.partial';
 import NewAgentButton from './NewAgentButton.partial';
+import { getAgentDetails } from '@prisma/client/sql';
 
-interface IAgentsPartialProps extends HTMLAttributes<HTMLDivElement> {
-
-}
-const AgentsPartial: FC<IAgentsPartialProps> = (props) => {
+const AgentsPartial: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
 	const { className, ...rest } = props;
     const { data } = useAgentDetails();
-    console.log(data);
     const cname = classNames('grid grid-cols-12 gap-4', className);
 	return (
 		<div data-component-name='AgentsPart' className={cname} {...rest}>
 			{
                 data 
-                ? data.map(agent => <AgentDetails className='col-span-12 lg:col-span-6 2xl:col-span-4' key={agent.agent_id} agent={agent} />)
+                ? data.map((agent:getAgentDetails.Result) => <AgentDetails className='col-span-12 lg:col-span-6 2xl:col-span-4' key={agent.agent_id} agent={agent} />)
                 :
                 ''
             }

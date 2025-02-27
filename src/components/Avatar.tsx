@@ -22,7 +22,6 @@ const Avatar: FC<IAvatarProps> = (props) => {
 				src={src}
 				alt={name || 'Avatar'}
 				className={classNames('object-cover', sharedClass)}
-				// eslint-disable-next-line react/jsx-props-no-spreading
 				{...rest}
 			/>
 		);

@@ -39,7 +39,7 @@ import LoaderDotsCommon from '@/components/LoaderDots.common';
 import FindingsListPartial from '../../dashboard/_partial/FindingsList.partial';
 
 const TABS: {
-	[key in 'SCANRESULTS' | 'SCANERRORS' | 'CRAWLRESULTS' | 'CRAWLERRORS' ] : 
+	[key in 'SCANRESULTS' | 'SCANERRORS' | 'CRAWLRESULTS' | 'CRAWLERRORS']: 
 	'Scan Results' | 'Scan Errors' | 'Crawl Results' | 'Crawl Errors';
 } = {
 	SCANRESULTS: 'Scan Results',
@@ -52,15 +52,14 @@ const AgentDetails = () => {
 	const [activeTab, setActiveTab] = useState(TABS.SCANRESULTS);
 	const { slug: id } = useParams();
 	const { i18n } = useTranslation();
-	const {isDarkTheme} = useDarkMode();
+	const { isDarkTheme } = useDarkMode();
 
-	const agentId: string | undefined = Array.isArray(id)?id[0]:id
+	const agentId: string | undefined = Array.isArray(id) ? id[0] : id
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 	const { data: agent, isLoading, performUpdate } = useAgent(agentId, setIsSaving);
-	const scanId = isLoading ? '' : agent.scans[0]?.id
-	const crawlId = isLoading ? '' : agent.crawls[0]?.id
+	const scanId = isLoading ? '' : agent.scans[0]?.id;
+	//const crawlId = isLoading ? '' : agent.crawls[0]?.id;
 
 	const formik = useFormik({
 		enableReinitialize: true,
@@ -68,9 +67,9 @@ const AgentDetails = () => {
 			name: agent?.name,
 			path: agent?.path,
 			use_history: agent?.use_history,
-			location: agent?.location
+			location: agent?.location,
 		},
-		onSubmit: (values) => { performUpdate(values) },
+		onSubmit: (values) => { performUpdate(values); },
 	});
 
 	const isNewItem = agentId === 'new';
@@ -80,9 +79,9 @@ const AgentDetails = () => {
 		isDirty: formik.dirty,
 	});
 
-	const {color, intensity} = statusToColor(agent?.status)
+	const { color, intensity } = statusToColor(agent?.status)
 	const circleColor = isDarkTheme ? 'bg-stone-950/50' : 'bg-sky-800'; 
-	const iconIntensity: TColorIntensity  = isDarkTheme ? '500' : '100';
+	const iconIntensity: TColorIntensity = isDarkTheme ? '500' : '100';
 
 	return (
 		<PageWrapper>
@@ -115,7 +114,7 @@ const AgentDetails = () => {
 			<Container className='flex shrink-0 grow basis-auto flex-col pb-0'>
 				<div className='flex h-full flex-wrap content-start'>
 					<div className='mb-4 grid w-full grid-cols-12 gap-4'>
-						<div className='col-span-12 flex flex-col gap-4 '>
+						<div className='col-span-12 flex flex-col gap-4'>
 							<Card>
 								<CardBody>
 									<div className='flex w-full gap-4'>

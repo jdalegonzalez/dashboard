@@ -5,17 +5,17 @@ import PageWrapper from '@/components/layouts/PageWrapper/PageWrapper';
 import projectsDb, { TProject } from '@/mocks/db/projects.db';
 import Card, {
 	CardBody,
-	CardFooter,
-	CardFooterChild,
+	//CardFooter,
+	//CardFooterChild,
 	CardHeader,
 	CardHeaderChild,
 	CardTitle,
 } from '@/components/ui/Card';
-import Link from 'next/link';
-import { appPages } from '@/config/pages.config';
-import Image, { StaticImageData } from 'next/image';
-import Icon from '@/components/icon/Icon';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+//import Link from 'next/link';
+//import { appPages } from '@/config/pages.config';
+//import Image, { StaticImageData } from 'next/image';
+//import Icon from '@/components/icon/Icon';
+//import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import Header, { HeaderLeft, HeaderRight } from '@/components/layouts/Header/Header';
@@ -33,8 +33,11 @@ interface IProjectItemProps {
 	project: TProject;
 }
 
-const ProjectItem: FC<IProjectItemProps> = ({ project }) => {
-	return (<div></div>
+const ProjectItem: FC<IProjectItemProps> = (/* { project } */) => {
+	return (
+		<div>
+
+		</div>
 		// <Card className='w-full'>
 		// 	<CardHeader>
 		// 		<CardHeaderChild>
@@ -50,11 +53,11 @@ const ProjectItem: FC<IProjectItemProps> = ({ project }) => {
 		// 			<div className='text-zinc-500'>{project.description}</div>
 
 		// 			{/* Only image */}
-		// 			{/* @ts-ignore */}
+		// 			{/* @ts-expect-error This is fine */}
 		// 			{project.image?.length === 1 && (
 		// 				<div>
 		// 					<Image
-		// 						// @ts-ignore
+		// 						// @ts-expect-error This is fine
 
 		// 						src={project.image[0]}
 		// 						alt={project.name}
@@ -66,11 +69,11 @@ const ProjectItem: FC<IProjectItemProps> = ({ project }) => {
 		// 			{/* Multiple images */}
 		// 			{typeof project.image !== 'undefined' &&
 		// 				typeof project.image === 'object' &&
-		// 				// @ts-ignore
+		// 				// @ts-expect-error This is fine
 		// 				project.image?.length > 1 && (
 		// 					<div className='grid grid-cols-12 gap-4'>
 		// 						{
-		// 							// @ts-ignore
+		// 							// @ts-expect-error This is fine
 
 		// 							project.image.map(
 		// 								(
@@ -87,19 +90,19 @@ const ProjectItem: FC<IProjectItemProps> = ({ project }) => {
 		// 									),
 		// 							)
 		// 						}
-		// 						{/* @ts-ignore */}
+		// 						{/* @ts-expect-error This is fine */}
 		// 						{project.image.length > 3 && (
 		// 							<div
 		// 								className='col-span-3 overflow-hidden rounded-lg bg-cover'
 		// 								style={{
-		// 									// @ts-ignore
+		// 									// @ts-expect-error This is fine
 
 		// 									backgroundImage: `url(${project.image[3]})`,
 		// 								}}>
 		// 								<div className='flex h-full w-full items-center justify-center font-semibold backdrop-blur'>
 		// 									+
 		// 									{
-		// 										// @ts-ignore
+		// 										// @ts-expect-error This is fine
 		// 										project.image.length - 3
 		// 									}
 		// 								</div>
@@ -119,7 +122,7 @@ const ProjectItem: FC<IProjectItemProps> = ({ project }) => {
 		// 								index < 5 && (
 		// 									<Image
 		// 										key={user.id}
-		// 										// @ts-ignore
+		// 										// @ts-expect-error This is fine
 		// 										src={user.image?.thumb}
 		// 										alt={`${user.firstName} ${user.lastName}`}
 		// 										className='inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-zinc-900'
@@ -146,7 +149,7 @@ const ProjectItem: FC<IProjectItemProps> = ({ project }) => {
 		// 				{project.image && (
 		// 					<div className='flex items-center gap-2 text-blue-500'>
 		// 						<Icon icon='HeroPaperClip' />
-		// 						{/* @ts-ignore */}
+		// 						{/* @ts-expect-error This is fine */}
 		// 						<div>{project.image?.length}</div>
 		// 					</div>
 		// 				)}

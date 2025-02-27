@@ -168,7 +168,6 @@ const MyComponent = () => {
 	};
 
 	const renderEventContent = (eventContent: EventContentArg) => {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { user, ...rest }: { user?: TUser } = eventContent.event.extendedProps;
 
 		return (
@@ -180,7 +179,6 @@ const MyComponent = () => {
 		);
 	};
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);
 
 	const handleEvents = (events: EventApi[]) => {

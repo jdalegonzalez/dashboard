@@ -28,7 +28,6 @@ const User: FC<IUserProps> = (props) => {
 		namePrefix,
 		nameSuffix,
 		suffix,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		isLoading = false,
 		...rest
 	} = props;

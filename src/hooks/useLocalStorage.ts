@@ -15,7 +15,6 @@ const useLocalStorage = (keyName: string, defaultValue: string | null) => {
 			}
 			window.localStorage.setItem(keyName, JSON.stringify(defaultValue));
 			return defaultValue;
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch (err) {
 			return defaultValue;
 		}
@@ -26,7 +25,6 @@ const useLocalStorage = (keyName: string, defaultValue: string | null) => {
 			try {
 				window.localStorage.setItem(keyName, JSON.stringify(newValue));
 				resolve(true);
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			} catch (err) {
 				/* empty */
 			}

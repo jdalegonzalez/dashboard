@@ -10,8 +10,8 @@ import Container from '@/components/layouts/Container/Container';
 import Doc, { DocContent, DocNav } from '@/templates/for-demo/Doc';
 import ExampleView from '@/templates/for-demo/ExampleView';
 import Card, { CardBody } from '@/components/ui/Card';
-import ReactDateRangeExample1Partial from '@/app/[locale]/integrated/react-date-range/_partial/ReactDateRangeExample1.partial';
-import ReactDateRangeExample2Partial from '@/app/[locale]/integrated/react-date-range/_partial/ReactDateRangeExample2.partial';
+import ReactDateRangeExample1Partial from '@/app/[locale]/_integrated/react-date-range/_partial/ReactDateRangeExample1.partial';
+import ReactDateRangeExample2Partial from '@/app/[locale]/_integrated/react-date-range/_partial/ReactDateRangeExample2.partial';
 import ReactDateRangeExample1MD from './_md/ReactDateRangeExample1.md';
 import ReactDateRangeExample2MD from './_md/ReactDateRangeExample2.md';
 
@@ -28,7 +28,7 @@ const ReactDateRangeClient = () => {
 		useRef(null),
 	];
 	const activeSection = useScrollSpy({
-		// @ts-ignore
+		// @ts-expect-error This is fine
 		sectionElementRefs: sectionRefs,
 		offsetPx: -90,
 	});

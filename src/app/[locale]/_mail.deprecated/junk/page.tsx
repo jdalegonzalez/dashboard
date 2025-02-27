@@ -1,5 +1,5 @@
 import React from 'react';
-import MailJunkClient from '@/app/[locale]/mail/junk/client';
+import MailJunkClient from '@/app/[locale]/_mail.deprecated/junk/client';
 
 const MailJunkPage = () => {
 	return <MailJunkClient />;

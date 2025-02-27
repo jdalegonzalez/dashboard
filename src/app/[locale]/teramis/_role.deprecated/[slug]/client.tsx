@@ -20,13 +20,12 @@ import Subheader, {
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
 import useSaveBtn from '@/hooks/useSaveBtn';
-import { appPages } from '@/config/pages.config';
+// import { appPages } from '@/config/pages.config';
 import Link from 'next/link';
 
 const RoleClient = () => {
 	const { slug: id } = useParams();
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 
 	const roleDb = rolesDb.find((i) => i.id === id);
@@ -141,7 +140,7 @@ const RoleClient = () => {
 															e.target.value,
 														)
 													}
-													// @ts-ignore
+													// @ts-expect-error This is fine
 
 													value={formik.values.modules[`${module.id}`]}
 												/>
@@ -160,7 +159,7 @@ const RoleClient = () => {
 															onChange={() => {
 																const newValues = {
 																	...PERMISSION?.[
-																		// @ts-ignore
+																		// @ts-expect-error This is fine
 
 																		formik.values?.modules?.[
 																			`${module.id}`
@@ -169,7 +168,7 @@ const RoleClient = () => {
 
 																	[`${i}`]:
 																		!PERMISSION?.[
-																			// @ts-ignore
+																			// @ts-expect-error This is fine
 
 																			formik.values
 																				?.modules?.[
@@ -201,7 +200,7 @@ const RoleClient = () => {
 															}}
 															checked={
 																PERMISSION?.[
-																	// @ts-ignore
+																	// @ts-expect-error This is fine
 																	formik.values?.modules?.[
 																		`${module.id}`
 																	]

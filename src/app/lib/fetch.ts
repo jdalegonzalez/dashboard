@@ -1,3 +1,5 @@
+import { Agent, CrawlError, ScanError, ScanResult } from '@prisma/client';
+import { getAgentDetails } from '@prisma/client/sql';
 import { NextRequest } from 'next/server';
 
 export default async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Promise<JSON> {
@@ -82,3 +84,49 @@ export const unpagedUrl = (urlbase: string, args?:Record<string,any>) => {
 export const pagedUrl = (urlbase: string, rows: number, page: number, extraArgs?:Record<string, any>) => {
   return argsUrl(urlbase, extraArgs, rows=rows, page=page)
 }
+
+export const defaultRows = 25;
+
+export const crawlPath = (rows: number = defaultRows, page: number = 1) => {
+  return pagedUrl('/api/agent/crawls', rows, page)
+}
+export type CrawlErrorAPIResults = PagedAPIResults<CrawlError>;
+
+export const findingsPath = (rows: number = defaultRows, page: number = 1, extraArgs?:object) => {
+    return pagedUrl('/api/agent/scans/errors', rows, page, extraArgs)
+}
+export type FindingsAPIResults = PagedAPIResults<ScanResult>;
+
+
+export const scanErrorsPath = (rows: number = defaultRows, page: number = 1) => {
+    return pagedUrl(import.meta.url, rows, page)
+}
+export type ScanErrorAPIResults = PagedAPIResults<ScanError>;
+
+export interface IAgentResult extends Agent {
+    crawls: {id: string}[],
+    scans: {id: string}[]
+}
+
+export interface ScanSummaryAPIResults {
+  series: {name: string, data: number[]}[];
+  paths: string [];
+  agents: string [];
+  durations: number[];
+  gigs_per_second: number[];
+}
+
+export interface AgentAPIResults {
+    agentCount: number;
+    warningCount: number;
+    errorCount: number;
+    unsupportedFilesCount: number;
+    totalFilesCount: number;
+    dedupedFilesCount: number;
+}
+
+export type AgentAPIDetailResults = getAgentDetails.Result[];
+export const fetchPath = (details:boolean = false) => {
+    return unpagedUrl('/api/agent', details ? {details} : undefined)
+}
+

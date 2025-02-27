@@ -15,7 +15,6 @@ const PageWrapper: FC<IPageWrapperProps> = (props) => {
 
 	const pathname = usePathname();
 	const purePath = purePathnameUtil(pathname);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { data: session, status } = useSession({
 		required: true,
 		onUnauthenticated() {

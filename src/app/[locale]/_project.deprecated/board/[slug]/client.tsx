@@ -18,7 +18,6 @@ import BoardPartial from '@/app/[locale]/_project.deprecated/_partial/Board.part
 import ColumnsPartial from '@/app/[locale]/_project.deprecated/_partial/Columns.partial';
 
 const ProjectBoardClient = () => {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { slug: id } = useParams();
 
 	const [globalFilter, setGlobalFilter] = useState<string>('');

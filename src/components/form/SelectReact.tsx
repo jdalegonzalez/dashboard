@@ -69,13 +69,11 @@ const SelectReact: FC<ISelectReactProps> = (props) => {
 		className,
 		color = themeConfig.themeColor,
 		colorIntensity = themeConfig.themeColorShade,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		isValidMessage,
+			isValidMessage,
 		name,
 		rounded = themeConfig.rounded,
 		dimension = 'default',
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		validFeedback,
+			validFeedback,
 		variant = 'solid',
 		isValid,
 		isTouched,

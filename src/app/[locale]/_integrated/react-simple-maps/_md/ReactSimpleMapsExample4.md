@@ -49,7 +49,7 @@ const MyComponent = () => {
 				}
 			</Geographies>
 			{markers.map(({ name, coordinates, markerOffset }) => (
-				// @ts-ignore
+				// @ts-expect-error This is fine
 				<Marker key={name} coordinates={coordinates}>
 					<circle
 						r={10}

@@ -10,10 +10,10 @@ import Container from '@/components/layouts/Container/Container';
 import Doc, { DocContent, DocNav } from '@/templates/for-demo/Doc';
 import ExampleView from '@/templates/for-demo/ExampleView';
 import Card, { CardBody } from '@/components/ui/Card';
-import ApexChartsExample1Partial from '@/app/[locale]/integrated/apex-charts/_partial/ApexChartsExample1.partial';
-import ApexChartsExample2Partial from '@/app/[locale]/integrated/apex-charts/_partial/ApexChartsExample2.partial';
-import ApexChartsExample3Partial from '@/app/[locale]/integrated/apex-charts/_partial/ApexChartsExample3.partial';
-import ApexChartsExample4Partial from '@/app/[locale]/integrated/apex-charts/_partial/ApexChartsExample4.partial';
+import ApexChartsExample1Partial from '@/app/[locale]/_integrated/apex-charts/_partial/ApexChartsExample1.partial';
+import ApexChartsExample2Partial from '@/app/[locale]/_integrated/apex-charts/_partial/ApexChartsExample2.partial';
+import ApexChartsExample3Partial from '@/app/[locale]/_integrated/apex-charts/_partial/ApexChartsExample3.partial';
+import ApexChartsExample4Partial from '@/app/[locale]/_integrated/apex-charts/_partial/ApexChartsExample4.partial';
 import ApexChartsExample1MD from './_md/ApexChartsExample1.md';
 import ApexChartsExample2MD from './_md/ApexChartsExample2.md';
 import ApexChartsExample3MD from './_md/ApexChartsExample3.md';
@@ -32,7 +32,7 @@ const ApexChartsClient = () => {
 		useRef(null),
 	];
 	const activeSection = useScrollSpy({
-		// @ts-ignore
+		// @ts-expect-error This is fine
 		sectionElementRefs: sectionRefs,
 		offsetPx: -90,
 	});

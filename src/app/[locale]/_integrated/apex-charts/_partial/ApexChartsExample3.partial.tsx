@@ -126,10 +126,10 @@ const ApexChartsExample3Partial = () => {
 			dataLabels: {
 				enabled: true,
 				formatter(val) {
-					// @ts-ignore
+					// @ts-expect-error This is fine
 
 					const a = dayjs(val[0]);
-					// @ts-ignore
+					// @ts-expect-error This is fine
 
 					const b = dayjs(val[1]);
 					const diff = b.diff(a, 'days');

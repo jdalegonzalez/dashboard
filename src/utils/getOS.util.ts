@@ -1,7 +1,7 @@
 const getOS = (): 'MacOS' | 'iOS' | 'Windows' | 'Android' | 'Linux' => {
-	// @ts-ignore
+	// @ts-expect-error This is fine TypeScript doesn't know about the window.navigator
 	const { userAgent } = typeof window !== 'undefined' && window.navigator;
-	// @ts-ignore
+	// @ts-expect-error This is fine TypeScript doesn't know about the window.navigator
 	const { platform } = typeof window !== 'undefined' && window.navigator;
 	const macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
 	const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
@@ -20,10 +20,9 @@ const getOS = (): 'MacOS' | 'iOS' | 'Windows' | 'Android' | 'Linux' => {
 		os = 'Linux';
 	}
 
-	// @ts-ignore
 	// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 	typeof window !== 'undefined' && os && document.documentElement.setAttribute('os', os);
-	// @ts-ignore
+	// @ts-expect-error This is fine TypeScript doesn't know about document.documentElement.getAttribute
 	return os;
 };
 

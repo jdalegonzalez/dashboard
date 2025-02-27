@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { Editor, Element as SlateElement, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
 import React, { FC, ReactNode } from 'react';
@@ -9,6 +7,7 @@ import Button from '../ui/Button';
 const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify'];
 
+//@ts-expect-error This is fine
 const isBlockActive = (editor, format, blockType = 'type') => {
 	const { selection } = editor;
 	if (!selection) return false;
@@ -17,12 +16,13 @@ const isBlockActive = (editor, format, blockType = 'type') => {
 		Editor.nodes(editor, {
 			at: Editor.unhangRange(editor, selection),
 			match: (n) =>
-				!Editor.isEditor(n) && SlateElement.isElement(n) && n[blockType] === format,
+				!Editor.isEditor(n) && SlateElement.isElement(n) && (n as any)[blockType] === format,
 		}),
 	);
 
 	return !!match;
 };
+//@ts-expect-error This is fine
 export const toggleBlock = (editor, format) => {
 	const isActive = isBlockActive(
 		editor,
@@ -37,11 +37,11 @@ export const toggleBlock = (editor, format) => {
 		match: (n) =>
 			!Editor.isEditor(n) &&
 			SlateElement.isElement(n) &&
-			LIST_TYPES.includes(n.type) &&
+			LIST_TYPES.includes((n as any).type) &&
 			!TEXT_ALIGN_TYPES.includes(format),
 		split: true,
 	});
-	let newProperties: Partial<SlateElement>;
+	let newProperties: any /*Partial<SlateElement>*/;
 
 	if (TEXT_ALIGN_TYPES.includes(format)) {
 		newProperties = {
@@ -62,12 +62,12 @@ export const toggleBlock = (editor, format) => {
 	}
 };
 
-const isMarkActive = (editor, format) => {
+const isMarkActive = (editor: any, format: any) => {
 	const marks = Editor.marks(editor);
 
-	return marks ? marks[format] === true : false;
+	return marks ? (marks as any)[format] === true : false;
 };
-export const toggleMark = (editor, format) => {
+export const toggleMark = (editor: any, format: any) => {
 	const isActive = isMarkActive(editor, format);
 
 	if (isActive) {
@@ -77,11 +77,9 @@ export const toggleMark = (editor, format) => {
 	}
 };
 
-// eslint-disable-next-line react/prop-types
+//@ts-expect-error This is fine
 export const Element = ({ attributes, children, element }) => {
-	// eslint-disable-next-line react/prop-types
 	const style = { textAlign: element.align };
-	// eslint-disable-next-line react/prop-types
 	switch (element.type) {
 		case 'block-quote':
 			return (
@@ -128,24 +126,17 @@ export const Element = ({ attributes, children, element }) => {
 	}
 };
 
-// eslint-disable-next-line react/prop-types
+//@ts-expect-error This is fine
 export const Leaf = ({ attributes, children, leaf }) => {
-	// eslint-disable-next-line react/prop-types
 	if (leaf.bold) {
 		children = <strong>{children}</strong>;
 	}
-
-	// eslint-disable-next-line react/prop-types
 	if (leaf.code) {
 		children = <code>{children}</code>;
 	}
-
-	// eslint-disable-next-line react/prop-types
 	if (leaf.italic) {
 		children = <em>{children}</em>;
 	}
-
-	// eslint-disable-next-line react/prop-types
 	if (leaf.underline) {
 		children = <u>{children}</u>;
 	}
@@ -153,7 +144,7 @@ export const Leaf = ({ attributes, children, leaf }) => {
 	return <span {...attributes}>{children}</span>;
 };
 
-// eslint-disable-next-line react/prop-types
+//@ts-expect-error This is fine
 export const BlockButton = ({ format, icon }) => {
 	const editor = useSlate();
 	return (
@@ -173,7 +164,7 @@ export const BlockButton = ({ format, icon }) => {
 	);
 };
 
-// eslint-disable-next-line react/prop-types
+//@ts-expect-error This is fine
 export const MarkButton = ({ format, icon }) => {
 	const editor = useSlate();
 	return (
@@ -188,7 +179,7 @@ export const MarkButton = ({ format, icon }) => {
 	);
 };
 
-// eslint-disable-next-line react/prop-types
+//@ts-expect-error This is fine
 export const Toolbar = ({ children }) => {
 	return (
 		<span className='flex items-center justify-between bg-zinc-100 dark:bg-zinc-800'>

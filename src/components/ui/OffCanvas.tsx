@@ -36,7 +36,7 @@ const checkComp = (
 		| ReactElement<IOffCanvasFooterProps>,
 ): boolean => {
 	return [componentName].includes(
-		// @ts-ignore
+		// @ts-expect-error This is fine
 
 		child?.type?.displayName,
 	);
@@ -241,9 +241,8 @@ const OffCanvas: FC<IOffCanvasProps> = (props) => {
 	const titleId = useId();
 
 	// Backdrop close function
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const closeOffCanvas = (event: { target: any }) => {
-		// @ts-ignore
+		// @ts-expect-error This is fine
 
 		if (ref.current && !ref.current.contains(event.target) && !isStaticBackdrop) {
 			setIsOpen(false);
@@ -253,15 +252,14 @@ const OffCanvas: FC<IOffCanvasProps> = (props) => {
 	useEventListener('touchstart', closeOffCanvas); // Touchscreen
 
 	// Backdrop static function
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const offCanvasStatic = (event: { target: any }) => {
-		// @ts-ignore
+		// @ts-expect-error This is fine
 
 		if (ref.current && !ref.current.contains(event.target) && isStaticBackdrop) {
-			// @ts-ignore
+			// @ts-expect-error This is fine
 
 			refOffCanvas.current.classList.add('!scale-105');
-			// @ts-ignore
+			// @ts-expect-error This is fine
 
 			setTimeout(() => refOffCanvas.current.classList.remove('!scale-105'), 300);
 		}
@@ -334,7 +332,7 @@ const OffCanvas: FC<IOffCanvasProps> = (props) => {
 										(child) =>
 											(checkComp('OffCanvasHeader', child) &&
 												cloneElement(child, {
-													// @ts-ignore
+													// @ts-expect-error This is fine
 													setIsOpen,
 													titleId,
 												})) ||

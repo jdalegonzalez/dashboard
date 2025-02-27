@@ -167,8 +167,7 @@ const CalendarPartial = ({ height = 400 }: { height?: string | number }) => {
 	};
 
 	const renderEventContent = (eventContent: EventContentArg) => {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { user, ...rest }: { user?: TUser } = eventContent.event.extendedProps;
+			const { user, ...rest }: { user?: TUser } = eventContent.event.extendedProps;
 
 		return (
 			<>
@@ -179,7 +178,6 @@ const CalendarPartial = ({ height = 400 }: { height?: string | number }) => {
 		);
 	};
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);
 
 	const handleEvents = (events: EventApi[]) => {

@@ -26,16 +26,14 @@ const FieldWrap = forwardRef<HTMLDivElement, IFieldWrapProps>((props, ref) => {
 		firstSuffix,
 
 		lastSuffix,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		isValidMessage,
+			isValidMessage,
 
 		isValid,
 
 		isTouched,
 
 		invalidFeedback,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		validFeedback,
+			validFeedback,
 		...rest
 	} = props;
 
@@ -44,11 +42,11 @@ const FieldWrap = forwardRef<HTMLDivElement, IFieldWrapProps>((props, ref) => {
 	);
 
 	const divFirstRef = useRef<HTMLDivElement>(null);
-	// @ts-ignore
+	// @ts-expect-error This is fine
 	const [domFirstRect] = useDomRect(divFirstRef);
 
 	const divLastRef = useRef<HTMLDivElement>(null);
-	// @ts-ignore
+	// @ts-expect-error This is fine
 	const [domLastRect] = useDomRect(divLastRef);
 
 	const { isLTR } = useDir();
@@ -65,7 +63,7 @@ const FieldWrap = forwardRef<HTMLDivElement, IFieldWrapProps>((props, ref) => {
 				</div>
 			)}
 			{cloneElement(children, {
-				// @ts-ignore
+				// @ts-expect-error This is fine
 				isValid,
 				isTouched,
 				invalidFeedback,

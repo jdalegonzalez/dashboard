@@ -2,7 +2,6 @@ import React, { FC, HTMLAttributes } from 'react';
 import classNames from 'classnames';
 import themeConfig from '@/config/theme.config';
 import Icon from '@/components/icon/Icon';
-import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
 
 interface INewAgentButtonPartialProps extends HTMLAttributes<HTMLButtonElement> {
     size?: number|string;

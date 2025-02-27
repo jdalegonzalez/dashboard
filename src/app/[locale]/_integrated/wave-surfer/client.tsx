@@ -10,7 +10,7 @@ import Container from '@/components/layouts/Container/Container';
 import Doc, { DocContent, DocNav } from '@/templates/for-demo/Doc';
 import ExampleView from '@/templates/for-demo/ExampleView';
 import Card, { CardBody } from '@/components/ui/Card';
-import WaveSurferExample1Partial from '@/app/[locale]/integrated/wave-surfer/_partial/WaveSurferExample1.partial';
+import WaveSurferExample1Partial from '@/app/[locale]/_integrated/wave-surfer/_partial/WaveSurferExample1.partial';
 import WaveSurferExample1MD from './_md/WaveSurferExample1.md';
 
 const WaveSurferClient = () => {
@@ -26,7 +26,7 @@ const WaveSurferClient = () => {
 		useRef(null),
 	];
 	const activeSection = useScrollSpy({
-		// @ts-ignore
+		// @ts-expect-error This is fine
 		sectionElementRefs: sectionRefs,
 		offsetPx: -90,
 	});

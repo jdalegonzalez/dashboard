@@ -67,7 +67,7 @@ const Subheader: FC<ISubheaderProps> = (props) => {
 	const { children, className = undefined, ...rest } = props;
 
 	const divRef = useRef<HTMLDivElement>(null);
-	// @ts-ignore
+	// @ts-expect-error This is fine
 	const [domRect] = useDomRect(divRef);
 
 	return (

@@ -19,7 +19,6 @@ const CloseButton: FC<ICloseButtonProps> = (props) => {
 			color='red'
 			className={classes}
 			onClick={() => (setIsOpen ? setIsOpen(false) : undefined)}
-			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...rest}
 		/>
 	);

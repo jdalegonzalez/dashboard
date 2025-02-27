@@ -26,8 +26,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-	title: 'Teramis Agent Status and Results',
-	description: 'Displays files determined to contain CUI discovered by running Teramis agents, shows the currently deployed agents and their status. ',
+    title: 'Teramis Agent Status and Results',
+    description: 'Displays files determined to contain CUI discovered by running Teramis agents, shows the currently deployed agents and their status.',
 };
 
 export function generateStaticParams() {
@@ -41,17 +41,9 @@ const RootLayout = async (
     }
 ) => {
     const params = await props.params;
-
-    const {
-        locale
-    } = params;
-
-    const {
-        children
-    } = props;
-
+    const { locale } = params;
+    const { children } = props;
     dayjs.extend(localizedFormat);
-
 	return (
 		<Providers>
 			<html suppressHydrationWarning lang={locale} dir={dir(locale)}>

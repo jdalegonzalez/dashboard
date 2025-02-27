@@ -1,5 +1,5 @@
 import React from 'react';
-import MailDraftClient from '@/app/[locale]/mail/draft/client';
+import MailDraftClient from '@/app/[locale]/_mail.deprecated/draft/client';
 
 const MailDraftPage = () => {
 	return <MailDraftClient />;

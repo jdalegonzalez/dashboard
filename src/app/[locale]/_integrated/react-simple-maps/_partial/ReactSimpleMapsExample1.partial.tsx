@@ -15,16 +15,15 @@ const ReactSimpleMapsExample1Partial = () => {
 	useEffect(() => {
 		csv('/data.csv')
 			.then((cities) => {
-				// @ts-ignore
 				const sortedCities = sortBy(cities, (o) => -o.population);
 				setMaxValue(sortedCities[0].population);
-				// @ts-ignore
+				// @ts-expect-error This is fine
 				setData(sortedCities);
 			})
 			.catch(() => {});
 	}, []);
 
-	// @ts-ignore
+	// @ts-expect-error This is fine
 	const popScale = useMemo(() => scaleLinear().domain([0, maxValue]).range([0, 24]), [maxValue]);
 
 	return (
@@ -40,7 +39,7 @@ const ReactSimpleMapsExample1Partial = () => {
 					))
 				}
 			</Geographies>
-			{/* @ts-ignore */}
+			{/* @ts-expect-error This is fine */}
 			{data.map(({ city_code, lng, lat, population }) => {
 				return (
 					<Marker key={city_code} coordinates={[lng, lat]}>

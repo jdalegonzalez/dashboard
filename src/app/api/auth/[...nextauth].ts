@@ -33,8 +33,7 @@ export const authOptions = {
 				username: { label: 'Username', type: 'text', placeholder: 'username' },
 				password: { label: 'Password', type: 'password' },
 			},
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			async authorize(credentials, req) {
+					async authorize(credentials, req) {
 				// Add logic here to look up the user from the credentials supplied
 				const user = { id: '6', name: 'scottnewton', email: 'scottnewton@site.com' };
 
@@ -67,7 +66,7 @@ export const authOptions = {
 };
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-	// @ts-ignore
+	// @ts-expect-error This is fine
 	if (req.query.nextauth.includes('callback') && req.method === 'POST') {
 		console.log('Handling callback request from my Identity Provider', req.body);
 	}
@@ -78,11 +77,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 	return NextAuth(req, res, {
 		...authOptions,
 		callbacks: {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			session({ session, token }) {
+					session({ session, token }) {
 				// Return a cookie value as part of the session
 				// This is read when `req.query.nextauth.includes("session") && req.method === "GET"`
-				// @ts-ignore
+				// @ts-expect-error This is fine
 				session.someCookie = someCookie;
 				return session;
 			},

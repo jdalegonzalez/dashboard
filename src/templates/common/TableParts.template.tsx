@@ -1,6 +1,6 @@
 import React, { FC, forwardRef } from 'react';
 import classNames from 'classnames';
-import { flexRender, Table as TTableProps, Column as TColumn, ColumnMeta, RowData } from '@tanstack/react-table';
+import { flexRender, Table as TTableProps, Column as TColumn, RowData } from '@tanstack/react-table';
 import { CardFooter, CardFooterChild } from '@/components/ui/Card';
 import Mounted from '@/components/Mounted';
 import Table, { ITableProps, TBody, Td, TFoot, Th, THead, Tr } from '../../components/ui/Table';
@@ -10,12 +10,11 @@ import Input from '../../components/form/Input';
 import Select from '../../components/form/Select';
 
 interface ITableHeaderTemplateProps {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	table: TTableProps<any>;
+	table: TTableProps<unknown>;
 	sizeUnits?: string
 }
 
-const columnWidthStyle = (column:TColumn<any, unknown>, argUnits?: string) => {
+const columnWidthStyle = (column:TColumn<unknown, unknown>, argUnits?: string) => {
 	const size = column.getSize();
 	const columnUnits = column.columnDef.meta?.sizeUnits
 	const units = columnUnits ?? argUnits ?? '%';
@@ -23,12 +22,12 @@ const columnWidthStyle = (column:TColumn<any, unknown>, argUnits?: string) => {
 	return {}
 }
 
-const columnWidthClass = (column: TColumn<any, unknown>) => {
+const columnWidthClass = (column: TColumn<unknown, unknown>) => {
 	const size = column.getSize();
 	const columnUnits = column.columnDef.meta?.sizeUnits
 	if (size && size >=0 && columnUnits === 'spacing') return `!w-${size}`
 }
-
+// @eslint-ignore
 declare module '@tanstack/react-table' {
 	interface ColumnMeta<TData extends RowData, TValue> {
 		addLeftBorder?: boolean,
@@ -99,7 +98,6 @@ export const TableHeaderTemplate: FC<ITableHeaderTemplateProps> = ({ table, size
 
 interface ITableBodyTemplateProps {
 	sizeUnits?: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	table: TTableProps<any>;
 }
 export const TableBodyTemplate: FC<ITableBodyTemplateProps> = ({ table, sizeUnits }) => {
@@ -128,7 +126,6 @@ export const TableBodyTemplate: FC<ITableBodyTemplateProps> = ({ table, sizeUnit
 };
 
 interface ITableFooterTemplateProps {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	table: TTableProps<any>;
 	sizeUnits?: string;
 }
@@ -185,7 +182,6 @@ export const TableFooterTemplate: FC<ITableFooterTemplateProps> = ({ table, size
 };
 
 interface ITableTemplateProps extends Partial<ITableProps> {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	table: TTableProps<any>;
 	sizeUnits?: string;
 	hasHeader?: boolean;
@@ -209,7 +205,6 @@ const TableTemplate: React.ForwardRefRenderFunction<HTMLTableElement, ITableTemp
 };
 
 interface ITableCardFooterTemplateProps extends Partial<ITableProps> {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	table: TTableProps<any>;
 }
 export const TableCardFooterTemplate: FC<ITableCardFooterTemplateProps> = ({ table }) => {

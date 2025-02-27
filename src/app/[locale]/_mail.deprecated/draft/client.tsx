@@ -13,7 +13,7 @@ import Subheader, {
 } from '@/components/layouts/Subheader/Subheader';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
-import { appPages } from '@/config/pages.config';
+// import { appPages } from '@/config/pages.config';
 import Container from '@/components/layouts/Container/Container';
 import Card, { CardBody, CardFooter, CardFooterChild } from '@/components/ui/Card';
 import MailSidebarItemPart from '@/app/[locale]/_mail.deprecated/_parts/MailSidebarItem.part';
@@ -51,7 +51,7 @@ const MailDraftClient = () => {
 
 	const activeMails = mails.filter((mail) => activeItem.includes(mail.id));
 
-	const router = useRouter();
+	//const router = useRouter();
 
 	return (
 		<PageWrapper>
@@ -101,7 +101,6 @@ const MailDraftClient = () => {
 											key={item.id}
 											active={activeItem}
 											setActive={setActiveItem}
-											// eslint-disable-next-line react/jsx-props-no-spreading
 											{...item}
 										/>
 									))}

@@ -106,7 +106,6 @@ const ProfileClient = () => {
 		colorIntensity: '500',
 	};
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 
 	const formik = useFormik({
@@ -187,7 +186,7 @@ const ProfileClient = () => {
 									<div key={i.text}>
 										<Button
 											icon={i.icon}
-											// eslint-disable-next-line react/jsx-props-no-spreading
+				
 											{...(activeTab.text === i.text
 												? {
 														...activeProps,
@@ -825,7 +824,7 @@ const ProfileClient = () => {
 										<div className='flex flex-wrap divide-y divide-dashed divide-zinc-500/50 [&>*]:py-4'>
 											{userData?.socialAuth &&
 												Object.keys(userData?.socialAuth).map((i) => {
-													// @ts-ignore
+													// @ts-expect-error This is fine
 
 													const status = userData?.socialAuth[i];
 													return (

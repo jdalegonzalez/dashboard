@@ -24,9 +24,7 @@ const TranslationsProvider = ({
 		const init = async () => {
 			if (!i18n) {
 				const newInstance = await initTranslations(locale, namespaces);
-				// @ts-ignore
 				i18n = newInstance;
-				// @ts-ignore
 				setInstance(newInstance);
 			} else if (i18n.language !== locale) {
 				await i18n.changeLanguage(locale);

@@ -120,10 +120,10 @@ const MyComponent = () => {
 										) : (
 											<Annotation
 												subject={centroid}
-												// @ts-ignore
+												// @ts-expect-error This is fine
 												// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
 												dx={offsets[cur.id][0]}
-												// @ts-ignore
+												// @ts-expect-error This is fine
 												// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
 												dy={offsets[cur.id][1]}
 												connectorProps={{}}>

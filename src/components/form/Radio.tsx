@@ -43,22 +43,16 @@ const Radio: FC<IRadioProps> = (props) => {
 		isInline = false,
 		label,
 		name,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		rounded = themeConfig.rounded,
+			rounded = themeConfig.rounded,
 		selectedValue,
 		dimension = 'default',
 		value,
 		disabled = false,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		isValid,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		isTouched,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		invalidFeedback,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		isValidMessage,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		validFeedback,
+			isValid,
+			isTouched,
+			invalidFeedback,
+			isValidMessage,
+			validFeedback,
 		...rest
 	} = props;
 
@@ -171,8 +165,7 @@ export const RadioGroup: FC<IRadioGroupProps> = (props) => {
 		isInline = false,
 		isTouched = false,
 		isValid = false,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		isValidMessage = true,
+			isValidMessage = true,
 		validFeedback,
 		...rest
 	} = props;

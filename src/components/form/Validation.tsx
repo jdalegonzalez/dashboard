@@ -23,7 +23,7 @@ const Validation: FC<IValidationProps> = (props) => {
 	return (
 		<>
 			{cloneElement(children, {
-				// @ts-ignore
+				// @ts-expect-error This is fine
 				isValid,
 				isTouched,
 				invalidFeedback,

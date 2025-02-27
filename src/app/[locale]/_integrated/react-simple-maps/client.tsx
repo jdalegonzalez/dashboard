@@ -10,10 +10,10 @@ import Container from '@/components/layouts/Container/Container';
 import Doc, { DocContent, DocNav } from '@/templates/for-demo/Doc';
 import ExampleView from '@/templates/for-demo/ExampleView';
 import Card, { CardBody } from '@/components/ui/Card';
-import ReactSimpleMapsExample1Partial from '@/app/[locale]/integrated/react-simple-maps/_partial/ReactSimpleMapsExample1.partial';
-import ReactSimpleMapsExample2Partial from '@/app/[locale]/integrated/react-simple-maps/_partial/ReactSimpleMapsExample2.partial';
-import ReactSimpleMapsExample3Partial from '@/app/[locale]/integrated/react-simple-maps/_partial/ReactSimpleMapsExample3.partial';
-import ReactSimpleMapsExample4Partial from '@/app/[locale]/integrated/react-simple-maps/_partial/ReactSimpleMapsExample4.partial';
+import ReactSimpleMapsExample1Partial from '@/app/[locale]/_integrated/react-simple-maps/_partial/ReactSimpleMapsExample1.partial';
+import ReactSimpleMapsExample2Partial from '@/app/[locale]/_integrated/react-simple-maps/_partial/ReactSimpleMapsExample2.partial';
+import ReactSimpleMapsExample3Partial from '@/app/[locale]/_integrated/react-simple-maps/_partial/ReactSimpleMapsExample3.partial';
+import ReactSimpleMapsExample4Partial from '@/app/[locale]/_integrated/react-simple-maps/_partial/ReactSimpleMapsExample4.partial';
 import ReactSimpleMapsExample1MD from './_md/ReactSimpleMapsExample1.md';
 import ReactSimpleMapsExample2MD from './_md/ReactSimpleMapsExample2.md';
 import ReactSimpleMapsExample3MD from './_md/ReactSimpleMapsExample3.md';
@@ -32,7 +32,7 @@ const ReactSimpleMapsClient = () => {
 		useRef(null),
 	];
 	const activeSection = useScrollSpy({
-		// @ts-ignore
+		// @ts-expect-error This is fine
 		sectionElementRefs: sectionRefs,
 		offsetPx: -90,
 	});

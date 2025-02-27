@@ -13,7 +13,6 @@ import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/compon
 import MdViewer from '@/components/MdViewer';
 import TablePart from '@/app/[locale]/_ui/table/_partial/Table.part';
 import Table3Part from '@/app/[locale]/_ui/table/_partial/Table3.part';
-import TablePartial from '@/app/[locale]/_sales.deprecated/dashboard/_partial.deprecated/Table.partial';
 import TableInterfaceMD from './_md/TableInterface.md';
 import TableExample1MD from './_md/TableExample1.md';
 import TableExample2MD from './_md/TableExample2.md';
@@ -75,13 +74,6 @@ const TableClient = () => {
 						<div className='col-span-12'>
 							<ExampleView title='Example 1' mdFile={TableExample1MD as string}>
 								<TablePart />
-							</ExampleView>
-						</div>
-						<div className='col-span-12'>
-							<ExampleView title='Example 2' mdFile={TableExample2MD as string}>
-								<Card>
-									<TablePartial />
-								</Card>
 							</ExampleView>
 						</div>
 						<div className='col-span-12'>

@@ -21,7 +21,10 @@ import DARK_MODE from '../constants/darkMode.constant';
 import themeConfig from '../config/theme.config';
 import useDeviceScreen from '../hooks/useDeviceScreen';
 
+const companyName = process.env.NEXT_PUBLIC_COMPANY_NAME;
+
 export interface IThemeContextProps {
+	companyName?: string;
 	isDarkTheme: boolean;
 	darkModeStatus: TDarkMode | null;
 	setDarkModeStatus: Dispatch<SetStateAction<TDarkMode | null>>;
@@ -34,7 +37,7 @@ export interface IThemeContextProps {
 	dir: string;
 	setDir: Dispatch<SetStateAction<string>>;
 }
-export const ThemeContext = createContext<IThemeContextProps>({} as IThemeContextProps);
+export const ThemeContext = createContext<IThemeContextProps>({companyName} as IThemeContextProps);
 
 interface IThemeContextProviderProps {
 	children: ReactNode;
@@ -83,7 +86,7 @@ export const ThemeContextProvider: FC<IThemeContextProviderProps> = ({ children 
 	const [asideStatus, setAsideStatus] = useState(
 		typeof window !== 'undefined' && localStorage.getItem('teramis_asideStatus')
 			? localStorage.getItem('teramis_asideStatus') === 'true'
-			: true,
+			: false,
 	);
 	useLayoutEffect(() => {
 		if (Number(theme.screens.md.replace('px', '')) <= Number(width))
@@ -115,6 +118,7 @@ export const ThemeContextProvider: FC<IThemeContextProviderProps> = ({ children 
 
 	const values: IThemeContextProps = useMemo(
 		() => ({
+			companyName,
 			isDarkTheme,
 			darkModeStatus,
 			setDarkModeStatus,

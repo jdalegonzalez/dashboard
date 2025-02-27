@@ -201,7 +201,7 @@ const DefaultAsideTemplate = () => {
 							Soon
 						</Badge>
 					</NavItem> */}
-					{  (process.env.DOC_UI) ?
+					{  (false) ?
 					<>
 					<NavSeparator />
 

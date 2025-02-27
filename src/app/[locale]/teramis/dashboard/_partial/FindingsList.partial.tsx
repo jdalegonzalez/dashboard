@@ -178,9 +178,9 @@ const FindingsListPartial = (props:IFindingsListProps) => {
 	const [filteredConf, setFilteredConf] = useState<string[]>(availableConf);
 	
 	const {scanId, allResults, title, showTitle } = {...defProps, ...props} 
-	const extraArgs = {
+	const extraArgs = scanId || allResults ? {
 		scanId, allResults
-	}
+	} : {};
 	const response = usePagedResponse<FindingsAPIResults>(fetchPath, pagination, blankResponse, extraArgs);
 
 	const table = useReactTable({
@@ -219,7 +219,6 @@ const FindingsListPartial = (props:IFindingsListProps) => {
 			checked={filtered.includes(conf)}
 		/>
 	));
-	console.log(checkboxes)
 	return (
 		<Card className='h-full'>
 			<div style={{color:'rgba(0,0,0,0)', width: Math.floor(size.width * fileColumnPercent), left: -99999, top: -99999 }} id={sizerId} className='fixed -z-10 select-none text-sm h-0 pt-0 pb-0 text-opacity-0 bg-opacity-0'></div>

@@ -10,7 +10,6 @@ const NewAgentButtonPartial: FC<INewAgentButtonPartialProps> = (props) => {
     const {size, style: propStyle, className, ...rest}  = props;
     const styleSize = (size !== undefined) ? {height: size, width: size } : {};
     const style = {...propStyle, ...styleSize}
-    console.log(size, style)
     return (
 		<button
             style={style}

@@ -70,7 +70,11 @@ export const argsUrl = (meta:string, args?:Record<string, any>, rows?:number, pa
   const extraArgs = (args === undefined) ? {} : args;
   if (page === undefined && rows !== undefined) page = 0;
   if (rows === undefined && page !== undefined) rows = defaultRows;
+
   const allParams:Record<string, any> = {...extraArgs, ...{page, rows}};
+  // Remove any undefined values
+  Object.keys(allParams).forEach(key => allParams[key] === undefined ? delete allParams[key] : {});
+
   const queryString = new URLSearchParams(allParams).toString();
   const q = queryString ? "?" + queryString : ""
   const base = metaToUrl(meta);
@@ -87,19 +91,19 @@ export const pagedUrl = (urlbase: string, rows: number, page: number, extraArgs?
 
 export const defaultRows = 25;
 
-export const crawlPath = (rows: number = defaultRows, page: number = 1) => {
-  return pagedUrl('/api/agent/crawls', rows, page)
+export const crawlErrorsPath = (rows: number = defaultRows, page: number = 1) => {
+  return pagedUrl('/api/agent/crawls/errors', rows, page)
 }
 export type CrawlErrorAPIResults = PagedAPIResults<CrawlError>;
 
 export const findingsPath = (rows: number = defaultRows, page: number = 1, extraArgs?:object) => {
-    return pagedUrl('/api/agent/scans/errors', rows, page, extraArgs)
+    return pagedUrl('/api/agent/findings', rows, page, extraArgs)
 }
 export type FindingsAPIResults = PagedAPIResults<ScanResult>;
 
 
 export const scanErrorsPath = (rows: number = defaultRows, page: number = 1) => {
-    return pagedUrl(import.meta.url, rows, page)
+    return pagedUrl('/api/agent/scans/errors', rows, page)
 }
 export type ScanErrorAPIResults = PagedAPIResults<ScanError>;
 

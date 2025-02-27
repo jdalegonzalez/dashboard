@@ -6,13 +6,13 @@ import DefaultHeaderTitleCommon from './_common/DefaultHeaderTitle.common';
 
 const defaultDesc = 'The results from the agents scanning your system for Controlled Unclassified Information.'
 
-const DefaultHeaderTemplate = ({desc}:{desc?:string}) => {
+const DefaultHeaderTemplate = ({desc,companyName}:{desc?:string, companyName?:string}) => {
 	const displayDesc = desc ?? defaultDesc
 	return (
 		<Header>
 			<HeaderLeft>
 				<div>
-					<DefaultHeaderTitleCommon />
+					<DefaultHeaderTitleCommon companyName={companyName}/>
 					<div className='text-zinc-500 m-0 mt-4'>{displayDesc}</div>			
 				</div>
 			</HeaderLeft>

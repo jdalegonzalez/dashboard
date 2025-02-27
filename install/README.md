@@ -21,6 +21,15 @@
         - Install Visual C++ Build Environment: For Visual Studio 2019 or later, use the Desktop development with C++ workload from Visual Studio Community. For a version older than Visual Studio 2019, install Visual Studio Build Tools with the Visual C++ build tools option.
     - For what it's worth, installing the dependencies may not be necessary since we're not going to be building on the box.
 
+#### Start the server
 * Get the build bundle and unzip it in the desired directory.
     - Once we have a repository for this, we can just assume it will always live there.  Perhaps sharepoint.  We'll configure github to build and deploy.
     - HOWEVER, for now, I'm manually building, moving to sharepoint, then downloading to this folder.
+* Copy the remaining config files to the folder where you unzipped the server
+    - You'll need package.json and the .env file that was generated 
+
+#### Set the server up to run as a service
+I have done a little research on how to do this but don't have detailed instructions yet.  For right now
+We have to manually start up and stop the webserver.  Once we're happy with how things work, we can wrap
+the web server up in a windows server.  Alternatively, if we move all of this to linux, the steps for
+running something as a service are much more straight forward.

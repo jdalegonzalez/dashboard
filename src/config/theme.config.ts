@@ -46,7 +46,7 @@ const themeConfig: TThemeConfigs = {
 	projectName: 'Default dashboard theme for the Teramis control panel.',
 	language: 'en',
 
-	theme: DARK_MODE.SYSTEM,
+	theme: DARK_MODE.DARK,
 	themeColor: 'sky',
 	themeColorShade: '500',
 	warningColor: 'amber',

@@ -46,7 +46,7 @@ export const enumParam = (req: NextRequest, paramName: string, vals: Object) => 
   return valid.length > 0 ? valid : undefined;
 }
 
-export const enumWhere = (field: string, vals: string[] | undefined, defaultWhere: Object) => {
+export const enumWhere = (field: string, vals: string[] | undefined, defaultWhere: object) => {
   if (!vals) return defaultWhere;
   return {[field]: { in: vals }};
 }

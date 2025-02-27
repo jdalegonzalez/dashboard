@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
 	createColumnHelper,
 	getCoreRowModel,
@@ -33,6 +33,8 @@ import TableTemplate, { TableCardFooterTemplate } from '@/templates/common/Table
 import Dropdown, { DropdownMenu, DropdownToggle } from '@/components/ui/Dropdown';
 import Checkbox from '@/components/form/Checkbox';
 import Button from '@/components/ui/Button';
+import { filter } from 'lodash';
+import { json } from 'd3-fetch';
 
 declare module '@tanstack/react-table' {
 	interface ColumnMeta<TData extends RowData, TValue> {
@@ -170,21 +172,30 @@ const defProps:Partial<IFindingsListProps> = {
 }
 
 const availableConf = Object.values(Confidence);
+const allButNone = availableConf.filter((c) => c !== 'NONE');
 
 const FindingsListPartial = (props:IFindingsListProps) => {
+	const {scanId, allResults, title, showTitle } = {...defProps, ...props} 
+	const confidences = allResults ? availableConf : allButNone;
+
 	const [pagination, setPagination] = useState({pageIndex: 0, pageSize});
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [globalFilter, setGlobalFilter] = useState<string>('');
-	const [filteredConf, setFilteredConf] = useState<string[]>(availableConf);
+	const [filteredConf, setFilteredConf] = useState<string[]>(confidences);
 	
-	const {scanId, allResults, title, showTitle } = {...defProps, ...props} 
-	const extraArgs = scanId || allResults ? {
-		scanId, allResults
-	} : {};
-	const response = usePagedResponse<FindingsAPIResults>(fetchPath, pagination, blankResponse, extraArgs);
 
+	const extraArgs = {
+		scanId, 
+		allResults, 
+		confidence: globalFilter
+	};
+
+	const response = usePagedResponse<FindingsAPIResults>(fetchPath, pagination, blankResponse, extraArgs);
+	const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+	const data = response.results;
+	const rowCount = response.totalRows;
 	const table = useReactTable({
-		data: response.results,
+		data,
 		columns,
 		state: {
 			sorting,
@@ -196,18 +207,51 @@ const FindingsListPartial = (props:IFindingsListProps) => {
 		onGlobalFilterChange: setGlobalFilter,
 		onPaginationChange: setPagination,
 		getCoreRowModel: getCoreRowModel(),
-		getFilteredRowModel: getFilteredRowModel(),
+		//getFilteredRowModel: getFilteredRowModel(),
 		getSortedRowModel: getSortedRowModel(),
 		//getPaginationRowModel: getPaginationRowModel(),
 		manualPagination: true,
-		rowCount: response.totalRows,
+		rowCount,
 		// debugTable: true,
 	});
 
 	const [setEleRef, size] = useElementSize();
 
-	const filtered = availableConf
-	const checkboxes = availableConf.map((conf) => (
+	useEffect(() => {
+		if (!isFilterOpen) {
+			if (filteredConf.length === confidences.length) {
+				console.log('Turning off the filter');
+				setGlobalFilter('');
+			}
+			else {
+				setGlobalFilter(filteredConf.join(','));
+				console.log('Turning on the filter');
+			}
+		}
+	}, [isFilterOpen]);
+
+	const ref = useRef<HTMLInputElement>(null);
+	useEffect(() => {
+		if (ref.current) {
+			if (confidences.length > filteredConf.length && filteredConf.length > 0) {
+				ref.current.checked = false;
+				ref.current.indeterminate = true;
+			} else {
+				ref.current.checked = (confidences.length === filteredConf.length);
+				ref.current.indeterminate = false;
+			}
+		}
+	}, [confidences.length, filteredConf.length]);
+
+	const handleSelectAll = () => {
+		if (confidences.length > filteredConf.length) {
+			setFilteredConf(confidences);
+		} else {
+			setFilteredConf(allButNone);
+		}
+	};
+
+	const checkboxes = confidences.map((conf) => (
 		<Checkbox
 			key={conf}
 			className='ms-4'
@@ -215,8 +259,14 @@ const FindingsListPartial = (props:IFindingsListProps) => {
 			id={conf}
 			name='projects'
 			label={conf}
-			onChange={()=>{}}
-			checked={filtered.includes(conf)}
+			onChange={()=>{
+				if (filteredConf.includes(conf)) {
+					setFilteredConf(filteredConf.filter((c) => c !== conf));
+				} else {
+					setFilteredConf([...filteredConf,conf]);
+				}
+			}}
+			checked={filteredConf.includes(conf)}
 		/>
 	));
 	return (
@@ -229,7 +279,7 @@ const FindingsListPartial = (props:IFindingsListProps) => {
 				)}
 				</CardHeaderChild>
 				<CardHeaderChild>
-					<Dropdown>
+					<Dropdown isOpen={isFilterOpen} setIsOpen={setIsFilterOpen}>
 						<DropdownToggle hasIcon={false}>
 							<Button
 								icon='DuoFilter'
@@ -243,11 +293,12 @@ const FindingsListPartial = (props:IFindingsListProps) => {
 						</DropdownToggle>
 						<DropdownMenu className='p-4'>
 							<Checkbox
+								ref={ref}
 								dimension='sm'
 								name='selectAll'
 								label='Select All'
-								onChange={() => {}}
-								checked={filtered.length === availableConf.length}
+								onChange={handleSelectAll}
+								checked={filteredConf.length === confidences.length}
 							/>
 							{checkboxes}
 						</DropdownMenu>

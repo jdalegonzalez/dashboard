@@ -1,4 +1,4 @@
-import { Agent, CrawlError, ScanError, ScanResult } from '@prisma/client';
+import { Agent, Confidence, CrawlError, ScanError, ScanResult, Severity, Status } from '@prisma/client';
 import { getAgentDetails } from '@prisma/client/sql';
 import { NextRequest } from 'next/server';
 
@@ -36,6 +36,19 @@ export const booleanParam = (req: NextRequest, paramName: string) => {
   const params = req.nextUrl.searchParams;
   const stringValue = (params.get(paramName) ?? "").trim().toLowerCase();    
   return stringValue && (stringValue === 'true' || stringValue === '1'); 
+}
+
+export const enumParam = (req: NextRequest, paramName: string, vals: Object) => {
+  const params = req.nextUrl.searchParams;
+  const paramArray = (params.get(paramName)??"").split(',');
+  const values = Object.values(vals);
+  const valid = paramArray.filter((p) => values.includes(p));
+  return valid.length > 0 ? valid : undefined;
+}
+
+export const enumWhere = (field: string, vals: string[] | undefined, defaultWhere: Object) => {
+  if (!vals) return defaultWhere;
+  return {[field]: { in: vals }};
 }
 
 export const idParam = (req: NextRequest, paramName: string) => {

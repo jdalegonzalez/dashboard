@@ -375,6 +375,24 @@ def get_arguments():
         description="Imports any files that have changed since the last import."
     )
     parser.add_argument(
+        "-d", "--database",
+        help="The database to connect to.",
+        dest="database",
+        default=os.getenv("PGDATABASE","teramis")
+    )
+    parser.add_argument(
+        "-D", "--date", 
+        type=datetime.fromisoformat,
+        help="Look for files newer than this datetime (in ISO format).  If blank, the app will look for files newer than the 'last_import' file in this folder",
+        dest='import_date',
+    )
+    parser.add_argument(
+        "-H", "--host",
+        help="The host to connect to.",
+        dest="host",
+        default=os.getenv("PGHOST","localhost")
+    )
+    parser.add_argument(
         "-i", "--init",
         help="Initialize the database",
         dest="init",
@@ -389,10 +407,16 @@ def get_arguments():
         action='store_true'
     )
     parser.add_argument(
-        "-D", "--date", 
-        type=datetime.fromisoformat,
-        help="Look for files newer than this datetime (in ISO format).  If blank, the app will look for files newer than the 'last_import' file in this folder",
-        dest='import_date',
+        "-p", "--port",
+        help="The port to connect to.",
+        dest="port",
+        default=os.getenv("PGPORT","5432")
+    )
+    parser.add_argument(
+        "-t", "--target",
+        help="The target folder to scan for data",
+        dest="target",
+        default=os.getenv("scan_target", os.path.dirname(__file__))
     )
     parser.add_argument(
         "-U", "--user",
@@ -405,24 +429,6 @@ def get_arguments():
         help="The password to connect with.",
         dest="password",
         default=os.getenv("PGPASSWORD","teramis")
-    )
-    parser.add_argument(
-        "-H", "--host",
-        help="The host to connect to.",
-        dest="host",
-        default=os.getenv("PGHOST","localhost")
-    )
-    parser.add_argument(
-        "-p", "--port",
-        help="The port to connect to.",
-        dest="port",
-        default=os.getenv("PGPORT","5432")
-    )
-    parser.add_argument(
-        "-d", "--database",
-        help="The database to connect to.",
-        dest="database",
-        default=os.getenv("PGDATABASE","teramis")
     )
     args = parser.parse_args()
 
@@ -480,7 +486,7 @@ def perform_import(args):
 
         if not args.no_import:
             print("Importing data.")
-            agent_from_directories(conn, os.path.join(os.path.dirname(__file__), "results"))
+            agent_from_directories(conn, os.path.join(args.target, "results"))
 
             # perform_import(conn, args.import_date)
 

@@ -1,0 +1,4 @@
+cuid2==2.0.1
+psycopg==3.2.5
+psycopg-binary==3.2.5
+typing_extensions==4.12.2

@@ -28,6 +28,7 @@ import Skeleton from '@/components/utils/ThemedSkeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { TAllColors } from '@/types/colors.type';
 import { TColorIntensity } from '@/types/colorIntensities.type';
+import Link from 'next/link';
 
 const monsterThroughput = 2 * bytesToGigRatio;
 
@@ -136,12 +137,14 @@ const AgentDetails: FC<IAgentItemProps> = ({ agent, className }) => {
                         <div className='flex items-center gap-4'>
                             <div className='flex-shrink-0'>
                                 <div className={`rounded-full ${circleColor} p-4`}>
-                                    <Icon
-                                        icon='DuoLte1'
-                                        size='text-5xl'
-                                        color={themeConfig.themeColor}
-                                        colorIntensity={iconIntensity}
-                                    />
+                                    <Link href={`/teramis/agent/${agent.agent_id}`}>
+                                        <Icon
+                                            icon='DuoLte1'
+                                            size='text-5xl'
+                                            color={themeConfig.themeColor}
+                                            colorIntensity={iconIntensity}
+                                        />
+                                    </Link>
                                 </div>
                             </div>
                             <div className='flex grow items-center'>

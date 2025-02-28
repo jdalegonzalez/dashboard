@@ -7,6 +7,7 @@ import {AgentAPIResults} from '@/app/lib/fetch';
 
 import useAgentOverview from '@/hooks/useAgent';
 import useDarkMode from '@/hooks/useDarkMode';
+import Link from 'next/link';
 
 const MiniAgent = () => {
 	const { agentInfo } = useAgentOverview();
@@ -21,12 +22,14 @@ const MiniAgent = () => {
 				<div className='flex items-center gap-4'>
 					<div className='flex-shrink-0'>
 						<div className={`rounded-full ${circleColor} p-4`}>
-							<Icon
-								icon='DuoLte1'
-								size='text-5xl'
-								color={themeConfig.themeColor}
-								colorIntensity={iconIntensity}
-							/>
+							<Link href='/teramis/agent/list'>
+								<Icon
+									icon='DuoLte1'
+									size='text-5xl'
+									color={themeConfig.themeColor}
+									colorIntensity={iconIntensity}
+								/>
+							</Link>
 						</div>
 					</div>
 					<div className='flex grow items-center'>

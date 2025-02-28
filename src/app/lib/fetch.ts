@@ -1,4 +1,4 @@
-import { Agent, Confidence, CrawlError, ScanError, ScanResult, Severity, Status } from '@prisma/client';
+import { Agent, Confidence, CrawlError, CrawlHash, ScanError, ScanResult, Severity, Status } from '@prisma/client';
 import { getAgentDetails } from '@prisma/client/sql';
 import { NextRequest } from 'next/server';
 
@@ -104,19 +104,24 @@ export const pagedUrl = (urlbase: string, rows: number, page: number, extraArgs?
 
 export const defaultRows = 25;
 
-export const crawlErrorsPath = (rows: number = defaultRows, page: number = 1) => {
-  return pagedUrl('/api/agent/crawls/errors', rows, page)
+export const crawlResultsPath = (rows: number = defaultRows, page: number = 1, extraArgs?:Record<string, any>) => {
+  return pagedUrl('/api/agent/crawls/results', rows, page, extraArgs);
+}
+export type CrawlAPIResults = PagedAPIResults<CrawlHash>;
+
+export const crawlErrorsPath = (rows: number = defaultRows, page: number = 1, extraArgs?:Record<string, any>) => {
+  return pagedUrl('/api/agent/crawls/errors', rows, page, extraArgs);
 }
 export type CrawlErrorAPIResults = PagedAPIResults<CrawlError>;
 
 export const findingsPath = (rows: number = defaultRows, page: number = 1, extraArgs?:object) => {
-    return pagedUrl('/api/agent/findings', rows, page, extraArgs)
+    return pagedUrl('/api/agent/findings', rows, page, extraArgs);
 }
 export type FindingsAPIResults = PagedAPIResults<ScanResult>;
 
 
-export const scanErrorsPath = (rows: number = defaultRows, page: number = 1) => {
-    return pagedUrl('/api/agent/scans/errors', rows, page)
+export const scanErrorsPath = (rows: number = defaultRows, page: number = 1, extraArgs?:Record<string, any>) => {
+    return pagedUrl('/api/agent/scans/errors', rows, page, extraArgs);
 }
 export type ScanErrorAPIResults = PagedAPIResults<ScanError>;
 

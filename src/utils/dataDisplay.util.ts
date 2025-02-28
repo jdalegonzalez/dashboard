@@ -64,10 +64,39 @@ export const severityToColor = (txt:Severity) => {
 	}
 }
 
-export const bytesToGigRatio   = 1e+9
+export const bytesToGigRatio   = 1e+9;
+export const bytesToMegRatio   = 1e+6;
+export const bytesToKbRatio    = 1e+3;
+
 export const bytesToGigs = (val: number | string | bigint, suffix: string = " Gb") => 
 	( Number(val) / bytesToGigRatio ).toLocaleString(undefined, {maximumFractionDigits: 2}) + suffix;
 export const gigsToBytes = (val: number | string | bigint, suffix: string = " B", asNum:boolean =false) => {
 	const result = Number(val) * bytesToGigRatio;
 	return asNum ? result : result.toLocaleString(undefined, {maximumFractionDigits: 2}) + suffix;
+}
+export const bytesToMegs = (val: number | string | bigint, suffix: string = " Mb") => 
+	( Number(val) / bytesToMegRatio ).toLocaleString(undefined, {maximumFractionDigits: 2}) + suffix;
+export const megsToBytes = (val: number | string | bigint, suffix: string = " B", asNum:boolean =false) => {
+	const result = Number(val) * bytesToMegRatio;
+	return asNum ? result : result.toLocaleString(undefined, {maximumFractionDigits: 2}) + suffix;
+}
+
+export const bytesToKb = (val: number | string | bigint, suffix: string = " Mb") => 
+	( Number(val) / bytesToKbRatio ).toLocaleString(undefined, {maximumFractionDigits: 2}) + suffix;
+export const kbToBytes = (val: number | string | bigint, suffix: string = " B", asNum:boolean =false) => {
+	const result = Number(val) * bytesToKbRatio;
+	return asNum ? result : result.toLocaleString(undefined, {maximumFractionDigits: 2}) + suffix;
+}
+
+export const bytesToHuman = (val: number | string | bigint, suffix?: string) => {
+	const bSuffix = suffix ?? " B";
+	const kbSuffix = suffix ?? " Kb";
+	const mbSuffix = suffix ?? " Mb";
+	const gbSuffix = suffix ?? " Gb";
+
+	const nVal = Number(val);
+	if (nVal < bytesToKbRatio) return `${val} ${bSuffix}`;
+	if (nVal < bytesToMegRatio) return bytesToKb(val, kbSuffix);
+	if (nVal < bytesToGigRatio) return bytesToMegs(val, mbSuffix);
+	return bytesToGigs(val, gbSuffix);
 }

@@ -16,7 +16,7 @@ const LoaderDotsCommon = () => {
 type TFormatter = (val: any) => string;
 export function loadingOrProperty<T>(obj: T|undefined, key:keyof T, wrapperClass:string='', formatter?:TFormatter) {
 	const cname = wrapperClass ? {className: wrapperClass} : {};
-	return obj?.[key] 
+	return obj?.[key] !== undefined
 		? formatter ? formatter(obj[key]) : obj[key] 
 		: <div {...cname} ><LoaderDotsCommon /></div>;
 }

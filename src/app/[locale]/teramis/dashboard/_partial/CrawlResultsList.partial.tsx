@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 
 import useElementSize from '@/hooks/useElementSize';
 import usePagedResponse from '@/hooks/usePagedResponse';
-import { type ScanError } from '@prisma/client';
-import { ScanErrorAPIResults as ErrorAPIResults, scanErrorsPath as fetchPath} from '@/app/lib/fetch';
+import { type CrawlHash } from '@prisma/client';
+import { CrawlAPIResults, crawlResultsPath as fetchPath } from '@/app/lib/fetch';
 import path from 'path';
 
 import {
@@ -17,107 +17,117 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 
-import { shorten, formatDate, severityToColor } from '@/utils/dataDisplay.util';
+import { shorten, formatDate, bytesToHuman } from '@/utils/dataDisplay.util';
 
 import Skeleton from '@/components/utils/ThemedSkeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import Badge from '@/components/ui/Badge';
 import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/components/ui/Card';
 import Tooltip from '@/components/ui/Tooltip';
 
 import TableTemplate, { TableCardFooterTemplate } from '@/templates/common/TableParts.template';
 
-const columnHelper = createColumnHelper<ScanError>();
+interface ColumnInfo extends CrawlHash {
+	matches?: number;
+}
+const columnHelper = createColumnHelper<ColumnInfo>();
 const fileColumnSize = 60;
 const fileColumnPercent = .57; // Close to 50% with a little fudge.
 const sizerId = `${path.basename(import.meta.url)}-sizer`;
 
-const cap = (val: string) => val.charAt(0).toUpperCase() + val.slice(1);
 const skelClass = 'bg-opacity-5'
 const columns = [
-	columnHelper.accessor('occurred_at', {
+	columnHelper.accessor('updated_at', {
 		cell: (info) => {
-			return info.row.original.id == 'loading' 
+			return info.row.original.hash == 'loading' 
 			? <Skeleton count={2} width='100%' className={`px-2 text-xl ${skelClass}`} /> 
 			: formatDate(info.getValue())
 		},
 		size: 12,
 		minSize: 12,
 		maxSize: 12,
-		header: 'Occurred',
-		footer: 'Occurred'
+		header: 'Crawled',
+		footer: 'Crawled'
 	}),
-	columnHelper.accessor('severity', {
-		cell: (info) => {
-			const val = info.getValue();
-			const {color,intensity} = severityToColor(val);
-			return (
-				info.row.original.id == 'loading'
-				? <Skeleton	
-					width='100%'
-					className={`px-2 text-4xl ${skelClass}`}
-				/>
-				: <Badge variant='outline' borderWidth='border' rounded='rounded' color={color} colorIntensity={intensity}>{val.length > 5 ? val.slice(0,4) : val}</Badge>
-			);
-		},
-		size: 10,
-		maxSize: 10,
-		minSize: 10,
-		header: 'Severity',
-		footer: 'Severity',
-	}),
-	columnHelper.accessor('error_name', {
+	columnHelper.accessor('hash', {
 		cell: (info) => (
-			info.row.original.id == 'loading'
+			info.row.original.hash == 'loading'
 			? <Skeleton 
 				width='100%' 
 				className={`text-sm rtl:mr-0 overflow-clip ${skelClass}`}
 			/>			
 			: 
-			<Tooltip text={cap(info.row.original.error_desc)}>
+			<Tooltip text={info.row.original.hash}>
 				<div className='overflow-hidden text-nowrap text-ellipsis'>{info.getValue()}</div>
 			</Tooltip>
 		),
-		size: -1,
-		maxSize: -1,
-		minSize: -1,
-		header: 'Error',
-		footer: 'Error',
+		size: fileColumnSize,
+		maxSize: fileColumnSize,
+		minSize: fileColumnSize,
+		header: 'Hash',
+		footer: 'Hash',
 	}),
-	columnHelper.accessor('file', {
+	columnHelper.accessor('bsize', {
 		cell: (info) => (
-			info.row.original.id == 'loading'
+			info.row.original.hash == 'loading'
+			? <Skeleton 
+				width='100%' 
+				className={`text-sm rtl:mr-0 overflow-clip ${skelClass}`}
+			/>			
+			: 
+			<div className='text-center'>{bytesToHuman(info.getValue())}</div>
+		),
+		size: 10,
+		maxSize: 10,
+		minSize: 10,
+		header: () => <div className='w-full text-center'>Bytes</div>,
+		footer: 'Bytes',
+	}),
+	columnHelper.accessor('file_paths', {
+		cell: (info) => (
+			info.row.original.hash == 'loading'
 			? 
 			<Skeleton 
 				width='100%' 
 				className={`text-sm rtl overflow-clip ${skelClass}`}
 			/>
 			: 
-			<Tooltip text={info.getValue()}>
-				<div className='text-sm rtl overflow-clip'>{shorten(sizerId, info.getValue(), 80)}</div>
+			<Tooltip text={(info.getValue()??[''])[0]}>
+				<div className='text-sm rtl overflow-clip'>{shorten(sizerId, (info.getValue()??[''])[0], 80)}</div>
 			</Tooltip>
 		),
 		size: fileColumnSize,
-		header: 'File Name',
-		footer: 'File Name',
+		header: 'Example File',
+		footer: 'Example File',
+	}),
+	columnHelper.accessor('matches', {
+		cell: (info) => (
+			info.row.original.hash == 'loading'
+			? 
+			<Skeleton 
+				width='100%' 
+				className={`text-sm rtl overflow-clip ${skelClass}`}
+			/>
+			: 
+			<div className='text-sm text-center'>{(info.row.original.file_paths??[]).length}</div>
+		),
+		size: 10,
+		header: () => <div className='text-center w-full'>Matches</div>,
+		footer: 'Matches',
 	}),
 ];
 
 const pageSize: number = 5;
 const emptyDate = new Date(0)
-const blankResult:ScanError = {
-	id: 'loading',
+const blankResult:CrawlHash = {
+	hash: 'loading',
 	created_at: emptyDate,
 	updated_at: emptyDate,
-	occurred_at: emptyDate,
-	severity: 'HINT',
-	file: '',
-	error_name: '',
-	error_desc: '',
-	scanId: '',
+	file_paths: [],
+	bsize: 0,
+	format: '',
+	crawlId: '',
 }
-
-const blankResponse: ErrorAPIResults = {
+const blankResponse: CrawlAPIResults = {
 	pages: 0,
 	totalRows: 0,
 	rowsPerPage: pageSize,
@@ -125,25 +135,26 @@ const blankResponse: ErrorAPIResults = {
 }
 
 export interface IErrorListProps {
-	scanId?: string,
+	crawlId?: string,
 	title?: string,
 	showTitle?: boolean
 }
 
 const defProps:Partial<IErrorListProps> = {
-	title: 'Scan Errors',
+	title: 'Crawl Errors',
 	showTitle: true
 }
 
-const ErrorListPartial = (props:IErrorListProps) => {
-	const {scanId, title, showTitle } = {...defProps, ...props} 
+const CrawlResultsPartial = (props:IErrorListProps) => {
+	const {crawlId, title, showTitle } = {...defProps, ...props} 
 
 	const [pagination, setPagination] = useState({pageIndex: 0, pageSize});
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [globalFilter, setGlobalFilter] = useState<string>('');
 
-	const response = usePagedResponse<ErrorAPIResults>(fetchPath, pagination, blankResponse);
-	
+	const extraArgs = { crawlId };
+	console.log(extraArgs)
+	const response = usePagedResponse<CrawlAPIResults>(fetchPath, pagination, blankResponse, extraArgs);
 	
 	const table = useReactTable({
 		data: response.results,
@@ -191,4 +202,4 @@ const ErrorListPartial = (props:IErrorListProps) => {
 	);
 };
 
-export default ErrorListPartial;
+export default CrawlResultsPartial;

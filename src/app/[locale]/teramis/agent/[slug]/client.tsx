@@ -37,6 +37,9 @@ import { TColorIntensity } from '@/types/colorIntensities.type';
 import Skeleton from '@/components/utils/ThemedSkeleton';
 import LoaderDotsCommon from '@/components/LoaderDots.common';
 import FindingsListPartial from '../../dashboard/_partial/FindingsList.partial';
+import CrawlErrorList from '../../dashboard/_partial/CrawlErrorList.partial';
+import ScanErrorList from '../../dashboard/_partial/ScanErrorList.partial';
+import CrawlResults from '../../dashboard/_partial/CrawlResultsList.partial';
 
 const TABS: {
 	[key in 'SCANRESULTS' | 'SCANERRORS' | 'CRAWLRESULTS' | 'CRAWLERRORS']: 
@@ -59,7 +62,7 @@ const AgentDetails = () => {
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 	const { data: agent, isLoading, performUpdate } = useAgent(agentId, setIsSaving);
 	const scanId = isLoading ? '' : agent.scans[0]?.id;
-	//const crawlId = isLoading ? '' : agent.crawls[0]?.id;
+	const crawlId = isLoading ? '' : agent.crawls[0]?.id;
 
 	const formik = useFormik({
 		enableReinitialize: true,
@@ -263,6 +266,15 @@ const AgentDetails = () => {
 								<div className='w-full'>
 								{activeTab === TABS.SCANRESULTS && !isLoading && (
 									<FindingsListPartial showTitle={false} scanId={scanId} allResults={true} />
+								)}
+								{activeTab === TABS.SCANERRORS && !isLoading && (
+									<ScanErrorList showTitle={false} scanId={scanId} />
+								)}
+								{activeTab === TABS.CRAWLRESULTS && !isLoading && (
+									<CrawlResults showTitle={false} crawlId={crawlId} />
+								)}
+								{activeTab === TABS.CRAWLERRORS && !isLoading && (
+									<CrawlErrorList showTitle={false} crawlId={crawlId} />
 								)}
 								</div>
 							</CardBody>

@@ -101,13 +101,27 @@ const blankResponse: ErrorAPIResults = {
 	results: Array.from({length: pageSize}, (v, i) => blankResult)
 }
 
-const ErrorListPartial = () => {
+export interface IErrorListProps {
+	crawlId?: string,
+	title?: string,
+	showTitle?: boolean
+}
+
+const defProps:Partial<IErrorListProps> = {
+	title: 'Crawl Errors',
+	showTitle: true
+}
+
+const ErrorListPartial = (props:IErrorListProps) => {
+	const {crawlId, title, showTitle } = {...defProps, ...props} 
+
 	const [pagination, setPagination] = useState({pageIndex: 0, pageSize});
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [globalFilter, setGlobalFilter] = useState<string>('');
 
-	const response = usePagedResponse<ErrorAPIResults>(fetchPath, pagination, blankResponse);
-	
+	const extraArgs = { crawlId };
+
+	const response = usePagedResponse<ErrorAPIResults>(fetchPath, pagination, blankResponse, extraArgs);
 	
 	const table = useReactTable({
 		data: response.results,
@@ -134,12 +148,14 @@ const ErrorListPartial = () => {
 
 	return (
 		<Card className='h-full'>
+			<div style={{color:'rgba(0,0,0,0)', width: Math.floor(size.width * fileColumnPercent), left: -99999, top: -99999 }} id={sizerId} className='fixed -z-10 select-none text-sm h-0 pt-0 pb-0 text-opacity-0 bg-opacity-0'></div>
+			{showTitle && (
 			<CardHeader>
-				<div style={{color:'rgba(0,0,0,0)', width: Math.floor(size.width * fileColumnPercent), left: -99999, top: -99999 }} id={sizerId} className='fixed -z-10 select-none text-sm h-0 pt-0 pb-0 text-opacity-0 bg-opacity-0'></div>
 				<CardHeaderChild>
-					<CardTitle>Crawl Errors</CardTitle>
+					<CardTitle>{title}</CardTitle>
 				</CardHeaderChild>
 			</CardHeader>
+			)}
 			<CardBody className='overflow-auto'>
 				<TableTemplate
 					ref={setEleRef}

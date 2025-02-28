@@ -94,12 +94,12 @@ if (-not (Get-Command "psql" -ErrorAction SilentlyContinue)) {
 }
 
 $newUser = "teramis"            # New user to be created
-$newSchema = "teramis"        # Schema name to be created
+$newDb = "teramis"          # Database name to be created
 
 # Connection string for psql
 $psqCheckCmd = "psql -h $pgHost -p $pgPort -U $pgAdminUser -d $pgDatabase -tXAc"
 $psqlCmd  = "psql -h $pgHost -p $pgPort -U $pgAdminUser -d $pgDatabase -c"
-$psqlCmd2 = "psql -h $pgHost -p $pgPort -U $pgAdminUser -d $newSchema -c"
+$psqlCmd2 = "psql -h $pgHost -p $pgPort -U $pgAdminUser -d $newDb -c"
 
 # Set environment variable for password to avoid password prompt
 $env:PGPASSWORD = $pgAdminPassword
@@ -118,24 +118,20 @@ else {
 }
 
 # Check if the database already exists
-$checkDbCmd = "SELECT 1 FROM pg_database WHERE datname='$newSchema';"
+$checkDbCmd = "SELECT 1 FROM pg_database WHERE datname='$newDb';"
 $dbExists = Invoke-Expression "$psqCheckCmd `"$checkDbCmd`""
 if ($dbExists -eq 1) {
-    Write-Host "Database '$newSchema' already exists. Skipping database creation."
+    Write-Host "Database '$newDb' already exists. Skipping database creation."
 }
 else {
-    Write-Host "Database '$newSchema' does not exist. Creating database..."
-    $createDbCmd = "CREATE DATABASE $newSchema WITH OWNER $newUser;"
+    Write-Host "Database '$newDb' does not exist. Creating database..."
+    $createDbCmd = "CREATE DATABASE $newDb WITH OWNER $newUser;"
     Invoke-Expression "$psqlCmd `"$createDbCmd`""
-    Write-Host "Database '$newSchema' created."
+    Write-Host "Database '$newDb' created."
 }
 
-# Create the new schema in the new database as the new user
-$createSchemaCmd = "CREATE SCHEMA IF NOT EXISTS $newSchema AUTHORIZATION $newUser;"
-Invoke-Expression "$psqlCmd2 `"$createSchemaCmd`""
-Write-Host "Schema '$newSchema' created."
-
 # Make the teramis user the owner of the teramis schema
+$newSchema = "public"
 $alterSchemaCmd = "ALTER SCHEMA $newSchema OWNER TO $newUser;"
 Invoke-Expression "$psqlCmd2 `"$alterSchemaCmd`""
 Write-Host "Schema '$newSchema' is now owned by user '$newUser'."
@@ -153,20 +149,17 @@ Invoke-Expression "$psqlCmd2 `"$grantTableRightsCmd`""
 $grantFutureRightsCmd = "ALTER DEFAULT PRIVILEGES IN SCHEMA $newSchema GRANT ALL PRIVILEGES ON TABLES TO $newUser;"
 Invoke-Expression "$psqlCmd2 `"$grantFutureRightsCmd`""
 
-Write-Host "User '$newUser' created, schema '$newSchema' created, and full rights granted."
+Write-Host "User '$newUser' created, database '$newDb' created, and full rights granted."
 
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 $sqlFile = "$scriptPath\migration.sql"
 Write-Host "Creating the tables..."
-$psqlFileCmd  = "psql -h $pgHost -p $pgPort -U $pgAdminUser -d $pgDatabase -f"
+$env:PGPASSWORD = $teramisPassword
+$psqlFileCmd  = "psql -h $pgHost -p $pgPort -U $newUser -d $newDb -f"
 Invoke-Expression "$psqlFileCmd `"$sqlFile`""
 Write-Host "Tables created."
 
-Write-Host "Setting up the environment variables..."
-
-# Generate a random secret for NextAuth
 $authSecret = [guid]::NewGuid().ToString()
-
 # Backup the .env file if it exists
 $envBackupPath = ".env.bak"
 if (Test-Path $envBackupPath) {
@@ -181,13 +174,13 @@ $envFilePath = ".env"
 $envContent = @"
 PGHOST=$pgHost
 PGPORT=$pgPort
-PGDATABASE=$newSchema
+PGDATABASE=$newDb
 PGUSER=$newUser
 PGPASSWORD=$teramisPassword
 NEXT_PUBLIC_URL="http://localhost:3000" # change as necessary
 NEXTAUTH_URL="http://localhost:3000"    # change as necessary
 NEXTAUTH_SECRET="$authSecret"
 NEXT_PUBLIC_COMPANY_NAME="$companyName"   # change as appropriate
-DATABASE_URL="postgresql://`${PGUSER}:`${PGPASSWORD}@`${PGHOST}:`${PGPORT}/`${PGDATABASE}?schema=${newSchema}"
+DATABASE_URL="postgresql://`${PGUSER}:`${PGPASSWORD}@`${PGHOST}:`${PGPORT}/`${PGDATABASE}"
 "@
 Set-Content -Path $envFilePath -Value $envContent

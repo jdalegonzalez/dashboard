@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { pagingParams, defaultRows } from '@/app/lib/fetch';
+import { pagingParams, defaultRows, idParam } from '@/app/lib/fetch';
 
 export async function GET(req: NextRequest) {
     const { skip, rowsPerPage } = pagingParams(req, defaultRows);
-
+    const crawlId = idParam(req, 'crawlId');
+    const idPart = crawlId ?  {crawlId: crawlId } : {}
     const sortOrder = { file: 'asc' as const}
-    const whereClause = {};
+    const whereClause = {...idPart };
 
     const [totalRows, results] = await prisma.$transaction([
         prisma.crawlError.count({ where: whereClause }),

@@ -163,8 +163,8 @@ const AgentDetails = () => {
 										<CardTitle>
 											<div>
 												<div>Agent Settings</div>
-												<div className='text-lg font-normal text-zinc-500'>
-													Here you can change user account information
+												<div className='mt-2 text-lg font-normal text-zinc-500'>
+													Here you can change agent settings
 												</div>
 											</div>
 										</CardTitle>
@@ -202,7 +202,7 @@ const AgentDetails = () => {
 												autoComplete='location'
 											/>
 										</div>
-										<div className='col-span-12 lg:col-span-6 relative'>
+										<div className='col-span-12 mt-10 lg:mt-0 lg:col-span-6 relative'>
 											<Checkbox
 												id='use_history'
 												name='use_history'

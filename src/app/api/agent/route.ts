@@ -7,7 +7,7 @@ import {
     getUnsupportedFileCount,
     getAgentDetails
 } from '@prisma/client/sql'
-import { booleanParam } from '@/app/lib/fetch';
+import { booleanParam, idParam } from '@/app/lib/fetch';
 
 const summaryJson = async () => {
     const [agentCount, warningInfo, errorCount, unsupportedInfo, totalFilesInfo, deDupedFilesInfo] = await Promise.all([
@@ -32,12 +32,13 @@ const summaryJson = async () => {
     return Number(this);
 }
 
-const detailsJson = async () => {
-    return await prisma.$queryRawTyped(getAgentDetails());
+const detailsJson = async (agentId: string = '') => {
+    return await prisma.$queryRawTyped(getAgentDetails(agentId));
 }
 
 export async function GET(req: NextRequest) {
-    const showDetails = booleanParam(req,'details');    
-    const res = showDetails ? await detailsJson() : await summaryJson();
+    const showDetails = booleanParam(req,'details');
+    const agentId = idParam(req, 'agentId')??'';
+    const res = showDetails ? await detailsJson(agentId) : await summaryJson();
     return NextResponse.json(res);
 }

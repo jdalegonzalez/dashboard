@@ -30,7 +30,7 @@ import Input from '@/components/form/Input';
 import Icon from '@/components/icon/Icon';
 import Checkbox from '@/components/form/Checkbox';
 import dayjs from 'dayjs';
-import { useAgent } from '@/hooks/useAgent';
+import { useAgent, useAgentDetails } from '@/hooks/useAgent';
 import { statusToColor } from '@/utils/dataDisplay.util';
 import useDarkMode from '@/hooks/useDarkMode';
 import { TColorIntensity } from '@/types/colorIntensities.type';
@@ -58,12 +58,12 @@ const AgentDetails = () => {
 	const { isDarkTheme } = useDarkMode();
 
 	const agentId: string | undefined = Array.isArray(id) ? id[0] : id
-
 	const [isSaving, setIsSaving] = useState<boolean>(false);
-	const { data: agent, isLoading, performUpdate } = useAgent(agentId, setIsSaving);
-	const scanId = isLoading ? '' : agent.scans[0]?.id;
-	const crawlId = isLoading ? '' : agent.crawls[0]?.id;
-
+	const { data: agent, isLoading:agentLoading, performUpdate } = useAgent(agentId, setIsSaving);
+	const { data: details, isLoading: detailsLoading } = useAgentDetails(agentId);
+	const scanId = agentLoading ? '' : agent.scans[0]?.id;
+	const crawlId = agentLoading ? '' : agent.crawls[0]?.id;
+	console.log(details);
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues: {
@@ -134,15 +134,15 @@ const AgentDetails = () => {
 										<div className='flex grow items-center'>
 											<div>
 												<div className='w-full text-2xl font-semibold'>
-													{!isLoading ? agent?.name : <Skeleton />}
+													{!agentLoading ? agent?.name : <Skeleton />}
 												</div>
 												<div className='w-full text-zinc-500'>
-													{!isLoading ? agent?.path : <Skeleton />}
+													{!agentLoading ? agent?.path : <Skeleton />}
 												</div>
 											</div>
 										</div>
 										<div className='flex-shrink-0'>
-											{isLoading ? 
+											{agentLoading ? 
 											<Skeleton />
 											:	
 											<Badge 
@@ -229,7 +229,7 @@ const AgentDetails = () => {
 											<div className='flex items-center gap-2'>
 												<Icon icon='HeroDocumentCheck' size='text-2xl' />
 												<span className='text-zinc-500'>Last saved:</span>
-												<b>{isLoading ? <LoaderDotsCommon /> : dayjs(agent?.updated_at).locale(i18n.language).format('LLL')}</b>
+												<b>{agentLoading ? <LoaderDotsCommon /> : dayjs(agent?.updated_at).locale(i18n.language).format('LLL')}</b>
 											</div>
 										)}
 									</CardFooterChild>
@@ -264,16 +264,16 @@ const AgentDetails = () => {
 							</CardHeader>
 							<CardBody>
 								<div className='w-full'>
-								{activeTab === TABS.SCANRESULTS && !isLoading && (
+								{activeTab === TABS.SCANRESULTS && !agentLoading && (
 									<FindingsListPartial showTitle={false} scanId={scanId} allResults={true} />
 								)}
-								{activeTab === TABS.SCANERRORS && !isLoading && (
+								{activeTab === TABS.SCANERRORS && !agentLoading && (
 									<ScanErrorList showTitle={false} scanId={scanId} />
 								)}
-								{activeTab === TABS.CRAWLRESULTS && !isLoading && (
+								{activeTab === TABS.CRAWLRESULTS && !agentLoading && (
 									<CrawlResults showTitle={false} crawlId={crawlId} />
 								)}
-								{activeTab === TABS.CRAWLERRORS && !isLoading && (
+								{activeTab === TABS.CRAWLERRORS && !agentLoading && (
 									<CrawlErrorList showTitle={false} crawlId={crawlId} />
 								)}
 								</div>

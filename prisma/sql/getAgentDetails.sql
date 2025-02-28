@@ -31,3 +31,4 @@ SELECT
 FROM       "Agent" 
 INNER JOIN "Scan" ON "Agent"."id" = "Scan"."agentId"
 INNER JOIN "Crawl" ON "Agent"."id" = "Crawl"."agentId"
+WHERE "Agent"."id" = $1 OR $1 = '';

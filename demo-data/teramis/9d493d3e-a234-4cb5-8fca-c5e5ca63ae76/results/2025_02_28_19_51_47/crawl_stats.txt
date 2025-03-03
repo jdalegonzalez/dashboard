@@ -1,0 +1,13 @@
+Root Directory: C:\Users\ladmin\Downloads\lib_test_data\all_type
+Start Time: 2025-02-28 19:51:47.164398
+End Time: 2025-02-28 19:51:48.186647
+Duration: 0:00:01.022249
+Throughput: 107.33 MB per second
+Root Size: 109.71 MB
+Directories: 0
+Files: 40
+Unsupported: 5
+Unique Files: 33
+Largest File: 22.43 MB (C:\Users\ladmin\Downloads\lib_test_data\all_type\zipper.7z)
+Extensions: ['.7z', '.doc', '.docx', '.dwg', '.gz', '.html', '.msg', '.odp', '.odt', '.pdf', '.ppt', '.pptx', '.rtf', '.tar', '.txt', '.vsdx', '.xls', '.xlsx', '.xml', '.zip']
+Errors: 0

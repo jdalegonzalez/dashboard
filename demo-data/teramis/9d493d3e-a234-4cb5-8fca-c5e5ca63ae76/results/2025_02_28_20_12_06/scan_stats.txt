@@ -1,0 +1,8 @@
+Root Directory: \\10.1.2.5\e\lib_test_data\all_type\img_zip
+Start Time: 2025-02-28 20:12:06.585290
+End Time: 2025-02-28 20:12:06.703700
+Duration: 0:00:00.118410
+Matches: 7
+Errors: 0
+Timeout: 0
+Scan Rate: 19.48 MB per second

@@ -238,7 +238,7 @@ const AgentDetails: FC<IAgentItemProps> = ({ agent, className }) => {
                 </CardBody>
                 <CardFooter className='text-zinc-500'>
                     <CardFooterChild className='w-full'>
-                        <div className='w-full truncate'>{agent.path}</div>
+                        {/* <div className='w-full truncate'>{agent.path}</div> */}
                     </CardFooterChild>
                 </CardFooter>
             </Card>

@@ -1,0 +1,13 @@
+Root Directory: \\10.1.2.5\e\lib_test_data\all_type\img_zip
+Start Time: 2025-02-28 22:09:35.837225
+End Time: 2025-02-28 22:09:36.688387
+Duration: 0:00:00.851162
+Throughput: 2.71 MB per second
+Root Size: 2.31 MB
+Directories: 0
+Files: 7
+Unsupported: 0
+Unique Files: 7
+Largest File: 1.66 MB (\\10.1.2.5\e\lib_test_data\all_type\img_zip\cui_cov.bmp)
+Extensions: ['.bmp', '.dib', '.gif', '.jpg', '.png', '.tif', '.tiff']
+Errors: 0

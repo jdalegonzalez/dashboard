@@ -1,0 +1,18 @@
+2025-02-28 22:07:32,964 - INFO - \\10.1.2.5\e\lib_test_data\all_type\10009.vsdx: ["CONTROLLED//DISEM-A/DISSEM- (first 100 chars)"] - Med
+2025-02-28 22:08:02,274 - INFO - \\10.1.2.5\e\lib_test_data\all_type\1901.xls: ["CUI (first 100 chars)"] - Med
+2025-02-28 22:08:04,139 - INFO - \\10.1.2.5\e\lib_test_data\all_type\2035_tp.odp: ["CUI Coverpage CV2 detection"] - High
+2025-02-28 22:08:04,434 - INFO - \\10.1.2.5\e\lib_test_data\all_type\2077.pptx: ["CUI x15", "CUI (first 250 chars) x2"] - Med
+2025-02-28 22:08:28,659 - INFO - \\10.1.2.5\e\lib_test_data\all_type\2401_2.odt: ["CUI (first 100 chars)"] - Med
+2025-02-28 22:08:29,333 - INFO - \\10.1.2.5\e\lib_test_data\all_type\2424.txt: ["CONTROLLED (first 100 chars)", "CONTROLLED//DISSEM-A/DISSEC- (first 100 chars)", "CUI//DISSEM-A/DISSEC- (first 100 chars)"] - High
+2025-02-28 22:08:29,333 - INFO - \\10.1.2.5\e\lib_test_data\all_type\2424_lnk.txt: ["CONTROLLED (first 100 chars)", "CONTROLLED//DISSEM-A/DISSEC- (first 100 chars)", "CUI//DISSEM-A/DISSEC- (first 100 chars)"] - High
+2025-02-28 22:08:29,526 - INFO - \\10.1.2.5\e\lib_test_data\all_type\462.tar: ["CUI Designation Indicator match"] - High
+2025-02-28 22:08:32,775 - INFO - \\10.1.2.5\e\lib_test_data\all_type\855.doc: ["CUI//DISEMA/DISSEMC x2"] - Low
+2025-02-28 22:08:33,227 - INFO - \\10.1.2.5\e\lib_test_data\all_type\content.xml: ["CUI (first 100 chars)"] - Med
+2025-02-28 22:08:36,635 - INFO - \\10.1.2.5\e\lib_test_data\all_type\img_zip.7z: ["CUI Coverpage CV2 detection"] - High
+2025-02-28 22:08:37,123 - INFO - \\10.1.2.5\e\lib_test_data\all_type\rtf_test.rtf: ["CUI (first 100 chars)"] - Med
+2025-02-28 22:08:37,123 - INFO - \\10.1.2.5\e\lib_test_data\all_type\SF 18 Signed – RFQ_70B06C22Q00000320_4S_LLC - Copy.rtf: ["CUI (first 100 chars)"] - Med
+2025-02-28 22:08:38,664 - INFO - \\10.1.2.5\e\lib_test_data\all_type\Test 1 False Positive_cont.docx: ["CONTROLLED"] - Low
+2025-02-28 22:08:38,901 - INFO - \\10.1.2.5\e\lib_test_data\all_type\Test 1 True Positive_cont.docx: ["CONTROLLED (first 100 chars)", "CONTROLLED"] - Med
+2025-02-28 22:08:39,285 - INFO - \\10.1.2.5\e\lib_test_data\all_type\Test 2 True Positive Type 1.pdf: ["CUI Coverpage CV2 detection"] - High
+2025-02-28 22:08:39,914 - INFO - \\10.1.2.5\e\lib_test_data\all_type\Test 3 True Positive Type 1.xlsx: ["SF902 or SF903 hash match"] - High
+2025-02-28 22:08:53,549 - INFO - \\10.1.2.5\e\lib_test_data\all_type\zipper.7z: ["SF902 or SF903 hash match", "CUI"] - High

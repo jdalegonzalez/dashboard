@@ -19,6 +19,7 @@ enum Status {
   SCANNING
   IDLE
   ERRORED
+  MISSING
 }
 
 enum Severity {
@@ -36,24 +37,30 @@ enum Confidence {
 }
 
 model Agent {
-  id          String   @id @default(cuid(2))
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
-  name        String
-  location    String
-  path        String
-  directory   String   @default("")
-  use_history Boolean  @default(true)
-  status      Status   @default(IDLE)
-  crawls      Crawl[]
-  scans       Scan[]
+  id           String   @id
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now()) @updatedAt
+  name         String
+  location     String
+  status       Status   @default(IDLE)
+  crawls       Crawl[]
+  scans        Scan[]
+  os           String
+  os_version   String
+  arch         String
+  processor    String
+  cores        Int
+  logical_cpus Int
+  ram_gb       Float
 }
 
 model Crawl {
   id                 String   @id @default(cuid(2))
   created_at         DateTime @default(now())
   updated_at         DateTime @default(now()) @updatedAt
+  result_folder      String
   root_path          String
+  use_history        Boolean  @default(true)
   file_count         Int
   dir_count          Int
   total_size         BigInt
@@ -69,6 +76,9 @@ model Crawl {
   unsupported_files  String[]
   agent              Agent @relation(fields: [agentId], references: [id], onDelete: Restrict)
   agentId            String
+  @@index(fields: [updated_at])
+  @@index(fields: [result_folder, agentId])
+  @@index(fields: [end_time, agentId])
 }
 
 model CrawlError {
@@ -98,6 +108,7 @@ model Scan {
   id              String   @id @default(cuid(2))
   created_at      DateTime @default(now())
   updated_at      DateTime @default(now()) @updatedAt
+  result_folder   String
   root_path       String
   start_time      DateTime @default(now())
   end_time        DateTime?
@@ -108,10 +119,13 @@ model Scan {
   results         ScanResult[]
   agent           Agent @relation(fields: [agentId], references: [id], onDelete: Restrict)
   agentId         String
+  @@index(fields: [updated_at])
+  @@index(fields: [result_folder, agentId])
+  @@index(fields: [end_time, agentId])
 }
 
 model ScanError {
-  id              String   @id @default(cuid(2))
+  id              String   @id
   created_at      DateTime @default(now())
   updated_at      DateTime @default(now()) @updatedAt
   occurred_at     DateTime
@@ -139,4 +153,5 @@ model ScanResult {
   scanId          String
   @@index(fields: [confidence])
   @@index(fields: [hash, id, confidence])
+  @@index(fields: [updated_at])
 }

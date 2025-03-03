@@ -1,0 +1,13 @@
+Root Directory: C:\Users\ladmin\Downloads\lib_test_data\all_type\img_zip
+Start Time: 2025-02-28 19:53:21.687084
+End Time: 2025-02-28 19:53:21.748335
+Duration: 0:00:00.061251
+Throughput: 37.65 MB per second
+Root Size: 2.31 MB
+Directories: 0
+Files: 7
+Unsupported: 0
+Unique Files: 7
+Largest File: 1.66 MB (C:\Users\ladmin\Downloads\lib_test_data\all_type\img_zip\cui_cov.bmp)
+Extensions: ['.bmp', '.dib', '.gif', '.jpg', '.png', '.tif', '.tiff']
+Errors: 0

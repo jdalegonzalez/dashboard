@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Status" AS ENUM ('CRAWLING', 'SCANNING', 'IDLE', 'ERRORED');
+CREATE TYPE "Status" AS ENUM ('CRAWLING', 'SCANNING', 'IDLE', 'ERRORED', 'MISSING');
 
 -- CreateEnum
 CREATE TYPE "Severity" AS ENUM ('HINT', 'WARNING', 'ERROR', 'FATAL');
@@ -14,10 +14,14 @@ CREATE TABLE "Agent" (
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
     "location" TEXT NOT NULL,
-    "path" TEXT NOT NULL,
-    "directory" TEXT NOT NULL DEFAULT '',
-    "use_history" BOOLEAN NOT NULL DEFAULT true,
     "status" "Status" NOT NULL DEFAULT 'IDLE',
+    "os" TEXT NOT NULL,
+    "os_version" TEXT NOT NULL,
+    "arch" TEXT NOT NULL,
+    "processor" TEXT NOT NULL,
+    "cores" INTEGER NOT NULL,
+    "logical_cpus" INTEGER NOT NULL,
+    "ram_gb" DOUBLE PRECISION NOT NULL,
 
     CONSTRAINT "Agent_pkey" PRIMARY KEY ("id")
 );
@@ -27,7 +31,9 @@ CREATE TABLE "Crawl" (
     "id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "result_folder" TEXT NOT NULL,
     "root_path" TEXT NOT NULL,
+    "use_history" BOOLEAN NOT NULL DEFAULT true,
     "file_count" INTEGER NOT NULL,
     "dir_count" INTEGER NOT NULL,
     "total_size" BIGINT NOT NULL,
@@ -37,7 +43,6 @@ CREATE TABLE "Crawl" (
     "extensions" TEXT[],
     "start_time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "end_time" TIMESTAMP(3) NOT NULL,
-    "duration" interval,
     "throughput" DOUBLE PRECISION NOT NULL,
     "unsupported_files" TEXT[],
     "agentId" TEXT NOT NULL,
@@ -76,10 +81,10 @@ CREATE TABLE "Scan" (
     "id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "result_folder" TEXT NOT NULL,
     "root_path" TEXT NOT NULL,
     "start_time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "end_time" TIMESTAMP(3),
-    "duration" interval,
     "matches" INTEGER NOT NULL,
     "timeouts" INTEGER NOT NULL,
     "gigs_per_second" DOUBLE PRECISION NOT NULL,
@@ -122,7 +127,25 @@ CREATE TABLE "ScanResult" (
 );
 
 -- CreateIndex
+CREATE INDEX "Crawl_updated_at_idx" ON "Crawl"("updated_at");
+
+-- CreateIndex
+CREATE INDEX "Crawl_result_folder_agentId_idx" ON "Crawl"("result_folder", "agentId");
+
+-- CreateIndex
+CREATE INDEX "Scan_updated_at_idx" ON "Scan"("updated_at");
+
+-- CreateIndex
+CREATE INDEX "Scan_result_folder_agentId_idx" ON "Scan"("result_folder", "agentId");
+
+-- CreateIndex
 CREATE INDEX "ScanResult_confidence_idx" ON "ScanResult"("confidence");
+
+-- CreateIndex
+CREATE INDEX "ScanResult_hash_id_confidence_idx" ON "ScanResult"("hash", "id", "confidence");
+
+-- CreateIndex
+CREATE INDEX "ScanResult_updated_at_idx" ON "ScanResult"("updated_at");
 
 -- AddForeignKey
 ALTER TABLE "Crawl" ADD CONSTRAINT "Crawl_agentId_fkey" FOREIGN KEY ("agentId") REFERENCES "Agent"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

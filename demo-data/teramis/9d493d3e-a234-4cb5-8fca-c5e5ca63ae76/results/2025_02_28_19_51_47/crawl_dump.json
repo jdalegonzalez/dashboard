@@ -1,0 +1,280 @@
+{
+    "root_path": "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type",
+    "file_count": 40,
+    "dir_count": 0,
+    "total_size": 115042870,
+    "scan_size": 95015990,
+    "largest_file_size": 23515577,
+    "largest_file_path": "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\zipper.7z",
+    "extensions": [
+        ".7z",
+        ".doc",
+        ".docx",
+        ".dwg",
+        ".gz",
+        ".html",
+        ".msg",
+        ".odp",
+        ".odt",
+        ".pdf",
+        ".ppt",
+        ".pptx",
+        ".rtf",
+        ".tar",
+        ".txt",
+        ".vsdx",
+        ".xls",
+        ".xlsx",
+        ".xml",
+        ".zip"
+    ],
+    "start_time": "2025-02-28T19:51:47.164398",
+    "end_time": "2025-02-28T19:51:48.186647",
+    "duration": 1.022249,
+    "throughput": 112538990.01123993,
+    "errors": [],
+    "hash_map": {
+        "4ecbb016f601468724b62847d0a9b57c13b6f7aa4759d7187d6b3316a6fce4f0": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\10053.dwg"
+            ],
+            "bsize": 115949,
+            "fmt": "image/vnd.dwg"
+        },
+        "562f7503215f5c25670feae517d161c969873ed0c357a79f96885972c892fe73": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\10009.vsdx"
+            ],
+            "bsize": 33886,
+            "fmt": "application/octet-stream"
+        },
+        "a8aaa95c183ab4dfb3da2be136c486452a2dc4dcca61e080ea586b6f2451d83b": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\10175.zip"
+            ],
+            "bsize": 2195158,
+            "fmt": "application/zip"
+        },
+        "5f5d23da5a5813ab165e9bfaf2f6324ab62ddce04027253cf6401799c67b442d": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\1525.xlsx"
+            ],
+            "bsize": 111863,
+            "fmt": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        },
+        "62e3c8e012e6160e5ab1f1c093f6d119084be84efbd1fc2eb95129b8c41fe5ed": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\10175.pdf"
+            ],
+            "bsize": 2366940,
+            "fmt": "application/pdf"
+        },
+        "ff3cb9a3135624ed8787795e3e2022697605de58d76b7cc53aefe5fce6dd76ab": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\1901.xls"
+            ],
+            "bsize": 292864,
+            "fmt": "application/vnd.ms-excel"
+        },
+        "b0b98d979419e47877970980fc762d067265837c81ba7e06cbf1f6e9db13756b": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\1831.xls"
+            ],
+            "bsize": 316416,
+            "fmt": "application/vnd.ms-excel"
+        },
+        "45c9d4e78736de16c3eda8ce5033508119e0e3f1e5b71f3db1c3f01327bd997b": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\2035_tp.odp"
+            ],
+            "bsize": 15005352,
+            "fmt": "application/vnd.oasis.opendocument.presentation"
+        },
+        "95fb39cd249c950395fa3ff3bd625a1ea1567b536eff492c36f62cacec1666c5": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\2077.pptx"
+            ],
+            "bsize": 15144123,
+            "fmt": "application/zip"
+        },
+        "6fcb32c115f0528e915f687de5534ea3999520cc8c354e6a11b2af71dfd862d4": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\2302.msg"
+            ],
+            "bsize": 179712,
+            "fmt": "application/vnd.ms-office"
+        },
+        "58cc4d25a488835d3387cf6c014518d19ed59cf48eebcb492d2204c0009d14ce": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\2401.gz"
+            ],
+            "bsize": 167117,
+            "fmt": "application/x-gzip"
+        },
+        "e0ba94beebfe4fa125f825b9ca94849a9928618eb06607320c3ef5a0f89633e9": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\2401.html"
+            ],
+            "bsize": 441427,
+            "fmt": "text/html"
+        },
+        "14cc883ace94ceec43fc2535164d5ba73847921a5dbf71a1571a1a77d5414186": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\2401_2.odt"
+            ],
+            "bsize": 499108,
+            "fmt": "application/vnd.oasis.opendocument.text"
+        },
+        "ab4ac355382e9171105b2af4df2e85dfb1d2af7c9eed9ef09411e553b1b0e6be": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\2424.txt",
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\2424_lnk.txt"
+            ],
+            "bsize": 449075,
+            "fmt": "text/plain"
+        },
+        "10ffecebc61da2f85b6e3576c873b8325ebd1f602f91522810ca436dcce7eba7": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\2136.ppt"
+            ],
+            "bsize": 18907136,
+            "fmt": "application/CDFV2"
+        },
+        "f64d66675bbe7a8dc9d471c49e139d2c30a0e534fdcc5a87d49d30aea5b53ccb": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\462.tar"
+            ],
+            "bsize": 26624,
+            "fmt": "application/x-tar"
+        },
+        "c3ba7c3ea5268e2253bfd4f1e70f3821d3530d49c02ea1eef1692bf693314539": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\855.doc"
+            ],
+            "bsize": 91648,
+            "fmt": "application/msword"
+        },
+        "0d6afb7e939f0936f40afdc759b5a354ea5427ec250a47e7b904ab1ea800a01d": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\empty3.rtf"
+            ],
+            "bsize": 7,
+            "fmt": "text/rtf"
+        },
+        "27aa0041e980746eb5cbecba14ccdd1b865e93ffe0bb9a5aeefc521c5e8beaa1": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\Honu Project Plan for scanning tests PDF.pdf"
+            ],
+            "bsize": 488643,
+            "fmt": "application/pdf"
+        },
+        "751416f72cd451228ea3c6ce6e3e14e721a9716c280a57d11446876f8e7227f2": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\Honu Project Plan for scanning tests xls.xlsx"
+            ],
+            "bsize": 24105,
+            "fmt": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        },
+        "5aa30f3eee75cf161cbe8f3d612a3ad17e7c78487456b21e5a69b74e6471a913": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\content.xml"
+            ],
+            "bsize": 2049631,
+            "fmt": "text/xml"
+        },
+        "0ab5d0b3bf1e10e22ab363b2e869e1b8b979ae77b0c9896720098ab8e51b6ca3": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\img_zip.7z"
+            ],
+            "bsize": 597217,
+            "fmt": "application/x-7z-compressed"
+        },
+        "a61cceba6b24cec0b668b1170524441ebd676cfdf14b72a26eebcf9db6f7c8ae": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\SF 18 Signed \u00e2\u20ac\u201c RFQ_70B06C22Q00000320_4S_LLC - Copy.rtf",
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\rtf_test.rtf"
+            ],
+            "bsize": 496298,
+            "fmt": "text/rtf"
+        },
+        "0458ae62639457b9b899d8a97ef166b93129a522fbba21614414ab586113511a": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\sf_903_tp.docx"
+            ],
+            "bsize": 49833,
+            "fmt": "application/zip"
+        },
+        "33e1355b5da6d3130112899a7ca11c24e0d8480a738bf3ac3df0bb0af30a8ff9": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\Test 1 False Positive_cont.docx"
+            ],
+            "bsize": 33663,
+            "fmt": "application/zip"
+        },
+        "f6da2a43f4715c25ce181b612813f4103a317f0cfd08e58ccd97496571fd7b09": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\Test 2 True Positive Type 1.pdf"
+            ],
+            "bsize": 178256,
+            "fmt": "application/pdf"
+        },
+        "e02a39911c7acdd5e56e274b3611c287623e924044e11c28419e8cb682595f4a": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\Test 1 True Positive_cont.docx"
+            ],
+            "bsize": 33692,
+            "fmt": "application/zip"
+        },
+        "49ce1094b1c542e4cab0f823821fd26cf3112a86ac58a6a44790887ebefd689e": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\Test 3 True Positive Type 1.xlsx"
+            ],
+            "bsize": 147014,
+            "fmt": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        },
+        "19f30f090695e9cad01535a378c6fda2cadc1630850416da54b68baa509891a1": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\test.pdf"
+            ],
+            "bsize": 235964,
+            "fmt": "application/pdf"
+        },
+        "8e824dadd3840bbac7a71be60e96ab198b960759fad0b616ab8bfecbc666da95": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\Test 5 True Positive.pdf"
+            ],
+            "bsize": 4633419,
+            "fmt": "application/pdf"
+        },
+        "cb9c586f40e37684c9347fece86b7d570683f4e25c4f0ebb9e00befc80326ea4": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\zipper3.zip"
+            ],
+            "bsize": 483549,
+            "fmt": "application/zip"
+        },
+        "1cd120ea509ab954a95f6a8421b74287a6cdd8027b101ec71d8b3b2b02913c1e": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\zipper4.tar.gz"
+            ],
+            "bsize": 4759351,
+            "fmt": "application/x-gzip"
+        },
+        "9a579a34da02ae9c54e4d84dfc4283978519f5fc763e80a5bb67a5ebe212572c": {
+            "fps": [
+                "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\zipper.7z"
+            ],
+            "bsize": 23515577,
+            "fmt": "application/x-7z-compressed"
+        }
+    },
+    "unsupported": [
+        "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\empty.txt",
+        "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\empty2.txt",
+        "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\Honu Project Plan for scanning tests.mpp",
+        "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\__init__.py",
+        "C:\\Users\\ladmin\\Downloads\\lib_test_data\\all_type\\77.docx"
+    ],
+    "predated": [],
+    "permission_err": []
+}

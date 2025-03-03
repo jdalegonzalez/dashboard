@@ -1,0 +1,77 @@
+{
+    "root_path": "\\\\10.1.2.5\\e\\lib_test_data\\all_type\\img_zip",
+    "file_count": 7,
+    "dir_count": 0,
+    "total_size": 2418270,
+    "scan_size": 2418270,
+    "largest_file_size": 1744558,
+    "largest_file_path": "\\\\10.1.2.5\\e\\lib_test_data\\all_type\\img_zip\\cui_cov.bmp",
+    "extensions": [
+        ".bmp",
+        ".dib",
+        ".gif",
+        ".jpg",
+        ".png",
+        ".tif",
+        ".tiff"
+    ],
+    "start_time": "2025-02-28T22:09:35.837225",
+    "end_time": "2025-02-28T22:09:36.688387",
+    "duration": 0.851162,
+    "throughput": 2841139.5245558424,
+    "errors": [],
+    "hash_map": {
+        "acf2ed69e48f851faaef2acc53e2fdb5e4b4009199f0f3b6b0afb5a952da1a83": {
+            "fps": [
+                "\\\\10.1.2.5\\e\\lib_test_data\\all_type\\img_zip\\cui_cov.bmp"
+            ],
+            "bsize": 1744558,
+            "fmt": "image/x-ms-bmp"
+        },
+        "97dc3d3e36433e23f36a1fe99500966d6c576e147b7b2d99f7dd82e99d782e9a": {
+            "fps": [
+                "\\\\10.1.2.5\\e\\lib_test_data\\all_type\\img_zip\\cui_cov.dib"
+            ],
+            "bsize": 73478,
+            "fmt": "image/x-ms-bmp"
+        },
+        "0855646ac3835e2a1c3cef2954316ffa62b9e422fefa03e36f62f9cf8b5d5c01": {
+            "fps": [
+                "\\\\10.1.2.5\\e\\lib_test_data\\all_type\\img_zip\\cui_cov.gif"
+            ],
+            "bsize": 130126,
+            "fmt": "image/gif"
+        },
+        "a5b26648aa9a3bd538eb459b0093ce3ab7cf38735058d30c80dc65a634796794": {
+            "fps": [
+                "\\\\10.1.2.5\\e\\lib_test_data\\all_type\\img_zip\\cui_cov.jpg"
+            ],
+            "bsize": 85037,
+            "fmt": "image/jpeg"
+        },
+        "dac1807ce4d70f3541ce7b10837b2a231a381201d44d875a03f3660bda028f00": {
+            "fps": [
+                "\\\\10.1.2.5\\e\\lib_test_data\\all_type\\img_zip\\cui_cov.png"
+            ],
+            "bsize": 38867,
+            "fmt": "image/png"
+        },
+        "4433f4381c056329f6137b61002ea8a5552e0bd26130fb136c481c0c4fa8d204": {
+            "fps": [
+                "\\\\10.1.2.5\\e\\lib_test_data\\all_type\\img_zip\\cui_cov.tif"
+            ],
+            "bsize": 281926,
+            "fmt": "image/tiff"
+        },
+        "265203fb3f0e3607314ee241641ab2185c13323dc796fc28928354e68ce3a31c": {
+            "fps": [
+                "\\\\10.1.2.5\\e\\lib_test_data\\all_type\\img_zip\\cui_cov.tiff"
+            ],
+            "bsize": 64278,
+            "fmt": "image/tiff"
+        }
+    },
+    "unsupported": [],
+    "predated": [],
+    "permission_err": []
+}

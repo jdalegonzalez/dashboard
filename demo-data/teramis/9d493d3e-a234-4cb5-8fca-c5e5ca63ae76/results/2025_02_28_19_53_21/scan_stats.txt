@@ -1,0 +1,8 @@
+Root Directory: C:\Users\ladmin\Downloads\lib_test_data\all_type\img_zip
+Start Time: 2025-02-28 19:53:21.768682
+End Time: 2025-02-28 19:53:27.466252
+Duration: 0:00:05.697570
+Matches: 7
+Errors: 0
+Timeout: 0
+Scan Rate: 414.49 KB per second

@@ -1,0 +1,11 @@
+2025-02-28 20:12:06,418 - INFO - Starting Teramis...
+2025-02-28 20:12:06,418 - INFO - Error logger initialized: Teramis\results\2025_02_28_20_12_06\errors.log
+2025-02-28 20:12:06,420 - INFO - Match logger initialized: Teramis\results\2025_02_28_20_12_06\matches.log
+2025-02-28 20:12:06,420 - INFO - CMD Settings: (Directory: \\10.1.2.5\e\lib_test_data\all_type\img_zip, Use History: True)
+2025-02-28 20:12:06,493 - INFO - Crawling from \\10.1.2.5\e\lib_test_data\all_type\img_zip: recursive=True, dedupe=True
+2025-02-28 20:12:06,585 - INFO - Deduplicated: 7/7 files in 0:00:00.095299
+2025-02-28 20:12:06,585 - INFO - 0 files not supported
+2025-02-28 20:12:06,600 - INFO - Scanning 7 files.
+2025-02-28 20:12:06,701 - INFO - Cleaning temp files...
+2025-02-28 20:12:06,703 - INFO - Scan Completed in 0:00:00.118410
+2025-02-28 20:12:06,712 - INFO - Table exported to Teramis\results\2025_02_28_20_12_06\output\results.csv

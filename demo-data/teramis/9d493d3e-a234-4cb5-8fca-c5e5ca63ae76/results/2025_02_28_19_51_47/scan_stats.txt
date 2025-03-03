@@ -1,0 +1,8 @@
+Root Directory: C:\Users\ladmin\Downloads\lib_test_data\all_type
+Start Time: 2025-02-28 19:51:48.192421
+End Time: 2025-02-28 19:52:38.361554
+Duration: 0:00:50.169133
+Matches: 23
+Errors: 7
+Timeout: 7
+Scan Rate: 1.81 MB per second

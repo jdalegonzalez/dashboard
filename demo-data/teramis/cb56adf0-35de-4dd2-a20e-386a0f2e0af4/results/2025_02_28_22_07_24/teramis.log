@@ -1,0 +1,11 @@
+2025-02-28 22:07:24,174 - INFO - Starting Teramis...
+2025-02-28 22:07:24,174 - INFO - Error logger initialized: Teramis\results\2025_02_28_22_07_24\errors.log
+2025-02-28 22:07:24,174 - INFO - Match logger initialized: Teramis\results\2025_02_28_22_07_24\matches.log
+2025-02-28 22:07:24,174 - INFO - CMD Settings: (Directory: \\10.1.2.5\e\lib_test_data\all_type, Use History: True)
+2025-02-28 22:07:24,239 - INFO - Crawling from \\10.1.2.5\e\lib_test_data\all_type: recursive=False, dedupe=True
+2025-02-28 22:07:29,798 - INFO - Deduplicated: 33/40 files in 0:00:05.552465
+2025-02-28 22:07:29,798 - INFO - 5 files not supported
+2025-02-28 22:07:29,811 - INFO - Scanning 33 files.
+2025-02-28 22:09:03,624 - INFO - Cleaning temp files...
+2025-02-28 22:09:03,627 - INFO - Scan Completed in 0:01:33.828965
+2025-02-28 22:09:03,633 - INFO - Table exported to Teramis\results\2025_02_28_22_07_24\output\results.csv

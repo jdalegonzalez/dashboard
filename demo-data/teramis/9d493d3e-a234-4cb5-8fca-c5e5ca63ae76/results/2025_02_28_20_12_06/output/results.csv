@@ -1,0 +1,8 @@
+Hash,Filepath,MimeType,Bsize,Size,Processed,Error,Match,Confidence
+97dc3d3e36433e23f36a1fe99500966d6c576e147b7b2d99f7dd82e99d782e9a,\\10.1.2.5\e\lib_test_data\all_type\img_zip\cui_cov.dib,image/x-ms-bmp,73478,71.76 KB,True,False,"[""CUI Coverpage CV2 detection""]",High
+0855646ac3835e2a1c3cef2954316ffa62b9e422fefa03e36f62f9cf8b5d5c01,\\10.1.2.5\e\lib_test_data\all_type\img_zip\cui_cov.gif,image/gif,130126,127.08 KB,True,False,"[""CUI Coverpage CV2 detection""]",High
+acf2ed69e48f851faaef2acc53e2fdb5e4b4009199f0f3b6b0afb5a952da1a83,\\10.1.2.5\e\lib_test_data\all_type\img_zip\cui_cov.bmp,image/x-ms-bmp,1744558,1.66 MB,True,False,"[""CUI Coverpage CV2 detection""]",High
+a5b26648aa9a3bd538eb459b0093ce3ab7cf38735058d30c80dc65a634796794,\\10.1.2.5\e\lib_test_data\all_type\img_zip\cui_cov.jpg,image/jpeg,85037,83.04 KB,True,False,"[""CUI Coverpage CV2 detection""]",High
+dac1807ce4d70f3541ce7b10837b2a231a381201d44d875a03f3660bda028f00,\\10.1.2.5\e\lib_test_data\all_type\img_zip\cui_cov.png,image/png,38867,37.96 KB,True,False,"[""CUI Coverpage CV2 detection""]",High
+4433f4381c056329f6137b61002ea8a5552e0bd26130fb136c481c0c4fa8d204,\\10.1.2.5\e\lib_test_data\all_type\img_zip\cui_cov.tif,image/tiff,281926,275.32 KB,True,False,"[""CUI Coverpage CV2 detection""]",High
+265203fb3f0e3607314ee241641ab2185c13323dc796fc28928354e68ce3a31c,\\10.1.2.5\e\lib_test_data\all_type\img_zip\cui_cov.tiff,image/tiff,64278,62.77 KB,True,False,"[""CUI Coverpage CV2 detection""]",High

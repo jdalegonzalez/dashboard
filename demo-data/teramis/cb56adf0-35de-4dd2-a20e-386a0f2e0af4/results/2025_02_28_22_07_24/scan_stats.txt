@@ -1,0 +1,8 @@
+Root Directory: \\10.1.2.5\e\lib_test_data\all_type
+Start Time: 2025-02-28 22:07:29.798781
+End Time: 2025-02-28 22:09:03.627746
+Duration: 0:01:33.828965
+Matches: 18
+Errors: 13
+Timeout: 13
+Scan Rate: 988.92 KB per second

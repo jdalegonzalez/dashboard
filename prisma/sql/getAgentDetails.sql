@@ -29,7 +29,8 @@ SELECT
     scan_size AS crawl_scan_size,
     largest_file_size,
     largest_file_path,
-    throughput
+    throughput,
+    crawl_errors
 FROM "Agent" 
 JOIN (
     SELECT

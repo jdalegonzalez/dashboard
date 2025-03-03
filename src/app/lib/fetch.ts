@@ -1,6 +1,8 @@
-import { Agent, Confidence, CrawlError, CrawlHash, ScanError, ScanResult, Severity, Status } from '@prisma/client';
+import { Agent, Confidence, CrawlError, CrawlHash, Prisma, PrismaClient, ScanError, ScanResult, Severity, Status } from '@prisma/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 import { getAgentDetails } from '@prisma/client/sql';
 import { NextRequest } from 'next/server';
+import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Promise<JSON> {
   const res = await fetch(input, init)
@@ -150,5 +152,45 @@ export interface AgentAPIResults {
 export type AgentAPIDetailResults = getAgentDetails.Result[];
 export const fetchPath = (details:boolean = false) => {
     return unpagedUrl('/api/agent', details ? {details} : undefined)
+}
+
+
+
+// TODO: It would be great to find a way to make crawlIdFilter and scanIdFilter
+// a single function since they're almost identical but TypeScript is making that
+// exceedingly challenging.  Rather than give up on type safety or wrestle with
+// union types or something, I've centralized what I could and left the rest
+
+const def1Query = ((field: string, id: string) => ({[field]: id}))
+const defInQuery = ((field: string, ids: string[]) => ({[field]: { in: ids }}));
+const manyQuery = (dates: Date[]) => ({
+    select: {id: true},
+    where: {end_time: {in: dates}}
+})
+const datesQuery = {
+    by:['agentId' as const],
+    _max: {
+        end_time: true as const
+    }
+}
+
+export const crawlIdFilter = async (prisma: PrismaClient, id: string | null) => {
+    if (id) return def1Query('crawlId', id)
+    const gb = prisma.crawl.groupBy
+    const fm = prisma.crawl.findMany
+
+    const newestDates = (await gb(datesQuery)).map(obj => obj._max.end_time) as Date[];
+    const ids = (await fm(manyQuery(newestDates))).map(obj => obj.id)
+    return defInQuery('crawlId', ids)
+}
+
+export const scanIdFilter = async (prisma: PrismaClient, id: string | null) => {
+    if (id) return def1Query('scanId', id)
+    const gb = prisma.scan.groupBy
+    const fm = prisma.scan.findMany
+
+    const newestDates = (await gb(datesQuery)).map(obj => obj._max.end_time) as Date[];
+    const ids = (await fm(manyQuery(newestDates))).map(obj => obj.id)
+    return defInQuery('scanId', ids)
 }
 

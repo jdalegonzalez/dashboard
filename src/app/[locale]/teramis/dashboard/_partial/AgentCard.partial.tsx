@@ -190,7 +190,7 @@ const AgentDetails: FC<IAgentItemProps> = ({ agent, className }) => {
                                 <div className='mt-2 flex flex-wrap text-sm items-start justify-start gap-1 whitespace-nowrap'>
                                     {!loading ?
                                         <div className={statStyle(themeConfig.themeColor, "500")}>
-                                            <Icon icon='Harddrive' /><div>{bytesToGigs(agent.scan_size)}</div>
+                                            <Icon icon='Harddrive' /><div>{bytesToGigs(agent.crawl_scan_size)}</div>
                                         </div>
                                         : undefined
                                     }

@@ -4,7 +4,6 @@ import {AgentAPIResults, AgentAPIDetailResults} from '@/app/lib/fetch';
 import { unpagedUrl } from '@/app/lib/fetch';
 import { getAgentDetails } from '@prisma/client/sql';
 import { IAgentResult } from '@/app/lib/fetch';
-import SvgChevronDoubleLeft from '@/components/icon/heroicons/ChevronDoubleLeft';
 
 const emptyDate = new Date(0)
 
@@ -21,7 +20,6 @@ export const blankAgent:IAgentResult = {
   logical_cpus: 0,
   ram_gb: 0.0,
   processor: '',
-  use_history: false,
   status: 'ERRORED',
   scans: [],
   crawls: []
@@ -35,14 +33,16 @@ export const blankResult:getAgentDetails.Result = {
   scan_id: '',
   scan_start_time: emptyDate,
   scan_end_time: null,
-  scan_size: 0 as unknown as bigint,
-  root_path: '',
+  scan_root_path: '',
+  crawl_scan_size: 0 as unknown as bigint,
+  crawl_root_path: '',
   matches: 0,
   timeouts: 0,
   scan_errors: null,
   crawl_id:'',
   crawl_start_time: emptyDate,
   crawl_end_time: emptyDate,
+  use_history: true,
   throughput: 0.0,
   gigs_per_second: 0,
   crawl_errors: null, 
@@ -71,9 +71,7 @@ export const useAgent = (id: string|string[]|undefined, setIsSaving?: React.Disp
   // TODO: We can optimize this when the request is also fetching or has fetched agent details by adding
   // "no-data" as a URL argment and letting the fetcher know not to actually fetch anything for "no-data" requests
   // I still need the call though to get the mutator.  HOWEVER, this will be a little tricky because I'll have to
-  // use the top-level mutator to update the agent details in the agent overview bit.  (WHICH I might need to anyway.)
-
-  // TODO: Verify that when this mutator is called, the agent name updates in the other cached requests.
+  // use the top-level mutator to update the agent details in the agent overview bit.
   const path = apiPath + '/' + id;
   const { data, error, isLoading, mutate } = useSWR<IAgentResult>(path, fetch);
   const performUpdate = async (newData:Partial<IAgentResult>) => {

@@ -2,16 +2,16 @@
 deploy_dir='./deploy'
 
 if [ -d $deploy_dir ]; then
-	echo "Removing existing deploy directory '${deploy_dir}'"
-	rm -rf $deploy_dir 
+    echo "Removing existing deploy directory '${deploy_dir}'"
+    rm -rf $deploy_dir 
 fi
 
 echo "Creating deploy directory '${deploy_dir}'"
 mkdir $deploy_dir 
 
 if [ ! -d ./.next ]; then
-	echo "Can't find the .next folder.  Please build."
-	exit 1
+    echo "Can't find the .next folder.  Please build."
+    exit 1
 fi
 
 echo "Copying the build artifacts"
@@ -33,7 +33,7 @@ cp ./agent_sync.py $deploy_dir
 echo "Zipping up the deploy folder"
 cd ./deploy
 if [ -f ../deploy.zip ]; then
-	rm ../deploy.zip
+    rm ../deploy.zip
 fi
 tar -chzf ../deploy.tar.gz .
 echo "You should be able to start the server by: 'cd ./next/standalone && node server.js'"

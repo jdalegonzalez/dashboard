@@ -251,7 +251,7 @@ const AgentDetails = () => {
 										<Skeleton />
 										}
 										<div className='col-span-1 flex-shrink-0 flex items-center gap-2 p-2 pb-0'>
-											<Icon icon='HeroRocketLaunch' className='text-sky-500' size='text-2xl' />
+											<Icon icon='DuoTimer' className='text-sky-500' size='text-2xl' />
 											<span className='text-zinc-500'>Performance</span>
 										</div>
 										<div className='col-span-1 flex-grow-1 p-2 text-zin'>
@@ -311,7 +311,7 @@ const AgentDetails = () => {
 										<Skeleton />
 										}
 										<div className='col-span-1 flex-shrink-0 flex items-center gap-2 p-2 pb-0'>
-											<Icon icon='HeroRocketLaunch' className='text-sky-500' size='text-2xl' />
+											<Icon icon='DuoTimer' className='text-sky-500' size='text-2xl' />
 											<span className='text-zinc-500'>Performance</span>
 										</div>
 										<div className='col-span-1 flex-grow-1 p-2 text-zin'>

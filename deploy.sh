@@ -28,4 +28,10 @@ cp ./.env* $deploy_dir
 #cp -r ./.next/static $deploy_dir/.next/standalone
 #cp -r ./public $deploy_dir/.next/standalone
 
+echo "Zipping up the deploy folder"
+cd ./deploy
+if [ -f ../deploy.zip ]; then
+	rm ../deploy.zip
+fi
+tar -chzf ../deploy.tar.gz .
 echo "You should be able to start the server by: 'cd ./next/standalone && node server.js'"

@@ -24,6 +24,7 @@ fi
 echo "Copying the build artifacts"
 cp -r ./.next $deploy_dir
 cp -r ./node_modules $deploy_dir
+cp -r ./prisma $deploy_dir
 cp ./package.json $deploy_dir
 cp ./.env* $deploy_dir
 cp ./requirements.txt $deploy_dir

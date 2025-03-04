@@ -41,5 +41,9 @@ yarn.lock
 .idea
 .env-orig
 
-# deploy folder
+
+# deploy artifacts
+deploy.tar.gz
+next.tar.gz
+
 deploy/

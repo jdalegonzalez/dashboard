@@ -46,7 +46,7 @@ export const statusToColor = (txt:Status) => {
 	if (!txt) return undefinedColor;
 	switch (txt.trim().toUpperCase()) {
 		case "CRAWLING": return { color: "emerald" as const, intensity: "600" as const};
-		case "SCANNING": return { color: "indigo" as const, intensity: "600" as const};
+		case "SCANNING": return { color: "indigo" as const, intensity: "700" as const};
 		case "IDLE": return { color: "sky" as const, intensity: "600" as const};
 		case "ERRORED": return { color: "red" as const, intensity: "700" as const};
 		case "PENDING": return { color: 'zinc' as const, intensity: '700' as const}

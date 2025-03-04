@@ -157,7 +157,7 @@ export async function PUT(req: NextRequest) {
         await writeFile(queueFile, JSON.stringify(queue, undefined, 2), {encoding:'utf-8', flag:'w+'});
         // If we got here, we need to update the agent to let it know it's know crawling.
         const res = await prisma.agent.update({
-            data: {status: Status.CRAWLING},
+            data: {status: Status.PENDING},
             where: {
                 id
             }

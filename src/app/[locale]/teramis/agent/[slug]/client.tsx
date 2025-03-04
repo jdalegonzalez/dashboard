@@ -69,7 +69,7 @@ const AgentDetails = () => {
 			!isSaving && 
 			!detailsLoading && 
 			!!(details[0]?.scan_root_path ?? false) &&
-			agent?.status === Status.IDLE
+			(agent?.status === Status.IDLE || agent?.status === Status.ERRORED)
 		),
 	});
 
@@ -152,7 +152,7 @@ const AgentDetails = () => {
 													colorIntensity='700'
 													isDisable={saveBtnDisable}
 													onClick={() => triggerScan({
-														status: 'SCANNING',
+														status: 'PENDING',
 														pathToScan: details[0]?.scan_root_path 
 													})}>
 													Scan Now

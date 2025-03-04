@@ -1,4 +1,3 @@
-
 deploy_dir='./deploy'
 
 if [ -d $deploy_dir ]; then
@@ -37,3 +36,4 @@ if [ -f ../deploy.zip ]; then
 fi
 tar -chzf ../deploy.tar.gz .
 echo "You should be able to start the server by: 'cd ./next/standalone && node server.js'"
+

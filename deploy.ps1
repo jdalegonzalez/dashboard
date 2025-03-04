@@ -1,1 +1,1 @@
-bash.exe -c "./deploy.sh"
+bash.exe -c "cat ./deploy.sh | tr -d '\r' | . /dev/stdin"

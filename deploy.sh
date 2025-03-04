@@ -1,3 +1,11 @@
+# Utility script to bundle up the necessary files for the
+# GUI so that they can be copied to another machine.
+#
+# Ultimately, once we have a better way of managing deploys
+# this script will likely no longer be useful.  Hence,
+# the lack of fancy things like arg parsing, passing in
+# the deploy folder, launching from another folder, 
+# etc...
 deploy_dir='./deploy'
 
 if [ -d $deploy_dir ]; then

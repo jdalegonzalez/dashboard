@@ -14,11 +14,13 @@ if [ ! -d ./.next ]; then
 	exit 1
 fi
 
-echo "Copying the build folders"
+echo "Copying the build artifacts"
 cp -r ./.next $deploy_dir
 cp -r ./node_modules $deploy_dir
 cp ./package.json $deploy_dir
 cp ./.env* $deploy_dir
+cp ./requirements.txt $deploy_dir
+cp ./agent_sync.py $deploy_dir
 
 # I wish this would work because it creates a 
 # much smaller bundle but it doesn't support

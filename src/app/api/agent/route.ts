@@ -33,6 +33,7 @@ const summaryJson = async () => {
 }
 
 const detailsJson = async (agentId: string = '') => {
+    console.log(agentId)
     return await prisma.$queryRawTyped(getAgentDetails(agentId));
 }
 

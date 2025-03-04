@@ -34,7 +34,6 @@ const agentFromDirectory = (source: string) => {
     const agent:Prisma.AgentCreateInput = {
         name: agentName(),
         location: faker.system.networkInterface({ interfaceSchema: 'mac' }),
-        path: "", 
         status: Status.IDLE
     };
     lines.forEach(line => {

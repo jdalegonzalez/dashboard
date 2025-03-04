@@ -1,8 +1,14 @@
-import { Agent, Confidence, CrawlError, CrawlHash, Prisma, PrismaClient, ScanError, ScanResult, Severity, Status } from '@prisma/client';
-import { DefaultArgs } from '@prisma/client/runtime/library';
+import {
+  Agent,
+  CrawlError,
+  CrawlHash,
+  PrismaClient,
+  ScanError,
+  ScanResult
+} from '@prisma/client';
+
 import { getAgentDetails } from '@prisma/client/sql';
 import { NextRequest } from 'next/server';
-import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Promise<JSON> {
   const res = await fetch(input, init)
@@ -13,16 +19,15 @@ export default async function fetcher<JSON = any>(input: RequestInfo, init?: Req
 }
 
 export async function updater<T = any>(url: RequestInfo, data:Partial<T>): Promise<JSON> {
-  // TODO: There will need to be CORS and credentials added here.
-  const options = {
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    }),
-    method: 'POST',
-    body: JSON.stringify(data)
-  }
-  console.log(options);
-  return fetcher(url, options)
+    // TODO: There will need to be CORS and credentials added here.
+    const options = {
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        }),
+        method: 'POST',
+        body: JSON.stringify(data)
+    }
+    return fetcher(url, options)
 }
 
 const isNumeric = (str:string) => Number.isFinite(+str);
@@ -56,7 +61,7 @@ export const enumWhere = (field: string, vals: string[] | undefined, defaultWher
 export const idParam = (req: NextRequest, paramName: string) => {
   const params = req.nextUrl.searchParams;
   const val = params.get(paramName);
-  return val ? val.replace(/[^0-9a-zA-Z]/g,'') : val;    
+  return val ? val.replace(/[^0-9a-zA-Z-]/g,'') : val;    
 }
 export const stringParam = (req: NextRequest, paramName: string) => {
   const params = req.nextUrl.searchParams;
@@ -117,10 +122,9 @@ export const crawlErrorsPath = (rows: number = defaultRows, page: number = 1, ex
 export type CrawlErrorAPIResults = PagedAPIResults<CrawlError>;
 
 export const findingsPath = (rows: number = defaultRows, page: number = 1, extraArgs?:object) => {
-    return pagedUrl('/api/agent/findings', rows, page, extraArgs);
+    return pagedUrl('/api/agent/scans/results', rows, page, extraArgs);
 }
 export type FindingsAPIResults = PagedAPIResults<ScanResult>;
-
 
 export const scanErrorsPath = (rows: number = defaultRows, page: number = 1, extraArgs?:Record<string, any>) => {
     return pagedUrl('/api/agent/scans/errors', rows, page, extraArgs);

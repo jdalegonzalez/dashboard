@@ -49,6 +49,7 @@ export const statusToColor = (txt:Status) => {
 		case "SCANNING": return { color: "indigo" as const, intensity: "600" as const};
 		case "IDLE": return { color: "sky" as const, intensity: "600" as const};
 		case "ERRORED": return { color: "red" as const, intensity: "700" as const};
+		case "PENDING": return { color: 'zinc' as const, intensity: '700' as const}
 		default: return { color: "blue" as const, intensity: "600" as const};
 	}
 }
@@ -68,8 +69,8 @@ export const bytesToGigRatio   = 1e+9;
 export const bytesToMegRatio   = 1e+6;
 export const bytesToKbRatio    = 1e+3;
 
-export const bytesToGigs = (val: number | string | bigint, suffix: string = " Gb") => 
-	( Number(val) / bytesToGigRatio ).toLocaleString(undefined, {maximumFractionDigits: 2}) + suffix;
+export const bytesToGigs = (val: number | string | bigint, suffix: string = " Gb", digits: number = 2) => 
+	( Number(val) / bytesToGigRatio ).toLocaleString(undefined, {maximumFractionDigits: digits}) + suffix;
 export const gigsToBytes = (val: number | string | bigint, suffix: string = " B", asNum:boolean =false) => {
 	const result = Number(val) * bytesToGigRatio;
 	return asNum ? result : result.toLocaleString(undefined, {maximumFractionDigits: 2}) + suffix;
@@ -88,11 +89,11 @@ export const kbToBytes = (val: number | string | bigint, suffix: string = " B", 
 	return asNum ? result : result.toLocaleString(undefined, {maximumFractionDigits: 2}) + suffix;
 }
 
-export const bytesToHuman = (val: number | string | bigint, suffix?: string) => {
-	const bSuffix = suffix ?? " B";
-	const kbSuffix = suffix ?? " Kb";
-	const mbSuffix = suffix ?? " Mb";
-	const gbSuffix = suffix ?? " Gb";
+export const bytesToHuman = (val: number | string | bigint, suffix?: string, units: string = "") => {
+	const bSuffix = suffix ?? ` B${units}`;
+	const kbSuffix = suffix ?? ` Kb${units}`;
+	const mbSuffix = suffix ?? ` Mb${units}`;
+	const gbSuffix = suffix ?? ` Gb${units}`;
 
 	const nVal = Number(val);
 	if (nVal < bytesToKbRatio) return `${val} ${bSuffix}`;

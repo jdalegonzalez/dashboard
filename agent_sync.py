@@ -1,14 +1,15 @@
-from enum import Enum
-import random
+from enum import StrEnum
+import traceback
 import psycopg
 from cuid2 import cuid_wrapper
 import argparse
 import csv
 import json
 import os
+import fcntl
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Callable, List, Union
 import logging
 
@@ -103,24 +104,45 @@ The full structure is as follows:
 logger = logging.getLogger(__name__)
 cuid_generator: Callable[[], str] = cuid_wrapper()
 
-class Status(Enum):
+class Status(StrEnum):
     IDLE = 'IDLE'
     CRAWLING = 'CRAWLING'
     SCANNING = 'SCANNING'
     ERRORED = 'ERRORED'
     MISSING = 'MISSING'
     
-class Severity(Enum):
+class Severity(StrEnum):
     HINT = 'HINT'
     WARNING = 'WARNING'
     ERROR = 'ERROR'
     FATAL = 'FATAL'
 
-class Confidence(Enum):
+class Confidence(StrEnum):
     HIGH = 'HIGH'
     MEDIUM = 'MEDIUM'
     LOW = 'LOW'
     NONE = 'NONE'
+
+def is_file_older(file_path, date_to_compare):
+    """
+    Checks if a file's modification time is older than a given date.
+    If the file doesn't exist, we assume it's older.  If the date
+    isn't given, we assume it's newer
+    Args:
+        file_path (str): The path to the file.
+        date_to_compare (datetime.datetime): The date to compare against.
+
+    Returns:
+        bool: True if the file is newer than the date, False otherwise.
+              Returns False if the file does not exist.
+    """
+    if not os.path.exists(file_path):
+        return True
+    if date_to_compare is None:
+        return False
+    
+    file_modification_time = datetime.fromtimestamp(os.path.getmtime(file_path))
+    return file_modification_time <= date_to_compare
 
 def is_file_newer(file_path, date_to_compare):
     """
@@ -166,12 +188,23 @@ def agent_from_machine_info(info_file: str, log_file:str) -> Union[dict, None]:
     return json_data
 
 
+bytes_to_gig_ratio   = 1e+9
+bytes_to_meg_ratio   = 1e+6
+bytes_to_kb_ratio    = 1e+3
 def gigs_from_string(str: str) -> float:
     """
     Converts a string to a float.
     """
     # 1.64 GB per second
-    val = str.strip().split(' ')[0]
+    # 19.48 MB per second
+    # 414.49 KB per second
+    pieces = str.strip().split(' ')
+    val = float(pieces[0])
+    um = pieces[1].upper()
+    if um == 'B':    val /=  bytes_to_gig_ratio
+    elif um == 'KB': val = ((val * bytes_to_kb_ratio) / bytes_to_gig_ratio)
+    elif um == 'MB': val = ((val * bytes_to_meg_ratio) / bytes_to_gig_ratio)
+    elif um == 'GB': pass
     return float(val)
 
 def match_string_to_array(str: str) -> List[str]:
@@ -298,7 +331,6 @@ def create_crawl_errors_from_directory(cursor, crawl_id: str, source: str) -> in
     Returns: Int: The number of rows created
     """
     rows = 0
-
     
     # If the errors file is older than the newest result for this crawl,
     # We'll assume we're already processed it.  If for some reason we're
@@ -406,6 +438,99 @@ def existing_item_map(cursor, agent_id: str, table: str) -> dict:
 
     return map
 
+def get_lock(source):
+    lock = os.path.join(source, 'queue.lock')
+    now = datetime.now()
+    five_minutes_ago = now - timedelta(minutes=5)
+    if not os.path.isdir(lock) or is_file_older(lock, five_minutes_ago):
+        ### Our lock.
+        os.makedirs(lock, exist_ok=True)
+        os.utime(lock)
+        def remove(): os.rmdir(lock)
+        return remove
+
+    logger.info(f"Couldn't get lock '{lock}'")
+    return None
+
+
+def json_from_queue(source):
+    empty_json = {'targets': []}
+    
+    # If the file is missing or empty, just move on.
+    if not os.path.isfile(source) or os.path.getsize(source) == 0:
+        return empty_json
+    
+    with open(source) as file:
+        try:
+            json_data = json.load(file)
+        except json.JSONDecodeError as e:
+            # If the file is corrupt, there is little 
+            # we can do, short of returning no status and hoping things
+            # ultimately sync back up.
+            logger.error(f"Decode error reading '{source}'")
+            logger.error(e)
+            return empty_json
+        
+        return json_data
+
+def set_agent_status(cursor, source:str, id: str):
+    """
+    Set's the agent status to either IDLE or ERRORED depending
+    on the current state of the queue.json file.
+
+    The agent has one aggregate status and yet the targets
+    file can contain more than one entry.  We'll set the 
+    agent's status as follows...
+
+    If ANY entries in queue are in status "errored", the
+    agent is in the status "ERRORED".  
+
+    If ALL of the entries in the queue are "scanned", the
+    agent is in the status "IDLE".
+
+    Otherwise, the agent is in the status "SCANNING". 
+    
+    Eventually, we may/could add the intermediate "CRAWLING"
+    status.
+    """
+
+    # We're not going to bother checking the lock file 
+    # since we only read this queue.  We don't write it.
+    status = Status.IDLE
+
+    queue_file = os.path.join(source, 'queue.json')
+    json_data = json_from_queue(queue_file)
+    new_targets = []
+    for target in json_data.get('targets', []):
+        targ_stat = target.get('status','').strip().upper()
+        if targ_stat == 'QUEUED':
+            new_targets.append(target)
+            if status == Status.IDLE: status = Status.SCANNING  
+        elif targ_stat.startswith('ERROR:'):
+            logger.error(f"Agent '{id}' '{targ_stat}'")
+            status = Status.ERRORED
+
+    cursor.execute(
+        f"""
+        UPDATE "Agent" SET status = '{status}' WHERE id = '{id}'
+        """
+    )
+                
+    logger.info(f"Set agent: '{id}' status to: '{status}'")
+
+    # If we can get the lock file, we'll update the queue.  
+    # Otherwise, we'll update it next time.
+    if remove_lock := get_lock(source):
+        try:
+            with open(queue_file, 'w') as file:
+                json.dump({'targets': new_targets}, file, indent=2)
+        except e:
+            logger.error(e)
+        finally:
+            if remove_lock: remove_lock()
+
+    return status
+
 def sync_agent_results(cursor, agent_id, source: str):
     """
     Processes all the scan/crawl folders in this agent directory and
@@ -428,8 +553,12 @@ def sync_agent_results(cursor, agent_id, source: str):
     # that's OK.
     for entry in os.listdir(root):
         folder = os.path.join(root, entry)
-        create_scan_from_directory(cursor, agent_id, entry, folder, scan_map)
         create_crawl_from_directory(cursor, agent_id, entry, folder, crawl_map)
+        create_scan_from_directory(cursor, agent_id, entry, folder, scan_map)
+    
+    # If got here, we've processed all the current results for the agent
+    # And we know the agent is no longer scanning or crawling
+    set_agent_status(cursor, source, agent_id)
 
 def write_scan_to_db(cursor, agent_id:str, folder: str, source:str) -> str:
     """
@@ -550,10 +679,11 @@ def create_thing_from_directory(cursor, thing:str, agent_id:str, folder:str, sou
     else:
         logger.info(f"Skipping {thing} '{folder}'.  It exists as ID: {id}")
 
-    if write_results_fn is not None: write_results_fn(cursor, id, source)
-    if write_errors_fn is not None: write_errors_fn(cursor, id, source)
+    created_rows = 0
+    if write_results_fn is not None: created_rows += write_results_fn(cursor, id, source)
+    if write_errors_fn is not None: created_rows  += write_errors_fn(cursor, id, source)
 
-    return id
+    return (id, created_rows)
 
 def create_scan_from_directory(cursor, agent_id:str, folder:str, source: str, scan_map):
     """
@@ -628,7 +758,7 @@ def get_arguments():
         "-t", "--target",
         help="The target folder to scan for data",
         dest="target",
-        default=os.getenv("scan_target", os.path.join(os.path.dirname(__file__), 'teramis'))
+        default=os.getenv("TERAMIS_SCAN_TARGET", os.path.join(os.path.dirname(__file__), 'teramis'))
     )
     parser.add_argument(
         "-U", "--user",
@@ -656,7 +786,7 @@ def perform_init(conn):
     conn.execute('DELETE FROM "Crawl";')
     conn.execute('DELETE FROM "Agent";')
 
-def create_new_agent(cursor, agent_id, info_file, log_file):
+def create_agent(cursor, agent_id, info_file, log_file):
     
     agent_data = agent_from_machine_info(info_file, log_file)
     
@@ -704,7 +834,7 @@ def sync_agent_and_db(conn, source: str):
                     logger.info(f"Skipping Agent: '{entry}'.  Agent already exists.")
                     agent_id = entry
                 else:
-                    agent_id = create_new_agent(cursor, entry, info_file, log_file)
+                    agent_id = create_agent(cursor, entry, info_file, log_file)
                 
                 sync_agent_results(cursor, agent_id, folder)
 
@@ -731,7 +861,7 @@ def perform_sync(args):
             logger.info("Importing data.")
             sync_agent_and_db(conn, args.target)
 
-            # perform_import(conn, args.import_date)
+        # Cleanup the agent status.
 
 if __name__ == '__main__':
 
@@ -753,7 +883,8 @@ if __name__ == '__main__':
         logger.info("Import complete.")
 
     except Exception as e:
-        logger.error(f"Error: {e}")
+        logger.error(e)
+        logger.error(traceback.format_exc())
         exit_code = 2
 
     finally:

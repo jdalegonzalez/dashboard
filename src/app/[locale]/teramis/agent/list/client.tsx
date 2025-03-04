@@ -5,7 +5,7 @@ import PageWrapper from '@/components/layouts/PageWrapper/PageWrapper';
 import { getAgentDetails } from '@prisma/client/sql';
 import useDarkMode from '@/hooks/useDarkMode';
 
-import { formatDate, statusToColor, bytesToGigs } from '@/utils/dataDisplay.util';
+import { formatDate, statusToColor, bytesToHuman, bytesToGigRatio } from '@/utils/dataDisplay.util';
 import {
 	SortingState,
 	createColumnHelper,
@@ -15,27 +15,14 @@ import {
 	getSortedRowModel,
 	getPaginationRowModel,
 	CellContext,
-	ColumnMeta,
 	RowData
 } from '@tanstack/react-table';
 import { appPages } from '@/config/pages.config';
 import Link from 'next/link';
-import Icon from '@/components/icon/Icon';
-import Tooltip from '@/components/ui/Tooltip';
-import Subheader, { SubheaderLeft, SubheaderRight } from '@/components/layouts/Subheader/Subheader';
-import FieldWrap from '@/components/form/FieldWrap';
-import Input from '@/components/form/Input';
-import Button from '@/components/ui/Button';
 import Container from '@/components/layouts/Container/Container';
 import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
-import Dropdown, {
-	DropdownItem,
-	DropdownMenu,
-	DropdownNavLinkItem,
-	DropdownToggle,
-} from '@/components/ui/Dropdown';
-import TableTemplate, { TableCardFooterTemplate } from '@/templates/common/TableParts.template';
+import TableTemplate from '@/templates/common/TableParts.template';
 import Skeleton from '@/components/utils/ThemedSkeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { TColorIntensity } from '@/types/colorIntensities.type';
@@ -45,12 +32,9 @@ const columnHelper = createColumnHelper<getAgentDetails.Result>();
 
 const editLinkPath = `${appPages.teramisAppPages.subPages.agentPage.subPages.editPageLink.to}/`;
 
-const darkCircleColor = 'bg-stone-950/50'; 
 const darkIconIntensity = '500';
 
-const lightCircleColor = 'bg-sky-800'; 
 const lightIconIntensity = '100';
-const skelClass = 'bg-opacity-5 p-0'
 
 const isLoading = (info:CellContext<getAgentDetails.Result, any>) => info.row.original.agent_id === 'loading';
 
@@ -87,7 +71,7 @@ const columnBuilder = (iconIntensity:TColorIntensity) => {
 						</div>
 						<div className='flex-grow truncate'>
 							<div className='text-sm text-nowrap'>{info.row.original.name}</div>
-							<div className='text-sm truncate text-nowrap text-zinc-500'>{info.row.original.path}</div>
+							<div className='text-sm truncate text-nowrap text-zinc-500'>{info.row.original.scan_root_path}</div>
 						</div>
 					</div>
 				</Link>
@@ -98,39 +82,6 @@ const columnBuilder = (iconIntensity:TColorIntensity) => {
 			enableGlobalFilter: false,
 			enableSorting: false,
 		}),
-		// columnHelper.accessor('status', {
-		// 	cell: (info) => {
-		// 		const val = info.getValue();
-		// 		const {color,intensity} = statusToColor(val);
-		// 		return (
-		// 			isLoading(info)
-		// 			? <Skeleton
-		// 				width='60%'
-		// 				className={`inline-flex items-center justify-center px-2 text-4xl ${skelClass}`}
-		// 			/>
-		// 			: <Badge 
-		// 				variant='outline' 
-		// 				borderWidth='border' 
-		// 				rounded='rounded' 
-		// 				color={color} 
-		// 				colorIntensity={intensity}>{val}
-		// 			</Badge>
-		// 		);
-		// 	},
-		// 	size: 60,
-		// 	header: 'Status',
-		// 	footer: 'Status',
-		// }),
-		// columnHelper.accessor('use_history', {
-		// 	cell: (info) => (
-		// 		isLoading(info) ?
-		// 		<Skeleton />
-		// 		:
-		// 		<span>{info.getValue()}</span>
-		// 	),
-		// 	header: 'Using History',
-		// 	footer: 'Using History',
-		// }),
 		columnHelper.accessor('scan_start_time', {
 			cell: (info) => (
 				isLoading(info) ?
@@ -152,14 +103,14 @@ const columnBuilder = (iconIntensity:TColorIntensity) => {
 			header: 'Scan End',
 			footer: 'Scan End',
 		}),
-		columnHelper.accessor('scan_size', {
+		columnHelper.accessor('crawl_scan_size', {
 			size: 90,
-			header: () => <div className='flex flex-row w-full items-center justify-center gap-1'><span className='text-center'>Size</span><span className='text-center text-zinc-500 text-xs pt-1'> (Gb)</span></div>,		
+			header: () => <div className='flex flex-row w-full items-center justify-center gap-1 text-center'>Size</div>,		
 			cell: (info) => (
 				isLoading(info) ?
 				<Skeleton />
 				:
-				<div className='w-full text-center'>{bytesToGigs(info.getValue(),"")}</div>
+				<div className='w-full text-center'>{bytesToHuman(info.getValue())}</div>
 			),
 			footer: 'Scan Size',
 		}),
@@ -198,12 +149,12 @@ const columnBuilder = (iconIntensity:TColorIntensity) => {
 		}),
 		columnHelper.accessor('gigs_per_second', {
 			size: 120,
-			header: () => <div className='flex-col w-full align-center justify-center'><div className='text-center'>Speed</div><div className='text-center text-zinc-500 text-xs pt-1'> (Gbps)</div></div>,
+			header: () => <div className='flex-col w-full align-center justify-center text-center'>Speed</div>,
 			cell: (info) => (
 				isLoading(info) ?
 				<Skeleton />
 				:
-				<div className='w-full text-center'>{info.getValue()}</div>
+				<div className='w-full text-center'>{bytesToHuman(Number(info.getValue() * bytesToGigRatio),undefined,"ps")}</div>
 			),
 			footer: 'Speed',
 		}),
@@ -240,12 +191,12 @@ const columnBuilder = (iconIntensity:TColorIntensity) => {
 		// }),
 		columnHelper.accessor('total_size', {
 			size: 90,
-			header: () => <div className='flex flex-row w-full items-center justify-center gap-1'><span className='text-center'>Size</span><span className='text-center text-zinc-500 text-xs pt-1'> (Gb)</span></div>,		
+			header: () => <div className='flex flex-row w-full items-center justify-center gap-1'><span className='text-center'>Size</span></div>,		
 			cell: (info) => (
 				isLoading(info) ?
 				<Skeleton />
 				:
-				<div className='w-full text-center'>{bytesToGigs(info.getValue(),"")}</div>
+				<div className='w-full text-center'>{bytesToHuman(info.getValue())}</div>
 			),
 			footer: 'Crawl Size',
 		}),
@@ -284,23 +235,23 @@ const columnBuilder = (iconIntensity:TColorIntensity) => {
 		}),
 		columnHelper.accessor('throughput', {
 			size: 120,
-			header: () => <div className='flex-col w-full align-center justify-center'><div className='text-center'>Speed</div><div className='text-center text-zinc-500 text-xs pt-1'> (Gbps)</div></div>,
+			header: () => <div className='flex-col w-full align-center justify-center text-center'>Speed</div>,
 			cell: (info) => (
 				isLoading(info) ?
 				<Skeleton />
 				:
-				<div className='w-full text-center'>{bytesToGigs(info.getValue(),"")}</div>
+				<div className='w-full text-center'>{bytesToHuman(info.getValue(),undefined,"ps")}</div>
 			),
 			footer: 'Speed',
 		}),
 		columnHelper.accessor('largest_file_size', {
 			size: 90,
-			header: () => <div className='flex flex-col w-full items-center justify-center gap-1'><span className='text-center text-nowrap'>Largest File</span><span className='text-center text-zinc-500 text-xs pt-1'> (Gb)</span></div>,		
+			header: () => <div className='flex flex-col w-full items-center justify-center gap-1 text-center text-nowrap'>Largest File</div>,		
 			cell: (info) => (
 				isLoading(info) ?
 				<Skeleton />
 				:
-				<div className='w-full text-center'>{bytesToGigs(info.getValue(),"")}</div>
+				<div className='w-full text-center'>{bytesToHuman(info.getValue())}</div>
 			),
 			footer: 'Largest File',
 		}),

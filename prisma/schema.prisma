@@ -20,6 +20,7 @@ enum Status {
   IDLE
   ERRORED
   MISSING
+  PENDING
 }
 
 enum Severity {

@@ -76,4 +76,3 @@ JOIN (
 ) c 
 ON c."agentId" = "Agent".id
 WHERE "Agent"."id" = $1 OR $1 = ''
-;

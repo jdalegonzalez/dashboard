@@ -32,10 +32,10 @@ import useDarkMode from '@/hooks/useDarkMode';
 import { TColorIntensity } from '@/types/colorIntensities.type';
 import Skeleton from '@/components/utils/ThemedSkeleton';
 import LoaderDotsCommon from '@/components/LoaderDots.common';
-import FindingsListPartial from '../../dashboard/_partial/FindingsList.partial';
-import CrawlErrorList from '../../dashboard/_partial/CrawlErrorList.partial';
-import ScanErrorList from '../../dashboard/_partial/ScanErrorList.partial';
-import CrawlResults from '../../dashboard/_partial/CrawlResultsList.partial';
+import FindingsListPartial from '@/app/[locale]/teramis/dashboard/_partial/FindingsList.partial';
+import CrawlErrorList from '@/app/[locale]/teramis/dashboard/_partial/CrawlErrorList.partial';
+import ScanErrorList from '@/app/[locale]/teramis/dashboard/_partial/ScanErrorList.partial';
+import CrawlResults from '@/app/[locale]/teramis/dashboard/_partial/CrawlResultsList.partial';
 import { Status } from '@prisma/client';
 
 const TABS: {
@@ -54,11 +54,11 @@ const AgentDetails = () => {
 	const { slug: id } = useParams();
 	const { i18n } = useTranslation();
 	const { isDarkTheme } = useDarkMode();
-
 	const agentId: string | undefined = Array.isArray(id) ? id[0] : id
 	const [isSaving, setIsSaving] = useState<boolean>(false);
-	const { data: agent, isLoading: agentLoading, triggerScan } = useAgent(agentId, setIsSaving);
+	const { data: agent, isLoading: agentLoading, triggerScan } = useAgent(agentId, setIsSaving, 5000);
 	const { data: details, isLoading: detailsLoading } = useAgentDetails(agentId);
+
 	const scanId = agentLoading  ? '' : agent.scans[0]?.id;
 	const crawlId = agentLoading ? '' : agent.crawls[0]?.id;
 
@@ -256,7 +256,7 @@ const AgentDetails = () => {
 										</div>
 										<div className='col-span-1 flex-grow-1 p-2 text-zin'>
 											{bytesToHuman(details[0]?.throughput )}<span className='text-zinc-500'>&nbsp;per second,</span> 
-											<span>&nbsp;{details[0].timeouts} </span><span className='text-zinc-500'>Timeouts</span> 
+											<span>&nbsp;{details[0]?.crawl_errors} </span><span className='text-zinc-500'>Errors</span> 
 										</div>
 									</CardBody>
 									<CardFooter>
@@ -264,7 +264,7 @@ const AgentDetails = () => {
 											<div className='flex items-center gap-2'>
 												<Icon icon='HeroDocumentCheck' size='text-2xl' />
 												<span className='text-zinc-500'>Last crawl:</span>
-												{detailsLoading ? <LoaderDotsCommon /> : dayjs(details[0]?.scan_end_time).locale(i18n.language).format('LLL')}
+												{detailsLoading ? <LoaderDotsCommon /> : dayjs(details[0]?.crawl_end_time).locale(i18n.language).format('LLL')}
 											</div>
 										</CardFooterChild>
 									</CardFooter>
@@ -316,7 +316,7 @@ const AgentDetails = () => {
 										</div>
 										<div className='col-span-1 flex-grow-1 p-2 text-zin'>
 											{bytesToHuman(details[0]?.gigs_per_second * bytesToGigRatio )}<span className='text-zinc-500'>&nbsp;per second,</span> 
-											<span>&nbsp;{details[0].timeouts} </span><span className='text-zinc-500'>Timeouts</span> 
+											<span>&nbsp;{details[0]?.timeouts} </span><span className='text-zinc-500'>Timeouts</span> 
 										</div>
 									</CardBody>
 									<CardFooter>

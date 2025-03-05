@@ -85,13 +85,11 @@ interface ITriggerPayload {
   pathToScan: string
 }
 
-export const useAgent = (id: string|string[]|undefined, setIsSaving?: React.Dispatch<React.SetStateAction<boolean>>) => {
-    // TODO: We can optimize this when the request is also fetching or has fetched agent details by adding
-    // "no-data" as a URL argment and letting the fetcher know not to actually fetch anything for "no-data" requests
-    // I still need the call though to get the mutator.  HOWEVER, this will be a little tricky because I'll have to
-    // use the top-level mutator to update the agent details in the agent overview bit.
+type TSavingStateAction = React.Dispatch<React.SetStateAction<boolean>>
+export const useAgent = (id: string|string[]|undefined, setIsSaving?: TSavingStateAction, refreshInterval?:number) => {
     const path = apiPath + '/' + id;
-    const { data, error, isLoading, mutate } = useSWR<IAgentResult>(path, fetch);
+    const options = refreshInterval ? {refreshInterval: refreshInterval} : {}
+    const { data, error, isLoading, mutate } = useSWR<IAgentResult>(path, fetch, options);
     const performUpdate = async (newData:Partial<IAgentResult>) => {
         if (setIsSaving) setIsSaving(true);
         await updater<IAgentResult>(path, newData)

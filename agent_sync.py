@@ -16,8 +16,7 @@ import socket
 import threading
 import hashlib
 
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
+from watchfiles import Change, watch
 
 """
 Scans a target directory that is expected to contain Teramis scan agent data and
@@ -136,7 +135,7 @@ def insensitive_in(val, val_list):
     return False
  
 HandlerType = Callable[[str, str], None]
-class TeramisEventHandler(FileSystemEventHandler):
+class TeramisEventHandler():
 
     def __init__(self, target:str, handler: HandlerType):
         self.target = target
@@ -145,6 +144,20 @@ class TeramisEventHandler(FileSystemEventHandler):
         self.update_map = {}
 
         super().__init__()
+
+    def start_watching(self): 
+
+        for changes in watch(self.target):
+            for change in changes:
+                change_type, file = change
+                print(change_type, file)
+                if change_type == Change.added:
+                    self.on_created(file)
+                elif change_type == Change.modified:
+                    self.on_modified(file)
+                elif change_type == Change.deleted:
+                    # We don't handle deleted.
+                    pass
 
     def update_hash(self, file:str):
         # Keep the dictionary of file hashes from 
@@ -187,33 +200,27 @@ class TeramisEventHandler(FileSystemEventHandler):
         else:
             logger.info(f"Not processing unchanged file '{file}'")
             
-    def on_created(self, event):
-        logger.info(f"File created: {event.src_path}")
+    def on_created(self, src_path):
+        logger.info(f"File created: {src_path}")
         # We're currently only looking for creation of either the queue file
         # or the machine_info file for an agent.  There will be other files that get
         # written and we may need to wait and not launch prematurely
-        folder, agent_id = self.is_agent_path(event.src_path, ['queue.json','machine_info.json'])
-        if folder and agent_id: self.launch_handler(event.src_path, folder, agent_id)
+        folder, agent_id = self.is_agent_path(src_path, ['queue.json','machine_info.json'])
+        if folder and agent_id: self.launch_handler(src_path, folder, agent_id)
     
-    def on_modified(self, event):
+    def on_modified(self, src_path):
         # We're currently only looking for modification of the queue file. We're
         # not going to catch updates to the machine_info.json file because the file
         # isn't reparsed by the sync
-        logger.info(f"File modified: {event.src_path}")
+        logger.info(f"File modified: {src_path}")
         if self.lock.acquire(blocking=False):
             try:
-                file, agent_id = self.is_agent_path(event.src_path, ['queue.json'], 'modified')
-                if file and agent_id: self.launch_handler(event.src_path, file, agent_id)
+                file, agent_id = self.is_agent_path(src_path, ['queue.json'], 'modified')
+                if file and agent_id: self.launch_handler(src_path, file, agent_id)
             finally:
                 self.lock.release()
         else:
             logger.info(f"Already locked")
-
-    def on_deleted(self, event):
-        logger.info(f"File deleted: {event.src_path}")
-
-    def on_moved(self, event):
-         logger.info(f"File moved from {event.src_path} to {event.dest_path}")
 
 
 def is_file_older(file_path, date_to_compare):
@@ -1030,15 +1037,7 @@ if __name__ == '__main__':
     if args.watch and exit_code == 0:
         logger.info(f"Watching '{args.target}'")
         event_handler = TeramisEventHandler(args.target, callback)
-        observer = Observer()
-        observer.schedule(event_handler, args.target, recursive=True)
-        observer.start()
-        try:
-            while True: time.sleep(1)
-        except KeyboardInterrupt:
-            observer.stop()
-        
-        observer.join()
+        event_handler.start_watching()
 
     logger.info("Exiting")
     sys.exit(exit_code)

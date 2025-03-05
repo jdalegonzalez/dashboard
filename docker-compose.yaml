@@ -1,0 +1,18 @@
+version: 2.33.1
+
+services:
+  watchdog:
+    image: teramis-watchdog
+    build:
+      context: .
+      dockerfile: Dockerfile.watchdog
+    volumes:
+      - ${TERAMIS_SCAN_TARGET}:/teramis-watchdog/agents
+    environment:
+      - PGHOST=database.local
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+      - TERAMIS_SCAN_TARGET=/teramis-watchdog/agents
+    extra_hosts:
+      - "database.local:172.17.0.1"

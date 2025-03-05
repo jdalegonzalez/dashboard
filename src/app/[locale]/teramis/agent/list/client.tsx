@@ -60,7 +60,7 @@ const columnBuilder = (iconIntensity:TColorIntensity) => {
 				: 				
 				<Link href={`${editLinkPath}${info.row.original.agent_id}`}>
 					<div className='flex items-center pr-4'>
-						<div className='flex-shrink-0 w-[60px] mr-2'>
+						<div className='flex-shrink-0 w-[80px] mr-2'>
 						<Badge 
 							variant='outline' 
 							borderWidth='border' 

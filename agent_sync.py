@@ -6,12 +6,16 @@ import argparse
 import csv
 import json
 import os
-import fcntl
 import re
 import sys
 from datetime import datetime, timedelta
+import time
 from typing import Callable, List, Union
 import logging
+import socket
+
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 
 """
 Scans a target directory that is expected to contain Teramis scan agent data and
@@ -122,6 +126,20 @@ class Confidence(StrEnum):
     MEDIUM = 'MEDIUM'
     LOW = 'LOW'
     NONE = 'NONE'
+
+class TeramisEventHandler(FileSystemEventHandler):
+    def on_created(self, event):
+        logger.info(f"File created: {event.src_path}")
+
+    def on_modified(self, event):
+        logger.info(f"File modified: {event.src_path}")
+
+    def on_deleted(self, event):
+        logger.info(f"File deleted: {event.src_path}")
+
+    def on_moved(self, event):
+         logger.info(f"File moved from {event.src_path} to {event.dest_path}")
+
 
 def is_file_older(file_path, date_to_compare):
     """
@@ -502,11 +520,15 @@ def set_agent_status(cursor, source:str, id: str):
     json_data = json_from_queue(queue_file)
     new_targets = []
     for target in json_data.get('targets', []):
+        # Once, I managed to stick something that wasn't an object
+        # in the targets array.  It's not valid, so we'll move on
+        if type(target) != dict: continue
         targ_stat = target.get('status','').strip().upper()
         if targ_stat == 'QUEUED':
             new_targets.append(target)
             if status == Status.IDLE: status = Status.SCANNING  
         elif targ_stat.startswith('ERROR:'):
+            new_targets.append(target)
             logger.error(f"Agent '{id}' '{targ_stat}'")
             status = Status.ERRORED
 
@@ -772,8 +794,18 @@ def get_arguments():
         dest="password",
         default=os.getenv("PGPASSWORD","teramis")
     )
+    parser.add_argument(
+        "-w", "--watch",
+        help="Watch for filesystem changes after cranking up.",
+        dest="watch",
+        default=False,
+        action='store_true'
+    )
+    
     args = parser.parse_args()
-
+    watch_env = os.getenv("TERAMIS_WATCH","False").strip().upper()
+    
+    args.watch = args.watch or watch_env == "TRUE" or watch_env == "1"
     return args
 
 def perform_init(conn):
@@ -850,18 +882,47 @@ def perform_sync(args):
     :param import_date: The date to import data from.
     """
     connect_string = f"postgresql://{args.user}:{args.password}@{args.host}:{args.port}/{args.database}"
+    exit_code = 0
 
-    with psycopg.connect(connect_string) as conn:
+    try:
 
-        if args.init:
-            logger.info("Initializing the database.")
-            perform_init(conn)
+        with open('teramis_importer.lock', 'x') as lock_file:
+            lock_file.write('locked')
 
-        if not args.no_import:
-            logger.info("Importing data.")
-            sync_agent_and_db(conn, args.target)
+        with psycopg.connect(connect_string) as conn:
 
-        # Cleanup the agent status.
+            if args.init:
+                logger.info("Initializing the database.")
+                perform_init(conn)
+
+            if not args.no_import:
+                logger.info("Importing data.")
+                sync_agent_and_db(conn, args.target)
+
+        logger.info("Import complete.")
+
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+        exit_code = 2
+
+    finally:
+        os.remove('teramis_importer.lock')
+
+    return exit_code
+
+def get_host_ip(hostname):
+    try:
+        ip_address = socket.gethostbyname(hostname)
+        return ip_address
+    except socket.gaierror as e:
+        return f"Error resolving hostname: {e}"
+
+def cat_etc_hosts():
+
+    with open('/etc/hosts','r') as file:
+        contents = file.read()
+        logger.info(contents)
 
 if __name__ == '__main__':
 
@@ -875,19 +936,23 @@ if __name__ == '__main__':
 
     exit_code = 0
 
-    try:
-        with open('teramis_importer.lock', 'x') as lock_file:
-            lock_file.write('locked')
+    logger.info(f'PGHOST: {args.host}')
+    logger.info(get_host_ip(args.host))
 
-        perform_sync(args)
-        logger.info("Import complete.")
+    exit_code = perform_sync(args)
 
-    except Exception as e:
-        logger.error(e)
-        logger.error(traceback.format_exc())
-        exit_code = 2
+    if args.watch:
+        logger.info(f"Watching '{args.target}'")
+        event_handler = TeramisEventHandler()
+        observer = Observer()
+        observer.schedule(event_handler, args.target, recursive=True)
+        observer.start()
+        try:
+            while True: time.sleep(1)
+        except KeyboardInterrupt:
+            observer.stop()
+        
+        observer.join()
 
-    finally:
-        os.remove('teramis_importer.lock')
-
+    logger.info("Exiting")
     sys.exit(exit_code)

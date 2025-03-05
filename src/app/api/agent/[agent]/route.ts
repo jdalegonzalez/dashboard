@@ -143,13 +143,15 @@ export async function PUT(req: NextRequest) {
 
     try {
         const queue = await readExistingQueue(queueFile);
-        const existing = queue.targets.find((e:IQueueEntry) => e.root === pathToScan);
-        if (existing) {
+        const existing = queue.targets.findIndex((e:IQueueEntry) => e.root === pathToScan);
+        const stat = (existing >= 0) ? (queue.targets[existing]??'').status?.trim().toUpperCase() ?? '' : ''
+        if (stat && !stat.startsWith('ERROR')) {
             return NextResponse.json(
-                {response: `Path ${pathToScan}' already queued for agent: '${id}'.`},
-                {status: 200, statusText: `Path ${pathToScan}' already queued for agent: '${id}'.`}
+                {response: `Path ${pathToScan}' already queued for agent: '${id}' (${stat}).`},
+                {status: 200, statusText: `Path ${pathToScan}' already queued for agent: '${id}' (${stat}).`}
             )
         }
+        if (existing >= 0) delete queue.targets[existing]
         queue.targets.push({
             root: pathToScan,
             status: 'queued'

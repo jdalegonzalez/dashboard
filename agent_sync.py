@@ -13,6 +13,8 @@ import time
 from typing import Callable, List, Union
 import logging
 import socket
+import threading
+import hashlib
 
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -127,12 +129,85 @@ class Confidence(StrEnum):
     LOW = 'LOW'
     NONE = 'NONE'
 
+def insensitive_in(val, val_list):
+    cval = val.casefold()
+    for ele in val_list:
+        if ele.casefold() == cval: return True
+    return False
+ 
+HandlerType = Callable[[str, str], None]
 class TeramisEventHandler(FileSystemEventHandler):
+
+    def __init__(self, target:str, handler: HandlerType):
+        self.target = target
+        self.handler = handler
+        self.lock = threading.Lock()
+        self.update_map = {}
+
+        super().__init__()
+
+    def update_hash(self, file:str):
+        # Keep the dictionary of file hashes from 
+        # getting too big.  We're only interested
+        # in preventing successive identical updated.
+        if len(self.update_map) > 100:
+            dict.pop(next(iter(self.update_map)))
+
+        with open(file, 'rb') as f:
+            last_hash = hashlib.file_digest(f,'md5').hexdigest()
+
+        self.update_map[file] = last_hash
+
+    def hash_changed(self, file: str) -> bool:
+        last_hash = self.update_map.get(file, '');
+        if not last_hash: return True
+        with open(file, 'rb') as f:
+            cur_hash = hashlib.file_digest(f,'md5').hexdigest()
+            return cur_hash != last_hash
+        
+    def is_agent_path(self, source, files, event_type = 'created'):
+        head, tail = os.path.split(source)
+        if insensitive_in(tail.strip(), files):
+            rest, agent_id = os.path.split(head)
+            if rest == self.target:
+                logger.info(f"'{tail}' {event_type} for agent: '{agent_id}'")
+                return (head, agent_id)
+        return (None, None)
+    
+
+    def launch_handler(self, file:str, folder: str, agent_id: str):
+        if self.hash_changed(file):
+            logger.info("Lauching sync")
+            try:
+                self.handler(folder, agent_id)
+                self.update_hash(file)
+            except Exception as e:
+                logger.error("Error in handler")
+                logger.error(e)
+        else:
+            logger.info(f"Not processing unchanged file '{file}'")
+            
     def on_created(self, event):
         logger.info(f"File created: {event.src_path}")
-
+        # We're currently only looking for creation of either the queue file
+        # or the machine_info file for an agent.  There will be other files that get
+        # written and we may need to wait and not launch prematurely
+        folder, agent_id = self.is_agent_path(event.src_path, ['queue.json','machine_info.json'])
+        if folder and agent_id: self.launch_handler(event.src_path, folder, agent_id)
+    
     def on_modified(self, event):
+        # We're currently only looking for modification of the queue file. We're
+        # not going to catch updates to the machine_info.json file because the file
+        # isn't reparsed by the sync
         logger.info(f"File modified: {event.src_path}")
+        if self.lock.acquire(blocking=False):
+            try:
+                file, agent_id = self.is_agent_path(event.src_path, ['queue.json'], 'modified')
+                if file and agent_id: self.launch_handler(event.src_path, file, agent_id)
+            finally:
+                self.lock.release()
+        else:
+            logger.info(f"Already locked")
 
     def on_deleted(self, event):
         logger.info(f"File deleted: {event.src_path}")
@@ -292,41 +367,24 @@ def create_scan_results_from_directory(cursor, scan_id: str, source: str) -> int
             csv_reader = csv.DictReader(file)
             for row in csv_reader:
                 rows += 1
-                cursor.execute(
-                    """
-                    INSERT INTO "ScanResult" (
-                        id,
-                        "scanId",
-                        hash,
-                        file_path,
-                        mime_type,
-                        bsize,
-                        processed,
-                        errored,
-                        match,
-                        confidence
-                    )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    """,
-                    (
-                        cuid_generator(),
-                        scan_id,
-                        row['Hash'],
-                        row['Filepath'],
-                        row['MimeType'],
-                        int(row['Bsize']),
-                        row['Processed'].upper().strip() == "TRUE",
-                        row['Error'].upper().strip() == "TRUE",
-                        match_string_to_array(row['Match']),
-                        confidence_string_to_enum(row['Confidence'])
-                    )
-                )
+                cursor.execute(*dict_to_insert_sql("ScanResult", {
+                    "id":         cuid_generator(),
+                    "scanId":     scan_id,
+                    "hash":       row['Hash'],
+                    "file_path":  row['Filepath'],
+                    "mime_type":  row['MimeType'],
+                    "bsize":      int(row['Bsize']),
+                    "processed":  row['Processed'].upper().strip() == "TRUE",
+                    "errored":    row['Error'].upper().strip() == "TRUE",
+                    "match":      match_string_to_array(row['Match']),
+                    "confidence": confidence_string_to_enum(row['Confidence'])
+                }))
 
         logger.info(f"Created {rows} results for scan: '{scan_id}'")
 
     return rows
 
-def dict_to_insert_sql(table:str, dct:dict) -> str:
+def dict_to_insert_sql(table:str, dct:dict, no_conflict = False) -> str:
 
     str = f'INSERT INTO "{table}" ('
     vals = ()
@@ -336,6 +394,8 @@ def dict_to_insert_sql(table:str, dct:dict) -> str:
         vals += (v,)
 
     str = str.rstrip(', ') + ') VALUES (' + ', '.join(['%s'] * len(dct)) + ')'
+
+    if no_conflict: str += ' ON CONFLICT DO NOTHING'
 
     return (str, vals)
 
@@ -546,7 +606,7 @@ def set_agent_status(cursor, source:str, id: str):
         try:
             with open(queue_file, 'w') as file:
                 json.dump({'targets': new_targets}, file, indent=2)
-        except e:
+        except Exception as e:
             logger.error(e)
         finally:
             if remove_lock: remove_lock()
@@ -627,9 +687,7 @@ def write_scan_to_db(cursor, agent_id:str, folder: str, source:str) -> str:
                 logger.warning(f"Unmatched Scan key '{tag}'")
 
         scan["agentId"] = agent_id
-        cursor.execute(*dict_to_insert_sql("Scan", scan
-        
-        ))
+        cursor.execute(*dict_to_insert_sql("Scan", scan))
         return scan['id']
 
 args_extractor_re = re.compile(r"CMD Settings: *\(Directory: ([^ ,]*), *Use History: *([TtRrUuEeFfAaLlSsEe]*)\)")
@@ -828,11 +886,36 @@ def create_agent(cursor, agent_id, info_file, log_file):
         )
         agent_data['id'] = agent_id
 
-    cursor.execute(*dict_to_insert_sql("Agent", agent_data))
+    cursor.execute(*dict_to_insert_sql("Agent", agent_data, no_conflict=True))
 
     return agent_data['id']
 
-def sync_agent_and_db(conn, source: str):
+def sync_agent_and_db(cursor, arg_agent_id:str, folder: str, existing_agents:list[str]):
+
+    if os.path.isdir(folder):
+        
+        info_file = os.path.join(folder, 'machine_info.json')
+        log_file = os.path.join(folder, 'teramis.log')
+        if not os.path.isfile(info_file):
+            logger.info(f'Skipping folder: "{folder}".  No machine_info.json')
+            return
+        
+        # We only create the agent the first time the file appears
+        # If we've already got this agent, we're not going to recreate
+        # it.  We will look for newer Scans and Crawls
+        if arg_agent_id in existing_agents:
+            logger.info(f"Skipping Agent: '{arg_agent_id}'.  Agent already exists.")
+            agent_id = arg_agent_id
+        else:
+            agent_id = create_agent(cursor, arg_agent_id, info_file, log_file)
+        
+        sync_agent_results(cursor, agent_id, folder)
+
+        return agent_id
+    else:
+        logger.warning(f"Bad path '{folder}' passed to sync_agent_and_db")
+
+def sync_agent_folders_and_db(conn, source: str):
     """
     Creates any agents that aren't already in the database from the
     machine_info.json file stored in their directory.
@@ -843,51 +926,53 @@ def sync_agent_and_db(conn, source: str):
     with conn.cursor() as cursor:
         for entry in os.listdir(source):
             folder = os.path.join(source, entry)
-            if os.path.isdir(folder):
-                
-                info_file = os.path.join(folder, 'machine_info.json')
-                log_file = os.path.join(folder, 'teramis.log')
-                if not os.path.isfile(info_file):
-                    logger.info(f'Skipping folder: "{folder}".  No machine_info.json')
-                    continue
-                
-                # This is an agent folder, so we'll add it to the list of found
-                # ones.  After we finish, we'll compare the list of agents we
+            if (agent_id := sync_agent_and_db(cursor, entry, folder, existing_agents)):
+                # This was an agent folder, so we'll add it to the list of found
+                # agents.  After we finish, we'll compare the list of agents we
                 # found with the ones we have in the DB.  The lists should match.
                 # If there is something in the db that is missing from the ones
                 # we found, we'll mark the agent as "Missing".
-
-                found_agents.append(entry)
-                
-                # We only create the agent the first time the file appears
-                # If we've already got this agent, we're not going to recreate
-                # it.  We will look for newer Scans and Crawls
-                if entry in existing_agents:
-                    logger.info(f"Skipping Agent: '{entry}'.  Agent already exists.")
-                    agent_id = entry
-                else:
-                    agent_id = create_agent(cursor, entry, info_file, log_file)
-                
-                sync_agent_results(cursor, agent_id, folder)
+                found_agents.append(agent_id)
 
         ## TODO: Check found_agents[] against existing_agents and mark
         ##       as missing any that are in existing but not in found.
 
-    conn.commit()
+def sync_one_agent(connect_string, agent_folder, agent_id):
+    """
+    Called by the update event handler to handle changes for a single
+    agent.  TODO: The move might be to scan all agents every time any
+    agent changes to that we clean up as we go in the case of race conditions. 
+    """
+    try:
 
-def perform_sync(args):
+        with psycopg.connect(connect_string) as conn:
+            sync_agent_and_db(conn.cursor(), agent_id, agent_folder, [])
+            conn.commit()
+
+        logger.info(f'Update for agent: {agent_id} complete.')
+
+    except Exception as e:
+        logger.error(e)
+        logger.error(traceback.format_exc())
+
+def perform_sync(args, connect_string):
     """
     Imports data from the given date.
 
     :param import_date: The date to import data from.
     """
-    connect_string = f"postgresql://{args.user}:{args.password}@{args.host}:{args.port}/{args.database}"
+
     exit_code = 0
 
-    try:
-
+    # Try to get the lock-file and bail if we can't
+    try: 
         with open('teramis_importer.lock', 'x') as lock_file:
             lock_file.write('locked')
+    except FileExistsError as e:
+        logger.info("Proocessing already running.  Exiting.")
+        return 1
+    
+    try:
 
         with psycopg.connect(connect_string) as conn:
 
@@ -897,7 +982,9 @@ def perform_sync(args):
 
             if not args.no_import:
                 logger.info("Importing data.")
-                sync_agent_and_db(conn, args.target)
+                sync_agent_folders_and_db(conn, args.target)
+            
+            conn.commit()
 
         logger.info("Import complete.")
 
@@ -918,12 +1005,6 @@ def get_host_ip(hostname):
     except socket.gaierror as e:
         return f"Error resolving hostname: {e}"
 
-def cat_etc_hosts():
-
-    with open('/etc/hosts','r') as file:
-        contents = file.read()
-        logger.info(contents)
-
 if __name__ == '__main__':
 
     logging.basicConfig(level=logging.INFO)
@@ -935,15 +1016,20 @@ if __name__ == '__main__':
         sys.exit(1)
 
     exit_code = 0
+    connect_string = f"postgresql://{args.user}:{args.password}@{args.host}:{args.port}/{args.database}"
 
     logger.info(f'PGHOST: {args.host}')
+    logger.info(f'PGDATABASE: {args.database}')
     logger.info(get_host_ip(args.host))
 
-    exit_code = perform_sync(args)
+    exit_code = perform_sync(args, connect_string)
 
-    if args.watch:
+    def callback(agent_folder: str, agent_id:str): 
+        sync_one_agent(connect_string, agent_folder, agent_id)
+
+    if args.watch and exit_code == 0:
         logger.info(f"Watching '{args.target}'")
-        event_handler = TeramisEventHandler()
+        event_handler = TeramisEventHandler(args.target, callback)
         observer = Observer()
         observer.schedule(event_handler, args.target, recursive=True)
         observer.start()

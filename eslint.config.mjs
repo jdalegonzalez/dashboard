@@ -4,6 +4,12 @@ const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
 })
 const eslintConfig = [
+  {
+    ignores: [
+      "src/prisma-client/",
+      "data/"
+    ]
+  },
   ...compat.config({
     extends: [
         'next',
@@ -14,7 +20,7 @@ const eslintConfig = [
     rules:{
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "off",
-    }
+    },
   }),
 ]
 export default eslintConfig

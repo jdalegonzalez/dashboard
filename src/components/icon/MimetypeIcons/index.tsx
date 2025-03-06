@@ -23,7 +23,6 @@ const MimeType: FC<IMimeTypeProps> = (props) => {
     const { style, mimeType, className, rounded = "rounded", ...rest } = props;
     const sharedClass = classNames('relative bg-stone-950/0', className, rounded);
     const ext = mime.extension(mimeType) ?? "";
-    if (!ext) console.log(mimeType);
     return (
         <div style={style} className={sharedClass}>
             <Icon

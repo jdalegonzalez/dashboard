@@ -14,7 +14,6 @@ export async function GET(req: NextRequest) {
 
     const sortOrder = { hash: 'asc' as const}
     const whereClause = {...idPart };
-    console.log(whereClause)
     const [totalRows, results] = await prisma.$transaction([
         prisma.crawlHash.count({ where: whereClause }),
         prisma.crawlHash.findMany({ where: whereClause, skip: skip, take: rowsPerPage, orderBy: sortOrder })

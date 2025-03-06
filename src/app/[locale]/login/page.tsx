@@ -20,7 +20,7 @@ type TValues = {
 	password: string;
 };
 
-const publicUrl:string = 'http://localhost:3000' // process.env.NEXT_PUBLIC_URL ?? '';
+//const publicUrl:string = process.env.NEXT_PUBLIC_URL ?? '';
 const LoginPage = (
     props: {
         searchParams?: Promise<Record<'callbackUrl' | 'error', string>>;
@@ -56,7 +56,7 @@ const LoginPage = (
 			});
 
 			if (!res?.error) {
-				router.push(searchParams?.callbackUrl ?? (publicUrl));
+				router.push(searchParams?.callbackUrl ?? '/');
 			}
 
 			// onLogin(values.username, values.password)

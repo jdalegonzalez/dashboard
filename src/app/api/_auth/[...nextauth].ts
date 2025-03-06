@@ -14,14 +14,14 @@ export const authOptions = {
 		// newUser: '/auth/new-user', // New users will be directed here on first sign in (leave the property out if not of interest)
 	},
 	providers: [
-		GithubProvider({
-			clientId: process.env.GITHUB_ID as string,
-			clientSecret: process.env.GITHUB_SECRET as string,
-		}),
-		GoogleProvider({
-			clientId: process.env.GOOGLE_CLIENT_ID as string,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-		}),
+		// GithubProvider({
+		// 	clientId: process.env.GITHUB_ID as string,
+		// 	clientSecret: process.env.GITHUB_SECRET as string,
+		// }),
+		// GoogleProvider({
+		// 	clientId: process.env.GOOGLE_CLIENT_ID as string,
+		// 	clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+		// }),
 		CredentialsProvider({
 			// The name to display on the sign in form (e.g. "Sign in with...")
 			name: 'Credentials',
@@ -33,7 +33,7 @@ export const authOptions = {
 				username: { label: 'Username', type: 'text', placeholder: 'username' },
 				password: { label: 'Password', type: 'password' },
 			},
-					async authorize(credentials, req) {
+			async authorize(credentials, req) {
 				// Add logic here to look up the user from the credentials supplied
 				const user = { id: '6', name: 'scottnewton', email: 'scottnewton@site.com' };
 
@@ -77,7 +77,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 	return NextAuth(req, res, {
 		...authOptions,
 		callbacks: {
-					session({ session, token }) {
+			session({ session, token }) {
 				// Return a cookie value as part of the session
 				// This is read when `req.query.nextauth.includes("session") && req.method === "GET"`
 				// @ts-expect-error This is fine

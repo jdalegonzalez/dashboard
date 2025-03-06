@@ -153,7 +153,7 @@ const CrawlResultsPartial = (props:IErrorListProps) => {
 	const [globalFilter, setGlobalFilter] = useState<string>('');
 
 	const extraArgs = { crawlId };
-	console.log(extraArgs)
+
 	const response = usePagedResponse<CrawlAPIResults>(fetchPath, pagination, blankResponse, extraArgs);
 	
 	const table = useReactTable({

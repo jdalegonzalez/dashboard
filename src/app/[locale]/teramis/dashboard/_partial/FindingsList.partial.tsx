@@ -220,12 +220,10 @@ const FindingsListPartial = (props:IFindingsListProps) => {
 	useEffect(() => {
 		if (!isFilterOpen) {
 			if (filteredConf.length === confidences.length) {
-				console.log('Turning off the filter');
 				setGlobalFilter('');
 			}
 			else {
 				setGlobalFilter(filteredConf.join(','));
-				console.log('Turning on the filter');
 			}
 		}
 	}, [isFilterOpen, confidences.length, filteredConf]);

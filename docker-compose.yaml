@@ -31,7 +31,7 @@ services:
     ports:
       - 6868:5432
     volumes:
-      - ${TERAMIS_DB_DIR:-./data}:/var/lib/postresql/data/pgdata
+      - ${TERAMIS_DB_DIR:-./data}:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${PG_SUPERUSER:-postgres}
       - POSTGRES_PASSWORD=${PG_SUPERUSER_PASSWORD}

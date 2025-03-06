@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import PageWrapper from '@/components/layouts/PageWrapper/PageWrapper';
-import { getAgentDetails } from '@prisma/client/sql';
+import { getAgentDetails } from '@/prisma-client/sql';
 import useDarkMode from '@/hooks/useDarkMode';
 
 import { formatDate, statusToColor, bytesToHuman, bytesToGigRatio } from '@/utils/dataDisplay.util';

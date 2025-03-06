@@ -4,7 +4,7 @@ import { IAgentResult } from '@/app/lib/fetch';
 import path from "path";
 import { readFile, mkdir, writeFile, open } from "fs/promises";
 import lockfile from 'proper-lockfile';
-import { Status } from "@prisma/client";
+import { Status } from "@/prisma-client";
 
 export const dynamic = "force-dynamic";
 

@@ -2,9 +2,9 @@ import useSWR from 'swr';
 import fetch, { updater } from '@/app/lib/fetch';
 import fetcher, {AgentAPIResults, AgentAPIDetailResults} from '@/app/lib/fetch';
 import { unpagedUrl } from '@/app/lib/fetch';
-import { getAgentDetails } from '@prisma/client/sql';
+import { getAgentDetails } from '@/prisma-client/sql';
 import { IAgentResult } from '@/app/lib/fetch';
-import { Status } from '@prisma/client';
+import { Status } from '@/prisma-client';
 
 const emptyDate = new Date(0)
 

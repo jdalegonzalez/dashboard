@@ -1,7 +1,7 @@
 'use client';
 
 import React, {FC} from 'react';
-import { getAgentDetails } from '@prisma/client/sql';
+import { getAgentDetails } from '@/prisma-client/sql';
 
 import Card, {
 	CardBody,

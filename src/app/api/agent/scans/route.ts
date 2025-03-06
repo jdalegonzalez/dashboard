@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { getScansSummary } from '@prisma/client/sql'
+import { getScansSummary } from '@/prisma-client/sql'
 import { ScanSummaryAPIResults } from '@/app/lib/fetch';
 
 export async function GET(request: NextRequest) {

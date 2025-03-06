@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { Confidence } from '@prisma/client';
+import { Confidence } from '@/prisma-client';
 import { pagingParams, defaultRows, booleanParam, idParam, enumParam, enumWhere, scanIdFilter as idFilter } from '@/app/lib/fetch';
 
 export async function GET(request: NextRequest) {

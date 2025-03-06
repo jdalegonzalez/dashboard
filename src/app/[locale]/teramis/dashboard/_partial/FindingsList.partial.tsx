@@ -17,7 +17,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import useElementSize from '@/hooks/useElementSize';
 import usePagedResponse from '@/hooks/usePagedResponse';
 import { FindingsAPIResults, findingsPath as fetchPath } from '@/app/lib/fetch'
-import { Confidence, type ScanResult } from '@prisma/client';
+import { Confidence, type ScanResult } from '@/prisma-client';
 
 // import FieldWrap from '@/components/form/FieldWrap';
 // import Input from '@/components/form/Input';

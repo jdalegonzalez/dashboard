@@ -6,7 +6,7 @@ import {
     getTotalFileCount,
     getUnsupportedFileCount,
     getAgentDetails
-} from '@prisma/client/sql'
+} from '@/prisma-client/sql'
 import { booleanParam, idParam } from '@/app/lib/fetch';
 
 const summaryJson = async () => {

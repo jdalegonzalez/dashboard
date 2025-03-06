@@ -1,0 +1,12 @@
+Dockerfile.gui
+Dockerfile.postgres
+Dockerfile.watchdog
+.dockerignore
+node_modules
+data
+install
+demo-data
+npm-debug.log
+README.md
+.next
+.git

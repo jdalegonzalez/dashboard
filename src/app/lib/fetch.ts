@@ -5,9 +5,9 @@ import {
   PrismaClient,
   ScanError,
   ScanResult
-} from '@prisma/client';
+} from '@/prisma-client';
 
-import { getAgentDetails } from '@prisma/client/sql';
+import { getAgentDetails } from '@/prisma-client/sql';
 import { NextRequest } from 'next/server';
 
 export default async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Promise<JSON> {

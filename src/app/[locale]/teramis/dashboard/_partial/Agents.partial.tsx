@@ -4,7 +4,7 @@ import {useAgentDetails} from '@/hooks/useAgent';
 
 import AgentDetails from './AgentCard.partial';
 import NewAgentButton from './NewAgentButton.partial';
-import { getAgentDetails } from '@prisma/client/sql';
+import { getAgentDetails } from '@/prisma-client/sql';
 
 const AgentsPartial: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
 	const { className, ...rest } = props;

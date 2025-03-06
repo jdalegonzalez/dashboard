@@ -1,4 +1,4 @@
-import { Severity, Status, Confidence } from '@prisma/client';
+import { Severity, Status, Confidence } from '@/prisma-client';
 
 export const shorten = (id: string, val:string, len:number = 20) => {
 	if (!val) return val;

@@ -36,7 +36,7 @@ import FindingsListPartial from '@/app/[locale]/teramis/dashboard/_partial/Findi
 import CrawlErrorList from '@/app/[locale]/teramis/dashboard/_partial/CrawlErrorList.partial';
 import ScanErrorList from '@/app/[locale]/teramis/dashboard/_partial/ScanErrorList.partial';
 import CrawlResults from '@/app/[locale]/teramis/dashboard/_partial/CrawlResultsList.partial';
-import { Status } from '@prisma/client';
+import { Status } from '@/prisma-client';
 
 const TABS: {
 	[key in 'SCANRESULTS' | 'SCANERRORS' | 'CRAWLRESULTS' | 'CRAWLERRORS']: 
@@ -56,6 +56,7 @@ const AgentDetails = () => {
 	const { isDarkTheme } = useDarkMode();
 	const agentId: string | undefined = Array.isArray(id) ? id[0] : id
 	const [isSaving, setIsSaving] = useState<boolean>(false);
+
 	const { data: agent, isLoading: agentLoading, triggerScan } = useAgent(agentId, setIsSaving, 5000);
 	const { data: details, isLoading: detailsLoading } = useAgentDetails(agentId);
 

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import useElementSize from '@/hooks/useElementSize';
 import usePagedResponse from '@/hooks/usePagedResponse';
-import { type CrawlError } from '@prisma/client';
+import { type CrawlError } from '@/prisma-client';
 import { CrawlErrorAPIResults as ErrorAPIResults, crawlErrorsPath as fetchPath } from '@/app/lib/fetch';
 import path from 'path';
 

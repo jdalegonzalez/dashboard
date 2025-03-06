@@ -1,4 +1,24 @@
 services:
+  gui:
+    image: teramis-gui
+    build:
+      context: .
+      dockerfile: Dockerfile.gui
+    ports:
+      - 8080:3000
+      
+    depends_on:
+      database:
+        condition: service_healthy
+        restart: true
+    environment:
+      - PGHOST=database
+      - PGPORT=5432
+      - PGUSER=${PGUSER:-teramis}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE:-teramis}
+      - TERAMIS_SCAN_TARGET=/teramis-watchdog/agents
+
   watchdog:
     image: teramis-watchdog
     build:

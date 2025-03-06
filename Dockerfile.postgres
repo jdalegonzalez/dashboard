@@ -1,0 +1,7 @@
+FROM postgres:latest
+
+WORKDIR /docker-entrypoint-initdb.d
+
+COPY teramis_db_init.sh .
+
+COPY teramis_db_init.sql.tm . 

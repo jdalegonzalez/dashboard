@@ -4,13 +4,45 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.watchdog
+    depends_on:
+      database:
+        condition: service_healthy
+        restart: true
     volumes:
       - ${TERAMIS_SCAN_TARGET}:/teramis-watchdog/agents
     environment:
-      - PGHOST=database.local
-      - PGUSER=${PGUSER}
+      - PGHOST=database
+      - PGPORT=5432
+      - PGUSER=${PGUSER:-teramis}
       - PGPASSWORD=${PGPASSWORD}
-      - PGDATABASE=${PGDATABASE}
+      - PGDATABASE=${PGDATABASE:-teramis}
       - TERAMIS_SCAN_TARGET=/teramis-watchdog/agents
-    extra_hosts:
-      - "database.local:${PGHOST:-172.17.0.1}"
+    command:
+      - "python"
+      - "agent_sync.py"
+      - "--watch"
+    #extra_hosts:
+    #  - "database:${PGHOST:-172.17.0.1}"
+  database:
+    image: teramis-postgres
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    ports:
+      - 6868:5432
+    volumes:
+      - ${TERAMIS_DB_DIR:-./data}:/var/lib/postresql/data/pgdata
+    environment:
+      - POSTGRES_USER=${PG_SUPERUSER:-postgres}
+      - POSTGRES_PASSWORD=${PG_SUPERUSER_PASSWORD}
+      - POSTGRES_DB=postgres
+      - PGUSER=${PGUSER:-teramis}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE:-teramis}
+      - PGPORT=5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PGUSER} -d ${PGDATABASE}" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s

@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prettier:fix": "prettier --write .",
-    "icon": "svgr SvgIcons -d src/components/icon/svg-icons --typescript --no-prettier"
+    "icon": "svgr SvgIcons -d src/components/icon/svg-icons --typescript --no-prettier",
+    "create-init-sql": "prisma migrate diff --from-empty --to-schema-datamodel ./prisma/schema.prisma --script"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.15",

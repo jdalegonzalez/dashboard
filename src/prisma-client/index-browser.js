@@ -117,6 +117,17 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.TargetScalarFieldEnum = {
+  id: 'id',
+  roots: 'roots',
+  skip_completed: 'skip_completed',
+  max_workers: 'max_workers',
+  mem_thresh: 'mem_thresh',
+  use_history: 'use_history',
+  default_timeout: 'default_timeout',
+  agentId: 'agentId'
+};
+
 exports.Prisma.AgentScalarFieldEnum = {
   id: 'id',
   created_at: 'created_at',
@@ -151,7 +162,7 @@ exports.Prisma.CrawlScalarFieldEnum = {
   end_time: 'end_time',
   throughput: 'throughput',
   unsupported_files: 'unsupported_files',
-  agentId: 'agentId'
+  targetId: 'targetId'
 };
 
 exports.Prisma.CrawlErrorScalarFieldEnum = {
@@ -185,7 +196,7 @@ exports.Prisma.ScanScalarFieldEnum = {
   matches: 'matches',
   timeouts: 'timeouts',
   gigs_per_second: 'gigs_per_second',
-  agentId: 'agentId'
+  targetId: 'targetId'
 };
 
 exports.Prisma.ScanErrorScalarFieldEnum = {
@@ -235,7 +246,8 @@ exports.Status = exports.$Enums.Status = {
   IDLE: 'IDLE',
   ERRORED: 'ERRORED',
   MISSING: 'MISSING',
-  PENDING: 'PENDING'
+  PENDING: 'PENDING',
+  STOPPED: 'STOPPED'
 };
 
 exports.Severity = exports.$Enums.Severity = {
@@ -253,6 +265,7 @@ exports.Confidence = exports.$Enums.Confidence = {
 };
 
 exports.Prisma.ModelName = {
+  Target: 'Target',
   Agent: 'Agent',
   Crawl: 'Crawl',
   CrawlError: 'CrawlError',

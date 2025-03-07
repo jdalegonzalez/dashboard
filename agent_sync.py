@@ -9,11 +9,9 @@ import os
 import re
 import sys
 from datetime import datetime, timedelta
-import time
 from typing import Callable, List, Union
 import logging
 import socket
-import threading
 import hashlib
 
 from watchfiles import Change, watch
@@ -115,6 +113,7 @@ class Status(StrEnum):
     SCANNING = 'SCANNING'
     ERRORED = 'ERRORED'
     MISSING = 'MISSING'
+    STOPPED = 'STOPPED'
     
 class Severity(StrEnum):
     HINT = 'HINT'
@@ -137,10 +136,10 @@ def insensitive_in(val, val_list):
 HandlerType = Callable[[str, str], None]
 class TeramisEventHandler():
 
-    def __init__(self, target:str, handler: HandlerType):
+    def __init__(self, target:str, results_handler: HandlerType, status_handler):
         self.target = target
-        self.handler = handler
-        self.lock = threading.Lock()
+        self.results_handler = results_handler
+        self.status_handler = status_handler
         self.update_map = {}
 
         super().__init__()
@@ -150,7 +149,6 @@ class TeramisEventHandler():
         for changes in watch(self.target):
             for change in changes:
                 change_type, file = change
-                print(change_type, file)
                 if change_type == Change.added:
                     self.on_created(file)
                 elif change_type == Change.modified:
@@ -184,43 +182,45 @@ class TeramisEventHandler():
             rest, agent_id = os.path.split(head)
             if rest == self.target:
                 logger.info(f"'{tail}' {event_type} for agent: '{agent_id}'")
-                return (head, agent_id)
-        return (None, None)
+                return (head, tail, agent_id)
+
+        return (None, None, None)
     
 
-    def launch_handler(self, file:str, folder: str, agent_id: str):
-        if self.hash_changed(file):
-            logger.info("Lauching sync")
+    def launch_handler(self, source:str, agent_folder: str, trigger_file:str, agent_id: str, handler: HandlerType):
+        if self.hash_changed(source):
+            logger.info("Lauching handler")
             try:
-                self.handler(folder, agent_id)
-                self.update_hash(file)
+                handler(agent_folder, trigger_file, agent_id)
+                self.update_hash(source)
             except Exception as e:
                 logger.error("Error in handler")
                 logger.error(e)
         else:
-            logger.info(f"Not processing unchanged file '{file}'")
+            logger.info(f"Not processing unchanged file '{source}'")
             
     def on_created(self, src_path):
+        # We're not monitoring for any changed file.  We're only looking for 
+        # changes to the files in the array passed to is_agent_path.  Changes
+        # to some files might mean a partially completed activity that we don't
+        # want to sync.
         logger.info(f"File created: {src_path}")
-        # We're currently only looking for creation of either the queue file
-        # or the machine_info file for an agent.  There will be other files that get
-        # written and we may need to wait and not launch prematurely
-        folder, agent_id = self.is_agent_path(src_path, ['queue.json','machine_info.json'])
-        if folder and agent_id: self.launch_handler(src_path, folder, agent_id)
+        agent_folder, trigger_file, agent_id = self.is_agent_path(src_path, ['queue.json','machine_info.json', 'checkin.json'])
+        if agent_folder and agent_id:
+            handler = self.status_handler if trigger_file == 'checkin.json' else self.results_handler 
+            self.launch_handler(src_path, agent_folder, trigger_file, agent_id, handler)
     
     def on_modified(self, src_path):
-        # We're currently only looking for modification of the queue file. We're
-        # not going to catch updates to the machine_info.json file because the file
-        # isn't reparsed by the sync
+        # We're not monitoring for any changed file.  We're only looking for 
+        # changes to the files in the array passed to is_agent_path.  Changes
+        # to some files might mean a partially completed activity that we don't
+        # want to sync.
         logger.info(f"File modified: {src_path}")
-        if self.lock.acquire(blocking=False):
-            try:
-                file, agent_id = self.is_agent_path(src_path, ['queue.json'], 'modified')
-                if file and agent_id: self.launch_handler(src_path, file, agent_id)
-            finally:
-                self.lock.release()
-        else:
-            logger.info(f"Already locked")
+        agent_folder, trigger_file, agent_id = \
+            self.is_agent_path(src_path, ['queue.json','machine_info.json','checkin.json'], 'modified')
+        if agent_folder and agent_id:
+            handler = self.status_handler if trigger_file == 'checkin.json' else self.results_handler 
+            self.launch_handler(src_path, agent_folder, trigger_file, agent_id, handler)
 
 
 def is_file_older(file_path, date_to_compare):
@@ -328,6 +328,17 @@ def confidence_string_to_enum(str: str) -> Confidence:
         'NONE': Confidence.NONE
     }.get(str, Confidence.HIGH)
 
+def status_string_to_enum(str: str) -> Status:
+    """
+    Converts a string to a Status enum.
+    """
+
+    str = str.strip().upper()
+    if str.startswith('ERROR'): return Status.ERRORED
+    if str.startswith('SCANNING'): return Status.SCANNING
+    if str == 'STOPPED': return Status.STOPPED
+    return Status.IDLE
+
 def get_newest_date(cursor, id:dict, table:str, date_field: str = "updated_at") -> Union[datetime, None]:
     """
     Pulls a the newest date field from a table so that we can use it to
@@ -374,7 +385,7 @@ def create_scan_results_from_directory(cursor, scan_id: str, source: str) -> int
             csv_reader = csv.DictReader(file)
             for row in csv_reader:
                 rows += 1
-                cursor.execute(*dict_to_insert_sql("ScanResult", {
+                cursor.execute(*insert_sql("ScanResult", {
                     "id":         cuid_generator(),
                     "scanId":     scan_id,
                     "hash":       row['Hash'],
@@ -391,7 +402,7 @@ def create_scan_results_from_directory(cursor, scan_id: str, source: str) -> int
 
     return rows
 
-def dict_to_insert_sql(table:str, dct:dict, no_conflict = False) -> str:
+def insert_sql(table:str, dct:dict, no_conflict = False) -> str:
 
     str = f'INSERT INTO "{table}" ('
     vals = ()
@@ -438,7 +449,7 @@ def create_crawl_errors_from_directory(cursor, crawl_id: str, source: str) -> in
             error_name = parts[0]
             error_desc = ""
             file_name = parts[1]
-            cursor.execute(*dict_to_insert_sql("CrawlError", {
+            cursor.execute(*insert_sql("CrawlError", {
                 "id":cuid_generator(),
                 "crawlId":crawl_id,
                 "error_name":error_name.strip(),
@@ -492,7 +503,7 @@ def create_scan_errors_from_directory(cursor, scan_id: str, source: str) -> int:
             name, desc = parts[2].split(':', 1)
             file = desc if name == 'Timeout' or len(parts) < 4 else parts[3]
             
-            cursor.execute(*dict_to_insert_sql("ScanError", {
+            cursor.execute(*insert_sql("ScanError", {
                  "id":          cuid_generator(),
                  "scanId":      scan_id,
                  "occurred_at": datetime.fromisoformat(parts[0]),
@@ -507,19 +518,63 @@ def create_scan_errors_from_directory(cursor, scan_id: str, source: str) -> int:
     return rows
 
 
-def existing_item_map(cursor, agent_id: str, table: str) -> dict:
+def add_folder_to_target(target_id:str, root:str, folder:str, crawl_id:str, scan_id:str, map:dict) -> dict:
+
+    existing = map.get(root)
+    if existing:
+        item = existing['folders'][folder]
+        if not item: 
+            existing['folders'][folder] = {}
+            item = existing['folders'][folder]
+        if crawl_id: item['crawl_id'] = crawl_id
+        if scan_id: item['scan_id'] = scan_id
+        existing['folders'][folder] = {'scan_id': scan_id, 'crawl_id': crawl_id}
+    else:
+        map[root] = {
+            'id': target_id,
+            'folders': {folder:{'scan_id': scan_id, 'crawl_id': crawl_id}}
+        }
+
+    return map[root]
+
+def existing_target_map(cursor, agent_id: str) -> dict:
     sql = \
     f"""
-        SELECT id, result_folder FROM "{table}" WHERE "agentId" = '{agent_id}'
+         SELECT "Target".id AS id, roots, "Crawl".id as crawl_id, "Scan".id as scan_id, "Crawl".result_folder AS folder
+           FROM "Target"
+      LEFT JOIN "Crawl" ON "Crawl"."targetId"   = "Target".id
+      LEFT JOIN "Scan"  ON "Scan".result_folder = "Crawl".result_folder AND "Crawl"."targetId" = "Scan"."targetId"
+     WHERE "agentId" = '{agent_id}'
+    """
+    existing = cursor.execute(sql)
+
+    map = {}
+    for id, roots, crawl_id, scan_id, folder in existing.fetchall():
+        for root in roots:
+            add_folder_to_target(id, root, folder, crawl_id, scan_id, map)
+
+    count = len(map)
+    if not map:
+        logger.info(f"No existing Targets for '{agent_id}'.  Importing all.")
+    else:
+        logger.info(f"Agent {agent_id} has {count} Targets.  Importing new.")
+
+    return map
+
+
+def existing_item_map(cursor, target_id: str, table: str) -> dict:
+    sql = \
+    f"""
+        SELECT id, result_folder FROM "{table}" WHERE "targetId" = '{target_id}'
     """
     existing = cursor.execute(sql)
     map = { folder: id  for id, folder in existing.fetchall() } if existing else {}
 
     if not map:
-        logger.info(f"No existing {table}s for '{agent_id}'.  Importing all.")
+        logger.info(f"No existing {table}s for '{target_id}'.  Importing all.")
     else:
         count = len(map.values())
-        logger.info(f"Agent {agent_id} has {count} {table}s.  Importing new.")
+        logger.info(f"Agent {target_id} has {count} {table}s.  Importing new.")
 
     return map
 
@@ -538,12 +593,11 @@ def get_lock(source):
     return None
 
 
-def json_from_queue(source):
-    empty_json = {'targets': []}
+def json_from_file(source, empty):
     
     # If the file is missing or empty, just move on.
     if not os.path.isfile(source) or os.path.getsize(source) == 0:
-        return empty_json
+        return empty
     
     with open(source) as file:
         try:
@@ -554,37 +608,17 @@ def json_from_queue(source):
             # ultimately sync back up.
             logger.error(f"Decode error reading '{source}'")
             logger.error(e)
-            return empty_json
+            return empty
         
         return json_data
 
-def set_agent_status(cursor, source:str, id: str):
+
+def cleanup_agent_queue(source:str, json_data: dict):
     """
-    Set's the agent status to either IDLE or ERRORED depending
-    on the current state of the queue.json file.
-
-    The agent has one aggregate status and yet the targets
-    file can contain more than one entry.  We'll set the 
-    agent's status as follows...
-
-    If ANY entries in queue are in status "errored", the
-    agent is in the status "ERRORED".  
-
-    If ALL of the entries in the queue are "scanned", the
-    agent is in the status "IDLE".
-
-    Otherwise, the agent is in the status "SCANNING". 
-    
-    Eventually, we may/could add the intermediate "CRAWLING"
-    status.
+    Removes the items that are in the queue that have been
+    processed either successfully or in error by the agents.
     """
-
-    # We're not going to bother checking the lock file 
-    # since we only read this queue.  We don't write it.
-    status = Status.IDLE
-
     queue_file = os.path.join(source, 'queue.json')
-    json_data = json_from_queue(queue_file)
     new_targets = []
     for target in json_data.get('targets', []):
         # Once, I managed to stick something that wasn't an object
@@ -593,19 +627,6 @@ def set_agent_status(cursor, source:str, id: str):
         targ_stat = target.get('status','').strip().upper()
         if targ_stat == 'QUEUED':
             new_targets.append(target)
-            if status == Status.IDLE: status = Status.SCANNING  
-        elif targ_stat.startswith('ERROR:'):
-            new_targets.append(target)
-            logger.error(f"Agent '{id}' '{targ_stat}'")
-            status = Status.ERRORED
-
-    cursor.execute(
-        f"""
-        UPDATE "Agent" SET status = '{status}' WHERE id = '{id}'
-        """
-    )
-                
-    logger.info(f"Set agent: '{id}' status to: '{status}'")
 
     # If we can get the lock file, we'll update the queue.  
     # Otherwise, we'll update it next time.
@@ -618,9 +639,51 @@ def set_agent_status(cursor, source:str, id: str):
         finally:
             if remove_lock: remove_lock()
 
+
+def set_agent_status(cursor, source:str, id: str):
+    """
+    Set's the agent status to either IDLE or CRAWLING, SCANNING,
+    ERRORED based on the current state of the agent_status.json and
+    checkin.json files.   We'll also clean up any items in the queue
+    that have been handled.
+    """
+
+    # We don't need to bother with lock files since we
+    # only read these files.
+    checkin_info = json_from_file(os.path.join(source, 'checkin.json'), {'status':'Idle'})
+    base_status = status_string_to_enum(checkin_info.get('status','Idle'))
+    # If we're scanning, we could be either scanning or crawling based 
+    # on the value in agent_status.json
+    if base_status != Status.SCANNING:
+        status = base_status
+    else:
+        agent_info = json_from_file(os.path.join(source, 'agent_status.json'),{'task':'Stopped'})
+        status = Status.CRAWLING if agent_info.get('task', '').strip().upper().startswith('CRAWLING') else Status.SCANNING
+
+    # We could optimize the number of writes by either including
+    # "Status != 'new_Status'" on the UPDATE.  We could do an
+    # initial read and skip the write if the reads match.  BUT
+    # By updating the status one way or another, the updated_at
+    # field will be the last check-in time for the agent.
+    cursor.execute(
+    f"""
+    UPDATE "Agent" SET status = '{status}' WHERE id = '{id}'
+    """
+    )
+                
+    logger.info(f"Set agent: '{id}' status to: '{status}'")
+    if status == Status.ERRORED: logger.error(checkin_info.get('status'))
+    
     return status
 
-def sync_agent_results(cursor, agent_id, source: str):
+def something_to_sync(agent_folder:str, target_file: str) -> bool:
+    json_data = json_from_file(os.path.join(agent_folder, target_file), {'targets':[]})
+    for target in json_data.get('targets', []):
+        if target.get('status','queued') != 'queued': return True
+    
+    return False
+
+def sync_agent_results(cursor, agent_id, agent_data, source: str):
     """
     Processes all the scan/crawl folders in this agent directory and
     puts them in the database if we don't have them already.
@@ -631,9 +694,31 @@ def sync_agent_results(cursor, agent_id, source: str):
 
     logger.info(f"Looking for scans from agent: '{agent_id}'")
     
+    default_settings = {
+        "skip_completed": False,
+        "max_workers": agent_data.get('Logical CPUs', 2) - 1,
+        "mem_thresh": 95,
+        "use_history": True,
+        "default_timeout": 5        
+    }
+
+    # If we've got a queue.json file, we might have settings for each
+    # of the targets that we're processing.  We'll use those settings
+    # if we have them.  Otherwise, we'll use default settings.
+    queue_data = json_from_file(os.path.join(source, 'queue.json'), {'targets': []})
+
+    if queue_data:
+        target_settings = { 
+            t['root']: t.get('settings', default_settings) 
+            for t in queue_data.get('targets',[]) 
+        }
+        cleanup_agent_queue(source, queue_data)
+    else:
+        target_settings = {}
+
     root = os.path.join(source, 'results')
-    scan_map = existing_item_map(cursor, agent_id, 'Scan')
-    crawl_map = existing_item_map(cursor, agent_id, 'Crawl')
+
+    existing_targets = existing_target_map(cursor, agent_id)
 
     # There could be an optimization here where we check the count in the db
     # against the count in the folder and skip if they match BUT, that could
@@ -642,20 +727,18 @@ def sync_agent_results(cursor, agent_id, source: str):
     # that's OK.
     for entry in os.listdir(root):
         folder = os.path.join(root, entry)
-        create_crawl_from_directory(cursor, agent_id, entry, folder, crawl_map)
-        create_scan_from_directory(cursor, agent_id, entry, folder, scan_map)
+        _id, _created_rows, root_path = create_crawl_from_directory(
+            cursor, agent_id, entry, folder, "",
+            existing_targets, target_settings, default_settings
+        )
+        create_scan_from_directory(cursor, agent_id, entry, folder,
+            root_path, existing_targets, target_settings, default_settings
+        )
     
-    # If got here, we've processed all the current results for the agent
-    # And we know the agent is no longer scanning or crawling
-    set_agent_status(cursor, source, agent_id)
-
-def write_scan_to_db(cursor, agent_id:str, folder: str, source:str) -> str:
+def write_scan_to_db(cursor, target_id:str, folder: str, source:str) -> str:
     """
     Reads the scan_stats.txt file and creates a Scan from it.
     """
-
-    # TODO: Put a unique contraint on agentId and result_folder
-
     with open(os.path.join(source, 'scan_stats.txt'), 'r') as file:
 
         lines = file.readlines()
@@ -693,19 +776,19 @@ def write_scan_to_db(cursor, agent_id:str, folder: str, source:str) -> str:
             else:
                 logger.warning(f"Unmatched Scan key '{tag}'")
 
-        scan["agentId"] = agent_id
-        cursor.execute(*dict_to_insert_sql("Scan", scan))
+        scan["targetId"] = target_id
+        cursor.execute(*insert_sql("Scan", scan))
         return scan['id']
 
 args_extractor_re = re.compile(r"CMD Settings: *\(Directory: ([^ ,]*), *Use History: *([TtRrUuEeFfAaLlSsEe]*)\)")
-def write_crawl_to_db(cursor, agent_id:str, folder, source) -> str:
+def write_crawl_to_db(cursor, target_id:str, folder, source) -> str:
 
     with open(os.path.join(source, 'crawl_dump.json'), 'r') as file:
         json_data = json.load(file)
         crawl_id = cuid_generator()
         # Rename the parts of json we need changed.
         json_data['id'] = crawl_id
-        json_data['agentId'] = agent_id
+        json_data['targetId'] = target_id
         json_data['result_folder'] = folder
         json_data['unsupported_files'] = json_data.pop('unsupported')
 
@@ -739,12 +822,12 @@ def write_crawl_to_db(cursor, agent_id:str, folder, source) -> str:
                         continue
                     json_data['use_history'] = args[2].strip().upper() == 'TRUE'
 
-    cursor.execute(*dict_to_insert_sql("Crawl", json_data))
+    cursor.execute(*insert_sql("Crawl", json_data))
 
     rows = 0
     for k, v in hash_map.items():
         rows += 1
-        cursor.execute(*dict_to_insert_sql("CrawlHash", {
+        cursor.execute(*insert_sql("CrawlHash", {
             "hash": str(k),
             "crawlId": crawl_id,
             "file_paths": v['fps'],
@@ -756,13 +839,66 @@ def write_crawl_to_db(cursor, agent_id:str, folder, source) -> str:
 
     return crawl_id
 
-def create_thing_from_directory(cursor, thing:str, agent_id:str, folder:str, source: str, map: dict, 
-    write_thing_fn:callable, write_results_fn:callable, write_errors_fn:callable) -> str:
+def root_from_folder(source:str) -> str:
+    """
+    Extracts to the root path from the crawl_dump.json and returns it.
+    We need the path to know if this is an existing Target or a new
+    Target for the agent.
+    """
+    crawl_json = os.path.join(source, 'crawl_dump.json')
+    if os.path.isfile(crawl_json):
+        json_data = json_from_file(crawl_json,{'root_path':''})
+        return json_data.get('root_path', '')
 
-    id = map.get(folder, None)
+    return ''
+
+def create_new_target(cursor, agent_id:str, root_path:str, target_settings:dict, default_settings: dict) -> str:
+    """
+    Creates a new Target for this agent and returns the ID.
+    """
+
+    settings = target_settings.get(root_path, default_settings)
+    new_target = {
+        'id': cuid_generator(),
+        'roots': [root_path],
+        **settings,
+        'agentId': agent_id
+    }
+    cursor.execute(*insert_sql("Target", new_target))
+    return new_target['id']
+
+def create_thing_from_directory(cursor, thing:str, agent_id:str, folder:str, source: str,
+    root_path, existing_targets:dict, target_settings:dict, default_settings:dict,
+    write_thing_fn:callable, write_results_fn:callable, write_errors_fn:callable) -> str:
+    """
+    Optionally creates a target for the agent and a Crawl or a Scan
+    """
+    
+    if not root_path: root_path = root_from_folder(source)
+    # At this point, if we don't have a root path, it's an error and we have to
+    # just ignore this folder.
+    if not root_path:
+        logger.warning(f"Can't determine root for '{source}'.  Ignoring this folder")
+        return (None, 0, root_path)
+    
+    # Check to see if we've ever seen this root before.
+    existing_info = existing_targets.get(root_path, None)
+
+    target_id = existing_info['id'] if existing_info else None
+    if not target_id:
+        target_id = create_new_target(cursor, agent_id, root_path, target_settings, default_settings)
+        existing_info = add_folder_to_target(target_id, root_path, folder, '', '', existing_targets)
+
+    crawl_id = existing_info['folders'][folder]['crawl_id']
+    scan_id = existing_info['folders'][folder]['scan_id']
+    id = crawl_id if thing == 'Crawl' else scan_id
+
     if not id:
-        id = write_thing_fn(cursor, agent_id, folder, source)
-        logging.info(f"Created {thing}: '{id}' from: '{folder}' for Agent: '{agent_id}'.")
+        id = write_thing_fn(cursor, target_id, folder, source)
+        logging.info(f"Created {thing}: '{id}' from: '{folder}' for Agent: '{agent_id}', Target: {target_id}.")
+        if thing == 'Crawl': crawl_id = id
+        else: scan_id = id
+        add_folder_to_target(target_id, root_path, folder, crawl_id, scan_id, existing_targets)
     else:
         logger.info(f"Skipping {thing} '{folder}'.  It exists as ID: {id}")
 
@@ -770,25 +906,33 @@ def create_thing_from_directory(cursor, thing:str, agent_id:str, folder:str, sou
     if write_results_fn is not None: created_rows += write_results_fn(cursor, id, source)
     if write_errors_fn is not None: created_rows  += write_errors_fn(cursor, id, source)
 
-    return (id, created_rows)
+    return (id, created_rows, root_path)
 
-def create_scan_from_directory(cursor, agent_id:str, folder:str, source: str, scan_map):
+def create_scan_from_directory(cursor, agent_id:str, folder:str, source: str,
+    root_path, existing_targets:dict, target_settings:dict, default_settings:dict
+) -> dict:
     """
     Reads a text file and writes the values in the database.
     """
     return create_thing_from_directory(
-        cursor, 'Scan', agent_id, folder, source, scan_map,
+        cursor, 'Scan', agent_id, folder, source, root_path,
+        existing_targets, target_settings, default_settings,
         write_scan_to_db,
         create_scan_results_from_directory,
         create_scan_errors_from_directory
     )
 
-def create_crawl_from_directory(cursor, agent_id:str, folder:str, source: str, crawl_map) -> dict:
+def create_crawl_from_directory(cursor, agent_id:str, folder:str, source: str,
+    root_path, existing_targets:dict, target_settings:dict, default_settings:dict
+) -> dict:
     """
-    Reads a JSON file and creates a crawl dict from it
+    Given an agent_id, the folder with the data and a list of existing
+    targets with whatever settings they may have, optionally creates
+    a new target and new crawl
     """
     return create_thing_from_directory(
-        cursor, 'Crawl', agent_id, folder, source, crawl_map,
+        cursor, 'Crawl', agent_id, folder, source, root_path,
+        existing_targets, target_settings, default_settings,
         write_crawl_to_db,
         None,
         create_crawl_errors_from_directory
@@ -879,21 +1023,25 @@ def perform_init(conn):
 
     :param conn: The database connection.
     """
-    conn.execute('DELETE FROM "Scan";')
-    conn.execute('DELETE FROM "Crawl";')
-    conn.execute('DELETE FROM "Agent";')
+    with conn.cursor() as cursor:
+        cursor.execute('DELETE FROM "ScanError"')
+        cursor.execute('DELETE FROM "ScanResult"')
+        cursor.execute('DELETE FROM "Scan"')
+        cursor.execute('DELETE FROM "CrawlError"')
+        cursor.execute('DELETE FROM "CrawlHash"')
+        cursor.execute('DELETE FROM "Crawl"')
+        cursor.execute('DELETE FROM "Target"')
+        cursor.execute('DELETE FROM "Agent"')
 
-def create_agent(cursor, agent_id, info_file, log_file):
-    
-    agent_data = agent_from_machine_info(info_file, log_file)
-    
+def create_agent(cursor, agent_id, agent_data):
+        
     if agent_data['id'] != agent_id:
         logger.warning(
             f"Machine ID in json ({agent_data['id']}) doesn't match directory '{agent_id}'.  Using '{agent_id}' as ID."
         )
         agent_data['id'] = agent_id
 
-    cursor.execute(*dict_to_insert_sql("Agent", agent_data, no_conflict=True))
+    cursor.execute(*insert_sql("Agent", agent_data, no_conflict=True))
 
     return agent_data['id']
 
@@ -910,17 +1058,21 @@ def sync_agent_and_db(cursor, arg_agent_id:str, folder: str, existing_agents:lis
         # We only create the agent the first time the file appears
         # If we've already got this agent, we're not going to recreate
         # it.  We will look for newer Scans and Crawls
+        agent_data = agent_from_machine_info(info_file, log_file)
         if arg_agent_id in existing_agents:
             logger.info(f"Skipping Agent: '{arg_agent_id}'.  Agent already exists.")
             agent_id = arg_agent_id
         else:
-            agent_id = create_agent(cursor, arg_agent_id, info_file, log_file)
+            agent_id = create_agent(cursor, arg_agent_id, agent_data)
         
-        sync_agent_results(cursor, agent_id, folder)
+        sync_agent_results(cursor, agent_id, agent_data, folder)
 
         return agent_id
+    
     else:
         logger.warning(f"Bad path '{folder}' passed to sync_agent_and_db")
+
+    return None
 
 def sync_agent_folders_and_db(conn, source: str):
     """
@@ -940,26 +1092,48 @@ def sync_agent_folders_and_db(conn, source: str):
                 # If there is something in the db that is missing from the ones
                 # we found, we'll mark the agent as "Missing".
                 found_agents.append(agent_id)
+                set_agent_status(cursor, folder, entry)
 
         ## TODO: Check found_agents[] against existing_agents and mark
         ##       as missing any that are in existing but not in found.
 
-def sync_one_agent(connect_string, agent_folder, agent_id):
+def sync_agent_status(conn, agent_folder:str, _:str, agent_id:str):
+
+    try:
+
+        with conn.cursor() as cursor:
+            set_agent_status(cursor, agent_folder, agent_id)
+        conn.commit()
+
+        logger.info(f'Status change for agent: {agent_id} complete.')
+
+    except Exception as e:
+        conn.rollback()
+        logger.error(traceback.format_exc())
+
+def sync_one_agent(conn, agent_folder:str, trigger_file: str, agent_id:str):
     """
     Called by the update event handler to handle changes for a single
     agent.  TODO: The move might be to scan all agents every time any
     agent changes to that we clean up as we go in the case of race conditions. 
     """
+
+    # If the trigger file is the queue, we only need to do a sync if 
+    # we have new results.
+    if trigger_file == 'queue.json' and not something_to_sync(agent_folder, trigger_file):
+        logger.info(f"{trigger_file} changed for agent: {agent_id} but there's nothing to sync")
+        return
+    
     try:
 
-        with psycopg.connect(connect_string) as conn:
-            sync_agent_and_db(conn.cursor(), agent_id, agent_folder, [])
-            conn.commit()
+        with conn.cursor() as cursor:
+            sync_agent_and_db(cursor, agent_id, agent_folder, [])
+        conn.commit()
 
         logger.info(f'Update for agent: {agent_id} complete.')
 
     except Exception as e:
-        logger.error(e)
+        conn.rollback()
         logger.error(traceback.format_exc())
 
 def perform_sync(args, connect_string):
@@ -996,10 +1170,9 @@ def perform_sync(args, connect_string):
         logger.info("Import complete.")
 
     except Exception as e:
-        logger.error(e)
         logger.error(traceback.format_exc())
         exit_code = 2
-
+        conn.rollback()
     finally:
         os.remove('teramis_importer.lock')
 
@@ -1031,13 +1204,18 @@ if __name__ == '__main__':
 
     exit_code = perform_sync(args, connect_string)
 
-    def callback(agent_folder: str, agent_id:str): 
-        sync_one_agent(connect_string, agent_folder, agent_id)
-
     if args.watch and exit_code == 0:
-        logger.info(f"Watching '{args.target}'")
-        event_handler = TeramisEventHandler(args.target, callback)
-        event_handler.start_watching()
+
+        with psycopg.connect(connect_string) as conn:
+
+            def results_callback(agent_folder: str, trigger_file:str, agent_id:str): 
+                sync_one_agent(conn, agent_folder, trigger_file, agent_id)
+            def status_callback(agent_folder: str, trigger_file: str, agent_id: str):
+                sync_agent_status(conn, agent_folder, trigger_file, agent_id)
+
+            logger.info(f"Watching '{args.target}'")
+            event_handler = TeramisEventHandler(args.target, results_callback, status_callback)
+            event_handler.start_watching()
 
     logger.info("Exiting")
     sys.exit(exit_code)

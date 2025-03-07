@@ -20,6 +20,12 @@ export namespace getAgentDetails {
     os_version: string
     processor: string
     ram_gb: number
+    target_id: string
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
     scan_id: string
     scan_root_path: string
     scan_start_time: Date

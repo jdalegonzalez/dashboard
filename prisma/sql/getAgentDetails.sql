@@ -10,6 +10,12 @@ SELECT
     os_version,
     processor,
     ram_gb,
+    t.id AS target_id,
+    skip_completed,
+    max_workers,
+    mem_thresh,
+    use_history,
+    default_timeout,
     scan_id,
     scan_root_path,
     scan_start_time,
@@ -32,6 +38,7 @@ SELECT
     throughput,
     crawl_errors
 FROM "Agent" 
+JOIN "Target" t ON t."agentId" = "Agent".id
 JOIN (
     SELECT
         "Scan".id            AS scan_id,
@@ -42,15 +49,15 @@ JOIN (
         "Scan".matches,
         "Scan".timeouts,
         "Scan".gigs_per_second,
-        "Scan"."agentId",
+        "Scan"."targetId",
         (SELECT COUNT(*) FROM "ScanError" WHERE "Scan"."id" = "ScanError"."scanId")::INT AS scan_errors
     FROM "Scan"
     INNER JOIN (
-        SELECT MAX("end_time") AS "end_time" FROM "Scan" GROUP BY "agentId" 
+        SELECT MAX("end_time") AS "end_time" FROM "Scan" GROUP BY "targetId" 
     ) newest_scan
     ON "Scan".end_time = newest_scan.end_time
 ) s 
-ON s."agentId" = "Agent".id
+ON s."targetId" = t.id
 JOIN (
     SELECT
         "Crawl".id            AS crawl_id,
@@ -58,7 +65,6 @@ JOIN (
         "Crawl".result_folder AS crawl_folder,
         "Crawl".start_time    AS crawl_start_time,
         "Crawl".end_time      AS crawl_end_time,
-        "Crawl".use_history,
         "Crawl"."file_count",
         "Crawl"."dir_count",
         "Crawl"."total_size",
@@ -66,13 +72,13 @@ JOIN (
         "Crawl"."largest_file_size",
         "Crawl"."largest_file_path",
         "Crawl"."throughput",
-        "Crawl"."agentId",
+        "Crawl"."targetId",
         (SELECT COUNT(*) FROM "CrawlError" WHERE "Crawl"."id" = "CrawlError"."crawlId")::INT AS crawl_errors
     FROM "Crawl"
     INNER JOIN (
-        SELECT MAX("end_time") AS "end_time" FROM "Crawl" GROUP BY "agentId" 
+        SELECT MAX("end_time") AS "end_time" FROM "Crawl" GROUP BY "targetId" 
     ) newest_crawl
     ON "Crawl".end_time = newest_crawl.end_time
 ) c 
-ON c."agentId" = "Agent".id
+ON c."targetId" = t.id
 WHERE "Agent"."id" = $1 OR $1 = ''

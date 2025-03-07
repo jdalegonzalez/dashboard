@@ -1,0 +1,94 @@
+2025-03-03 21:22:49,361 - INFO - Starting Teramis listener...
+2025-03-03 21:22:49,361 - INFO - Checking in every 5 seconds...
+2025-03-03 21:22:49,393 - ERROR - Error: Cannot access specified root
+2025-03-03 21:22:49,441 - INFO - Updated check report: Idle
+2025-03-03 21:22:54,486 - INFO - Updated check report: Idle
+2025-03-03 21:22:59,518 - INFO - Updated check report: Idle
+2025-03-03 21:23:04,549 - INFO - Updated check report: Idle
+2025-03-03 21:23:09,580 - INFO - Updated check report: Idle
+2025-03-03 21:23:14,612 - INFO - Updated check report: Idle
+2025-03-03 21:23:19,644 - INFO - Updated check report: Idle
+2025-03-03 21:23:24,681 - INFO - Updated check report: Idle
+2025-03-03 21:23:29,713 - INFO - Updated check report: Idle
+2025-03-03 21:23:34,749 - INFO - Updated check report: Idle
+2025-03-03 21:23:39,799 - INFO - Updated check report: Idle
+2025-03-03 21:23:44,832 - INFO - Updated check report: Idle
+2025-03-03 21:23:49,868 - INFO - Updated check report: Idle
+2025-03-03 21:23:54,900 - INFO - Updated check report: Idle
+2025-03-03 21:23:59,928 - INFO - Updated check report: Idle
+2025-03-03 21:24:04,959 - INFO - Updated check report: Idle
+2025-03-03 21:24:09,996 - INFO - Updated check report: Idle
+2025-03-03 21:24:15,099 - INFO - Scanning: \\10.1.2.5\e\lib_test_data\all_type
+2025-03-03 21:24:15,166 - INFO - Updated check report: Scanning: \\10.1.2.5\e\lib_test_data\all_type
+2025-03-03 21:30:20,102 - ERROR - Error: Cannot access specified root
+2025-03-03 21:30:20,137 - INFO - Updated check report: Idle
+2025-03-03 21:30:25,152 - ERROR - Error: Cannot access specified root
+2025-03-03 21:30:25,184 - INFO - Updated check report: Idle
+2025-03-03 21:30:30,220 - INFO - Updated check report: Idle
+2025-03-03 21:30:35,266 - INFO - Updated check report: Idle
+2025-03-03 21:30:40,297 - INFO - Updated check report: Idle
+2025-03-03 21:30:45,341 - INFO - Updated check report: Idle
+2025-03-03 21:30:50,370 - INFO - Updated check report: Idle
+2025-03-03 21:30:55,407 - INFO - Updated check report: Idle
+2025-03-03 21:31:00,432 - INFO - Updated check report: Idle
+2025-03-03 21:31:05,475 - INFO - Updated check report: Idle
+2025-03-03 21:31:10,509 - INFO - Updated check report: Idle
+2025-03-03 21:31:15,547 - INFO - Updated check report: Idle
+2025-03-03 21:31:20,565 - INFO - Updated check report: Idle
+2025-03-03 21:31:25,607 - INFO - Updated check report: Idle
+2025-03-03 21:31:30,633 - INFO - Updated check report: Idle
+2025-03-03 21:31:35,678 - INFO - Updated check report: Idle
+2025-03-03 21:31:40,708 - INFO - Updated check report: Idle
+2025-03-03 21:31:45,744 - INFO - Updated check report: Idle
+2025-03-03 21:31:50,783 - INFO - Updated check report: Idle
+2025-03-03 21:31:52,934 - WARNING - Listener interrupted by user
+2025-03-03 21:31:52,965 - INFO - Updated check report: Stopped
+2025-03-03 21:31:52,966 - INFO - Listener exiting safely
+2025-03-03 21:33:37,451 - INFO - Starting Teramis listener...
+2025-03-03 21:33:37,451 - INFO - Checking in every 5 seconds...
+2025-03-03 21:33:37,466 - ERROR - Error: Cannot access specified root
+2025-03-03 21:33:37,511 - INFO - Updated check report: Idle
+2025-03-03 21:33:42,553 - INFO - Updated check report: Idle
+2025-03-03 21:33:47,576 - INFO - Updated check report: Idle
+2025-03-03 21:33:52,623 - INFO - Updated check report: Idle
+2025-03-03 21:33:57,654 - INFO - Updated check report: Idle
+2025-03-03 21:34:02,690 - INFO - Updated check report: Idle
+2025-03-03 21:34:07,724 - INFO - Updated check report: Idle
+2025-03-03 21:34:12,754 - INFO - Updated check report: Idle
+2025-03-03 21:34:17,792 - INFO - Updated check report: Idle
+2025-03-03 21:34:22,812 - INFO - Updated check report: Idle
+2025-03-03 21:34:27,854 - INFO - Updated check report: Idle
+2025-03-03 21:34:32,891 - INFO - Updated check report: Idle
+2025-03-03 21:34:37,950 - INFO - Updated check report: Idle
+2025-03-03 21:34:42,973 - INFO - Updated check report: Idle
+2025-03-03 21:34:48,020 - INFO - Updated check report: Idle
+2025-03-03 21:34:53,051 - INFO - Updated check report: Idle
+2025-03-03 21:34:58,085 - INFO - Updated check report: Idle
+2025-03-03 21:35:03,114 - INFO - Updated check report: Idle
+2025-03-03 21:35:08,148 - INFO - Updated check report: Idle
+2025-03-03 21:35:13,166 - INFO - Updated check report: Idle
+2025-03-03 21:35:18,210 - INFO - Updated check report: Idle
+2025-03-03 21:35:23,245 - INFO - Updated check report: Idle
+2025-03-03 21:35:28,266 - INFO - Updated check report: Idle
+2025-03-03 21:35:33,312 - INFO - Updated check report: Idle
+2025-03-03 21:35:38,348 - INFO - Updated check report: Idle
+2025-03-03 21:35:43,384 - INFO - Updated check report: Idle
+2025-03-03 21:35:48,417 - INFO - Updated check report: Idle
+2025-03-03 21:35:53,458 - INFO - Updated check report: Idle
+2025-03-03 21:35:58,506 - INFO - Updated check report: Idle
+2025-03-03 21:36:03,755 - INFO - Updated check report: Idle
+2025-03-03 21:36:08,788 - INFO - Updated check report: Idle
+2025-03-03 21:36:13,825 - INFO - Updated check report: Idle
+2025-03-03 21:36:18,857 - INFO - Updated check report: Idle
+2025-03-03 21:36:23,891 - INFO - Updated check report: Idle
+2025-03-03 21:36:28,927 - INFO - Updated check report: Idle
+2025-03-03 21:36:33,371 - WARNING - Listener interrupted by user
+2025-03-03 21:36:33,393 - INFO - Updated check report: Stopped
+2025-03-03 21:36:33,393 - INFO - Listener exiting safely
+2025-03-05 21:30:46,979 - INFO - Starting Teramis listener...
+2025-03-05 21:30:46,995 - INFO - Checking in every 5 seconds...
+2025-03-05 21:30:47,004 - INFO - Scanning: \\10.1.2.5\e\lib_test_data\all_type\img_zip
+2025-03-05 21:33:07,582 - WARNING - Listener interrupted by user
+2025-03-05 21:33:07,613 - INFO - Listener exiting safely
+2025-03-05 21:35:12,646 - INFO - Starting Teramis listener...
+2025-03-05 21:35:12,646 - INFO - Checking in every 5 seconds...

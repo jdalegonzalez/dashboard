@@ -1,5 +1,0 @@
-Not supported: C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\empty.txt
-Not supported: C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\empty2.txt
-Not supported: C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\Honu Project Plan for scanning tests.mpp
-Not supported: C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\__init__.py
-Not supported: C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\all_type\77.docx

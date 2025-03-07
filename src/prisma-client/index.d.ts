@@ -14,6 +14,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model Target
+ * 
+ */
+export type Target = $Result.DefaultSelection<Prisma.$TargetPayload>
+/**
  * Model Agent
  * 
  */
@@ -59,7 +64,8 @@ export namespace $Enums {
   IDLE: 'IDLE',
   ERRORED: 'ERRORED',
   MISSING: 'MISSING',
-  PENDING: 'PENDING'
+  PENDING: 'PENDING',
+  STOPPED: 'STOPPED'
 };
 
 export type Status = (typeof Status)[keyof typeof Status]
@@ -105,8 +111,8 @@ export const Confidence: typeof $Enums.Confidence
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Agents
- * const agents = await prisma.agent.findMany()
+ * // Fetch zero or more Targets
+ * const targets = await prisma.target.findMany()
  * ```
  *
  *
@@ -126,8 +132,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Agents
-   * const agents = await prisma.agent.findMany()
+   * // Fetch zero or more Targets
+   * const targets = await prisma.target.findMany()
    * ```
    *
    *
@@ -234,6 +240,16 @@ export class PrismaClient<
   }>, ClientOptions>
 
       /**
+   * `prisma.target`: Exposes CRUD operations for the **Target** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Targets
+    * const targets = await prisma.target.findMany()
+    * ```
+    */
+  get target(): Prisma.TargetDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.agent`: Exposes CRUD operations for the **Agent** model.
     * Example usage:
     * ```ts
@@ -742,6 +758,7 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    Target: 'Target',
     Agent: 'Agent',
     Crawl: 'Crawl',
     CrawlError: 'CrawlError',
@@ -764,10 +781,84 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "agent" | "crawl" | "crawlError" | "crawlHash" | "scan" | "scanError" | "scanResult"
+      modelProps: "target" | "agent" | "crawl" | "crawlError" | "crawlHash" | "scan" | "scanError" | "scanResult"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      Target: {
+        payload: Prisma.$TargetPayload<ExtArgs>
+        fields: Prisma.TargetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TargetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TargetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TargetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TargetPayload>
+          }
+          findFirst: {
+            args: Prisma.TargetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TargetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TargetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TargetPayload>
+          }
+          findMany: {
+            args: Prisma.TargetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TargetPayload>[]
+          }
+          create: {
+            args: Prisma.TargetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TargetPayload>
+          }
+          createMany: {
+            args: Prisma.TargetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TargetCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TargetPayload>[]
+          }
+          delete: {
+            args: Prisma.TargetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TargetPayload>
+          }
+          update: {
+            args: Prisma.TargetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TargetPayload>
+          }
+          deleteMany: {
+            args: Prisma.TargetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TargetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TargetUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TargetPayload>[]
+          }
+          upsert: {
+            args: Prisma.TargetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TargetPayload>
+          }
+          aggregate: {
+            args: Prisma.TargetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTarget>
+          }
+          groupBy: {
+            args: Prisma.TargetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TargetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TargetCountArgs<ExtArgs>
+            result: $Utils.Optional<TargetCountAggregateOutputType> | number
+          }
+        }
+      }
       Agent: {
         payload: Prisma.$AgentPayload<ExtArgs>
         fields: Prisma.AgentFieldRefs
@@ -1374,6 +1465,7 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
+    target?: TargetOmit
     agent?: AgentOmit
     crawl?: CrawlOmit
     crawlError?: CrawlErrorOmit
@@ -1471,17 +1563,55 @@ export namespace Prisma {
 
 
   /**
-   * Count Type AgentCountOutputType
+   * Count Type TargetCountOutputType
    */
 
-  export type AgentCountOutputType = {
+  export type TargetCountOutputType = {
     crawls: number
     scans: number
   }
 
+  export type TargetCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    crawls?: boolean | TargetCountOutputTypeCountCrawlsArgs
+    scans?: boolean | TargetCountOutputTypeCountScansArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TargetCountOutputType without action
+   */
+  export type TargetCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TargetCountOutputType
+     */
+    select?: TargetCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TargetCountOutputType without action
+   */
+  export type TargetCountOutputTypeCountCrawlsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CrawlWhereInput
+  }
+
+  /**
+   * TargetCountOutputType without action
+   */
+  export type TargetCountOutputTypeCountScansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ScanWhereInput
+  }
+
+
+  /**
+   * Count Type AgentCountOutputType
+   */
+
+  export type AgentCountOutputType = {
+    targets: number
+  }
+
   export type AgentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    crawls?: boolean | AgentCountOutputTypeCountCrawlsArgs
-    scans?: boolean | AgentCountOutputTypeCountScansArgs
+    targets?: boolean | AgentCountOutputTypeCountTargetsArgs
   }
 
   // Custom InputTypes
@@ -1498,15 +1628,8 @@ export namespace Prisma {
   /**
    * AgentCountOutputType without action
    */
-  export type AgentCountOutputTypeCountCrawlsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CrawlWhereInput
-  }
-
-  /**
-   * AgentCountOutputType without action
-   */
-  export type AgentCountOutputTypeCountScansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ScanWhereInput
+  export type AgentCountOutputTypeCountTargetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TargetWhereInput
   }
 
 
@@ -1593,6 +1716,1199 @@ export namespace Prisma {
   /**
    * Models
    */
+
+  /**
+   * Model Target
+   */
+
+  export type AggregateTarget = {
+    _count: TargetCountAggregateOutputType | null
+    _avg: TargetAvgAggregateOutputType | null
+    _sum: TargetSumAggregateOutputType | null
+    _min: TargetMinAggregateOutputType | null
+    _max: TargetMaxAggregateOutputType | null
+  }
+
+  export type TargetAvgAggregateOutputType = {
+    max_workers: number | null
+    mem_thresh: number | null
+    default_timeout: number | null
+  }
+
+  export type TargetSumAggregateOutputType = {
+    max_workers: number | null
+    mem_thresh: number | null
+    default_timeout: number | null
+  }
+
+  export type TargetMinAggregateOutputType = {
+    id: string | null
+    skip_completed: boolean | null
+    max_workers: number | null
+    mem_thresh: number | null
+    use_history: boolean | null
+    default_timeout: number | null
+    agentId: string | null
+  }
+
+  export type TargetMaxAggregateOutputType = {
+    id: string | null
+    skip_completed: boolean | null
+    max_workers: number | null
+    mem_thresh: number | null
+    use_history: boolean | null
+    default_timeout: number | null
+    agentId: string | null
+  }
+
+  export type TargetCountAggregateOutputType = {
+    id: number
+    roots: number
+    skip_completed: number
+    max_workers: number
+    mem_thresh: number
+    use_history: number
+    default_timeout: number
+    agentId: number
+    _all: number
+  }
+
+
+  export type TargetAvgAggregateInputType = {
+    max_workers?: true
+    mem_thresh?: true
+    default_timeout?: true
+  }
+
+  export type TargetSumAggregateInputType = {
+    max_workers?: true
+    mem_thresh?: true
+    default_timeout?: true
+  }
+
+  export type TargetMinAggregateInputType = {
+    id?: true
+    skip_completed?: true
+    max_workers?: true
+    mem_thresh?: true
+    use_history?: true
+    default_timeout?: true
+    agentId?: true
+  }
+
+  export type TargetMaxAggregateInputType = {
+    id?: true
+    skip_completed?: true
+    max_workers?: true
+    mem_thresh?: true
+    use_history?: true
+    default_timeout?: true
+    agentId?: true
+  }
+
+  export type TargetCountAggregateInputType = {
+    id?: true
+    roots?: true
+    skip_completed?: true
+    max_workers?: true
+    mem_thresh?: true
+    use_history?: true
+    default_timeout?: true
+    agentId?: true
+    _all?: true
+  }
+
+  export type TargetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Target to aggregate.
+     */
+    where?: TargetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Targets to fetch.
+     */
+    orderBy?: TargetOrderByWithRelationInput | TargetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TargetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Targets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Targets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Targets
+    **/
+    _count?: true | TargetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TargetAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TargetSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TargetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TargetMaxAggregateInputType
+  }
+
+  export type GetTargetAggregateType<T extends TargetAggregateArgs> = {
+        [P in keyof T & keyof AggregateTarget]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTarget[P]>
+      : GetScalarType<T[P], AggregateTarget[P]>
+  }
+
+
+
+
+  export type TargetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TargetWhereInput
+    orderBy?: TargetOrderByWithAggregationInput | TargetOrderByWithAggregationInput[]
+    by: TargetScalarFieldEnum[] | TargetScalarFieldEnum
+    having?: TargetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TargetCountAggregateInputType | true
+    _avg?: TargetAvgAggregateInputType
+    _sum?: TargetSumAggregateInputType
+    _min?: TargetMinAggregateInputType
+    _max?: TargetMaxAggregateInputType
+  }
+
+  export type TargetGroupByOutputType = {
+    id: string
+    roots: string[]
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    agentId: string
+    _count: TargetCountAggregateOutputType | null
+    _avg: TargetAvgAggregateOutputType | null
+    _sum: TargetSumAggregateOutputType | null
+    _min: TargetMinAggregateOutputType | null
+    _max: TargetMaxAggregateOutputType | null
+  }
+
+  type GetTargetGroupByPayload<T extends TargetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TargetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TargetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TargetGroupByOutputType[P]>
+            : GetScalarType<T[P], TargetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TargetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roots?: boolean
+    skip_completed?: boolean
+    max_workers?: boolean
+    mem_thresh?: boolean
+    use_history?: boolean
+    default_timeout?: boolean
+    agentId?: boolean
+    crawls?: boolean | Target$crawlsArgs<ExtArgs>
+    scans?: boolean | Target$scansArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    _count?: boolean | TargetCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["target"]>
+
+  export type TargetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roots?: boolean
+    skip_completed?: boolean
+    max_workers?: boolean
+    mem_thresh?: boolean
+    use_history?: boolean
+    default_timeout?: boolean
+    agentId?: boolean
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["target"]>
+
+  export type TargetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roots?: boolean
+    skip_completed?: boolean
+    max_workers?: boolean
+    mem_thresh?: boolean
+    use_history?: boolean
+    default_timeout?: boolean
+    agentId?: boolean
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["target"]>
+
+  export type TargetSelectScalar = {
+    id?: boolean
+    roots?: boolean
+    skip_completed?: boolean
+    max_workers?: boolean
+    mem_thresh?: boolean
+    use_history?: boolean
+    default_timeout?: boolean
+    agentId?: boolean
+  }
+
+  export type TargetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roots" | "skip_completed" | "max_workers" | "mem_thresh" | "use_history" | "default_timeout" | "agentId", ExtArgs["result"]["target"]>
+  export type TargetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    crawls?: boolean | Target$crawlsArgs<ExtArgs>
+    scans?: boolean | Target$scansArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    _count?: boolean | TargetCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TargetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+  }
+  export type TargetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+  }
+
+  export type $TargetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Target"
+    objects: {
+      crawls: Prisma.$CrawlPayload<ExtArgs>[]
+      scans: Prisma.$ScanPayload<ExtArgs>[]
+      agent: Prisma.$AgentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      roots: string[]
+      skip_completed: boolean
+      max_workers: number
+      mem_thresh: number
+      use_history: boolean
+      default_timeout: number
+      agentId: string
+    }, ExtArgs["result"]["target"]>
+    composites: {}
+  }
+
+  type TargetGetPayload<S extends boolean | null | undefined | TargetDefaultArgs> = $Result.GetResult<Prisma.$TargetPayload, S>
+
+  type TargetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TargetFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TargetCountAggregateInputType | true
+    }
+
+  export interface TargetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Target'], meta: { name: 'Target' } }
+    /**
+     * Find zero or one Target that matches the filter.
+     * @param {TargetFindUniqueArgs} args - Arguments to find a Target
+     * @example
+     * // Get one Target
+     * const target = await prisma.target.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TargetFindUniqueArgs>(args: SelectSubset<T, TargetFindUniqueArgs<ExtArgs>>): Prisma__TargetClient<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one Target that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TargetFindUniqueOrThrowArgs} args - Arguments to find a Target
+     * @example
+     * // Get one Target
+     * const target = await prisma.target.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TargetFindUniqueOrThrowArgs>(args: SelectSubset<T, TargetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TargetClient<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first Target that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TargetFindFirstArgs} args - Arguments to find a Target
+     * @example
+     * // Get one Target
+     * const target = await prisma.target.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TargetFindFirstArgs>(args?: SelectSubset<T, TargetFindFirstArgs<ExtArgs>>): Prisma__TargetClient<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first Target that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TargetFindFirstOrThrowArgs} args - Arguments to find a Target
+     * @example
+     * // Get one Target
+     * const target = await prisma.target.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TargetFindFirstOrThrowArgs>(args?: SelectSubset<T, TargetFindFirstOrThrowArgs<ExtArgs>>): Prisma__TargetClient<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more Targets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TargetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Targets
+     * const targets = await prisma.target.findMany()
+     * 
+     * // Get first 10 Targets
+     * const targets = await prisma.target.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const targetWithIdOnly = await prisma.target.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TargetFindManyArgs>(args?: SelectSubset<T, TargetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a Target.
+     * @param {TargetCreateArgs} args - Arguments to create a Target.
+     * @example
+     * // Create one Target
+     * const Target = await prisma.target.create({
+     *   data: {
+     *     // ... data to create a Target
+     *   }
+     * })
+     * 
+     */
+    create<T extends TargetCreateArgs>(args: SelectSubset<T, TargetCreateArgs<ExtArgs>>): Prisma__TargetClient<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many Targets.
+     * @param {TargetCreateManyArgs} args - Arguments to create many Targets.
+     * @example
+     * // Create many Targets
+     * const target = await prisma.target.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TargetCreateManyArgs>(args?: SelectSubset<T, TargetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Targets and returns the data saved in the database.
+     * @param {TargetCreateManyAndReturnArgs} args - Arguments to create many Targets.
+     * @example
+     * // Create many Targets
+     * const target = await prisma.target.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Targets and only return the `id`
+     * const targetWithIdOnly = await prisma.target.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TargetCreateManyAndReturnArgs>(args?: SelectSubset<T, TargetCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a Target.
+     * @param {TargetDeleteArgs} args - Arguments to delete one Target.
+     * @example
+     * // Delete one Target
+     * const Target = await prisma.target.delete({
+     *   where: {
+     *     // ... filter to delete one Target
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TargetDeleteArgs>(args: SelectSubset<T, TargetDeleteArgs<ExtArgs>>): Prisma__TargetClient<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one Target.
+     * @param {TargetUpdateArgs} args - Arguments to update one Target.
+     * @example
+     * // Update one Target
+     * const target = await prisma.target.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TargetUpdateArgs>(args: SelectSubset<T, TargetUpdateArgs<ExtArgs>>): Prisma__TargetClient<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more Targets.
+     * @param {TargetDeleteManyArgs} args - Arguments to filter Targets to delete.
+     * @example
+     * // Delete a few Targets
+     * const { count } = await prisma.target.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TargetDeleteManyArgs>(args?: SelectSubset<T, TargetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Targets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TargetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Targets
+     * const target = await prisma.target.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TargetUpdateManyArgs>(args: SelectSubset<T, TargetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Targets and returns the data updated in the database.
+     * @param {TargetUpdateManyAndReturnArgs} args - Arguments to update many Targets.
+     * @example
+     * // Update many Targets
+     * const target = await prisma.target.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Targets and only return the `id`
+     * const targetWithIdOnly = await prisma.target.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TargetUpdateManyAndReturnArgs>(args: SelectSubset<T, TargetUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one Target.
+     * @param {TargetUpsertArgs} args - Arguments to update or create a Target.
+     * @example
+     * // Update or create a Target
+     * const target = await prisma.target.upsert({
+     *   create: {
+     *     // ... data to create a Target
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Target we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TargetUpsertArgs>(args: SelectSubset<T, TargetUpsertArgs<ExtArgs>>): Prisma__TargetClient<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of Targets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TargetCountArgs} args - Arguments to filter Targets to count.
+     * @example
+     * // Count the number of Targets
+     * const count = await prisma.target.count({
+     *   where: {
+     *     // ... the filter for the Targets we want to count
+     *   }
+     * })
+    **/
+    count<T extends TargetCountArgs>(
+      args?: Subset<T, TargetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TargetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Target.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TargetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TargetAggregateArgs>(args: Subset<T, TargetAggregateArgs>): Prisma.PrismaPromise<GetTargetAggregateType<T>>
+
+    /**
+     * Group by Target.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TargetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TargetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TargetGroupByArgs['orderBy'] }
+        : { orderBy?: TargetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TargetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTargetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Target model
+   */
+  readonly fields: TargetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Target.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TargetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    crawls<T extends Target$crawlsArgs<ExtArgs> = {}>(args?: Subset<T, Target$crawlsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrawlPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    scans<T extends Target$scansArgs<ExtArgs> = {}>(args?: Subset<T, Target$scansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ScanPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    agent<T extends AgentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AgentDefaultArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Target model
+   */ 
+  interface TargetFieldRefs {
+    readonly id: FieldRef<"Target", 'String'>
+    readonly roots: FieldRef<"Target", 'String[]'>
+    readonly skip_completed: FieldRef<"Target", 'Boolean'>
+    readonly max_workers: FieldRef<"Target", 'Int'>
+    readonly mem_thresh: FieldRef<"Target", 'Int'>
+    readonly use_history: FieldRef<"Target", 'Boolean'>
+    readonly default_timeout: FieldRef<"Target", 'Int'>
+    readonly agentId: FieldRef<"Target", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Target findUnique
+   */
+  export type TargetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetInclude<ExtArgs> | null
+    /**
+     * Filter, which Target to fetch.
+     */
+    where: TargetWhereUniqueInput
+  }
+
+  /**
+   * Target findUniqueOrThrow
+   */
+  export type TargetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetInclude<ExtArgs> | null
+    /**
+     * Filter, which Target to fetch.
+     */
+    where: TargetWhereUniqueInput
+  }
+
+  /**
+   * Target findFirst
+   */
+  export type TargetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetInclude<ExtArgs> | null
+    /**
+     * Filter, which Target to fetch.
+     */
+    where?: TargetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Targets to fetch.
+     */
+    orderBy?: TargetOrderByWithRelationInput | TargetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Targets.
+     */
+    cursor?: TargetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Targets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Targets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Targets.
+     */
+    distinct?: TargetScalarFieldEnum | TargetScalarFieldEnum[]
+  }
+
+  /**
+   * Target findFirstOrThrow
+   */
+  export type TargetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetInclude<ExtArgs> | null
+    /**
+     * Filter, which Target to fetch.
+     */
+    where?: TargetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Targets to fetch.
+     */
+    orderBy?: TargetOrderByWithRelationInput | TargetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Targets.
+     */
+    cursor?: TargetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Targets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Targets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Targets.
+     */
+    distinct?: TargetScalarFieldEnum | TargetScalarFieldEnum[]
+  }
+
+  /**
+   * Target findMany
+   */
+  export type TargetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetInclude<ExtArgs> | null
+    /**
+     * Filter, which Targets to fetch.
+     */
+    where?: TargetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Targets to fetch.
+     */
+    orderBy?: TargetOrderByWithRelationInput | TargetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Targets.
+     */
+    cursor?: TargetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Targets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Targets.
+     */
+    skip?: number
+    distinct?: TargetScalarFieldEnum | TargetScalarFieldEnum[]
+  }
+
+  /**
+   * Target create
+   */
+  export type TargetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Target.
+     */
+    data: XOR<TargetCreateInput, TargetUncheckedCreateInput>
+  }
+
+  /**
+   * Target createMany
+   */
+  export type TargetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Targets.
+     */
+    data: TargetCreateManyInput | TargetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Target createManyAndReturn
+   */
+  export type TargetCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * The data used to create many Targets.
+     */
+    data: TargetCreateManyInput | TargetCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Target update
+   */
+  export type TargetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Target.
+     */
+    data: XOR<TargetUpdateInput, TargetUncheckedUpdateInput>
+    /**
+     * Choose, which Target to update.
+     */
+    where: TargetWhereUniqueInput
+  }
+
+  /**
+   * Target updateMany
+   */
+  export type TargetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Targets.
+     */
+    data: XOR<TargetUpdateManyMutationInput, TargetUncheckedUpdateManyInput>
+    /**
+     * Filter which Targets to update
+     */
+    where?: TargetWhereInput
+    /**
+     * Limit how many Targets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Target updateManyAndReturn
+   */
+  export type TargetUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * The data used to update Targets.
+     */
+    data: XOR<TargetUpdateManyMutationInput, TargetUncheckedUpdateManyInput>
+    /**
+     * Filter which Targets to update
+     */
+    where?: TargetWhereInput
+    /**
+     * Limit how many Targets to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Target upsert
+   */
+  export type TargetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Target to update in case it exists.
+     */
+    where: TargetWhereUniqueInput
+    /**
+     * In case the Target found by the `where` argument doesn't exist, create a new Target with this data.
+     */
+    create: XOR<TargetCreateInput, TargetUncheckedCreateInput>
+    /**
+     * In case the Target was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TargetUpdateInput, TargetUncheckedUpdateInput>
+  }
+
+  /**
+   * Target delete
+   */
+  export type TargetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetInclude<ExtArgs> | null
+    /**
+     * Filter which Target to delete.
+     */
+    where: TargetWhereUniqueInput
+  }
+
+  /**
+   * Target deleteMany
+   */
+  export type TargetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Targets to delete
+     */
+    where?: TargetWhereInput
+    /**
+     * Limit how many Targets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Target.crawls
+   */
+  export type Target$crawlsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Crawl
+     */
+    select?: CrawlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Crawl
+     */
+    omit?: CrawlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrawlInclude<ExtArgs> | null
+    where?: CrawlWhereInput
+    orderBy?: CrawlOrderByWithRelationInput | CrawlOrderByWithRelationInput[]
+    cursor?: CrawlWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CrawlScalarFieldEnum | CrawlScalarFieldEnum[]
+  }
+
+  /**
+   * Target.scans
+   */
+  export type Target$scansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Scan
+     */
+    select?: ScanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Scan
+     */
+    omit?: ScanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ScanInclude<ExtArgs> | null
+    where?: ScanWhereInput
+    orderBy?: ScanOrderByWithRelationInput | ScanOrderByWithRelationInput[]
+    cursor?: ScanWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ScanScalarFieldEnum | ScanScalarFieldEnum[]
+  }
+
+  /**
+   * Target without action
+   */
+  export type TargetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Target
+     */
+    select?: TargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Target
+     */
+    omit?: TargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TargetInclude<ExtArgs> | null
+  }
+
 
   /**
    * Model Agent
@@ -1864,8 +3180,7 @@ export namespace Prisma {
     cores?: boolean
     logical_cpus?: boolean
     ram_gb?: boolean
-    crawls?: boolean | Agent$crawlsArgs<ExtArgs>
-    scans?: boolean | Agent$scansArgs<ExtArgs>
+    targets?: boolean | Agent$targetsArgs<ExtArgs>
     _count?: boolean | AgentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agent"]>
 
@@ -1919,8 +3234,7 @@ export namespace Prisma {
 
   export type AgentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "name" | "location" | "status" | "os" | "os_version" | "arch" | "processor" | "cores" | "logical_cpus" | "ram_gb", ExtArgs["result"]["agent"]>
   export type AgentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    crawls?: boolean | Agent$crawlsArgs<ExtArgs>
-    scans?: boolean | Agent$scansArgs<ExtArgs>
+    targets?: boolean | Agent$targetsArgs<ExtArgs>
     _count?: boolean | AgentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AgentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1929,8 +3243,7 @@ export namespace Prisma {
   export type $AgentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Agent"
     objects: {
-      crawls: Prisma.$CrawlPayload<ExtArgs>[]
-      scans: Prisma.$ScanPayload<ExtArgs>[]
+      targets: Prisma.$TargetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2340,8 +3653,7 @@ export namespace Prisma {
    */
   export interface Prisma__AgentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    crawls<T extends Agent$crawlsArgs<ExtArgs> = {}>(args?: Subset<T, Agent$crawlsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrawlPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    scans<T extends Agent$scansArgs<ExtArgs> = {}>(args?: Subset<T, Agent$scansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ScanPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    targets<T extends Agent$targetsArgs<ExtArgs> = {}>(args?: Subset<T, Agent$targetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2772,51 +4084,27 @@ export namespace Prisma {
   }
 
   /**
-   * Agent.crawls
+   * Agent.targets
    */
-  export type Agent$crawlsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Agent$targetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Crawl
+     * Select specific fields to fetch from the Target
      */
-    select?: CrawlSelect<ExtArgs> | null
+    select?: TargetSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Crawl
+     * Omit specific fields from the Target
      */
-    omit?: CrawlOmit<ExtArgs> | null
+    omit?: TargetOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CrawlInclude<ExtArgs> | null
-    where?: CrawlWhereInput
-    orderBy?: CrawlOrderByWithRelationInput | CrawlOrderByWithRelationInput[]
-    cursor?: CrawlWhereUniqueInput
+    include?: TargetInclude<ExtArgs> | null
+    where?: TargetWhereInput
+    orderBy?: TargetOrderByWithRelationInput | TargetOrderByWithRelationInput[]
+    cursor?: TargetWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: CrawlScalarFieldEnum | CrawlScalarFieldEnum[]
-  }
-
-  /**
-   * Agent.scans
-   */
-  export type Agent$scansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Scan
-     */
-    select?: ScanSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Scan
-     */
-    omit?: ScanOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ScanInclude<ExtArgs> | null
-    where?: ScanWhereInput
-    orderBy?: ScanOrderByWithRelationInput | ScanOrderByWithRelationInput[]
-    cursor?: ScanWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ScanScalarFieldEnum | ScanScalarFieldEnum[]
+    distinct?: TargetScalarFieldEnum | TargetScalarFieldEnum[]
   }
 
   /**
@@ -2884,7 +4172,7 @@ export namespace Prisma {
     start_time: Date | null
     end_time: Date | null
     throughput: number | null
-    agentId: string | null
+    targetId: string | null
   }
 
   export type CrawlMaxAggregateOutputType = {
@@ -2903,7 +4191,7 @@ export namespace Prisma {
     start_time: Date | null
     end_time: Date | null
     throughput: number | null
-    agentId: string | null
+    targetId: string | null
   }
 
   export type CrawlCountAggregateOutputType = {
@@ -2924,7 +4212,7 @@ export namespace Prisma {
     end_time: number
     throughput: number
     unsupported_files: number
-    agentId: number
+    targetId: number
     _all: number
   }
 
@@ -2963,7 +4251,7 @@ export namespace Prisma {
     start_time?: true
     end_time?: true
     throughput?: true
-    agentId?: true
+    targetId?: true
   }
 
   export type CrawlMaxAggregateInputType = {
@@ -2982,7 +4270,7 @@ export namespace Prisma {
     start_time?: true
     end_time?: true
     throughput?: true
-    agentId?: true
+    targetId?: true
   }
 
   export type CrawlCountAggregateInputType = {
@@ -3003,7 +4291,7 @@ export namespace Prisma {
     end_time?: true
     throughput?: true
     unsupported_files?: true
-    agentId?: true
+    targetId?: true
     _all?: true
   }
 
@@ -3111,7 +4399,7 @@ export namespace Prisma {
     end_time: Date
     throughput: number
     unsupported_files: string[]
-    agentId: string
+    targetId: string
     _count: CrawlCountAggregateOutputType | null
     _avg: CrawlAvgAggregateOutputType | null
     _sum: CrawlSumAggregateOutputType | null
@@ -3151,10 +4439,10 @@ export namespace Prisma {
     end_time?: boolean
     throughput?: boolean
     unsupported_files?: boolean
-    agentId?: boolean
+    targetId?: boolean
     errors?: boolean | Crawl$errorsArgs<ExtArgs>
     hashes?: boolean | Crawl$hashesArgs<ExtArgs>
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    target?: boolean | TargetDefaultArgs<ExtArgs>
     _count?: boolean | CrawlCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["crawl"]>
 
@@ -3176,8 +4464,8 @@ export namespace Prisma {
     end_time?: boolean
     throughput?: boolean
     unsupported_files?: boolean
-    agentId?: boolean
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    targetId?: boolean
+    target?: boolean | TargetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["crawl"]>
 
   export type CrawlSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3198,8 +4486,8 @@ export namespace Prisma {
     end_time?: boolean
     throughput?: boolean
     unsupported_files?: boolean
-    agentId?: boolean
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    targetId?: boolean
+    target?: boolean | TargetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["crawl"]>
 
   export type CrawlSelectScalar = {
@@ -3220,21 +4508,21 @@ export namespace Prisma {
     end_time?: boolean
     throughput?: boolean
     unsupported_files?: boolean
-    agentId?: boolean
+    targetId?: boolean
   }
 
-  export type CrawlOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "result_folder" | "root_path" | "use_history" | "file_count" | "dir_count" | "total_size" | "scan_size" | "largest_file_size" | "largest_file_path" | "extensions" | "start_time" | "end_time" | "throughput" | "unsupported_files" | "agentId", ExtArgs["result"]["crawl"]>
+  export type CrawlOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "result_folder" | "root_path" | "use_history" | "file_count" | "dir_count" | "total_size" | "scan_size" | "largest_file_size" | "largest_file_path" | "extensions" | "start_time" | "end_time" | "throughput" | "unsupported_files" | "targetId", ExtArgs["result"]["crawl"]>
   export type CrawlInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     errors?: boolean | Crawl$errorsArgs<ExtArgs>
     hashes?: boolean | Crawl$hashesArgs<ExtArgs>
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    target?: boolean | TargetDefaultArgs<ExtArgs>
     _count?: boolean | CrawlCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CrawlIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    target?: boolean | TargetDefaultArgs<ExtArgs>
   }
   export type CrawlIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    target?: boolean | TargetDefaultArgs<ExtArgs>
   }
 
   export type $CrawlPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3242,7 +4530,7 @@ export namespace Prisma {
     objects: {
       errors: Prisma.$CrawlErrorPayload<ExtArgs>[]
       hashes: Prisma.$CrawlHashPayload<ExtArgs>[]
-      agent: Prisma.$AgentPayload<ExtArgs>
+      target: Prisma.$TargetPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3262,7 +4550,7 @@ export namespace Prisma {
       end_time: Date
       throughput: number
       unsupported_files: string[]
-      agentId: string
+      targetId: string
     }, ExtArgs["result"]["crawl"]>
     composites: {}
   }
@@ -3659,7 +4947,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     errors<T extends Crawl$errorsArgs<ExtArgs> = {}>(args?: Subset<T, Crawl$errorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrawlErrorPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     hashes<T extends Crawl$hashesArgs<ExtArgs> = {}>(args?: Subset<T, Crawl$hashesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrawlHashPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    agent<T extends AgentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AgentDefaultArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    target<T extends TargetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TargetDefaultArgs<ExtArgs>>): Prisma__TargetClient<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3706,7 +4994,7 @@ export namespace Prisma {
     readonly end_time: FieldRef<"Crawl", 'DateTime'>
     readonly throughput: FieldRef<"Crawl", 'Float'>
     readonly unsupported_files: FieldRef<"Crawl", 'String[]'>
-    readonly agentId: FieldRef<"Crawl", 'String'>
+    readonly targetId: FieldRef<"Crawl", 'String'>
   }
     
 
@@ -6402,7 +7690,7 @@ export namespace Prisma {
     matches: number | null
     timeouts: number | null
     gigs_per_second: number | null
-    agentId: string | null
+    targetId: string | null
   }
 
   export type ScanMaxAggregateOutputType = {
@@ -6416,7 +7704,7 @@ export namespace Prisma {
     matches: number | null
     timeouts: number | null
     gigs_per_second: number | null
-    agentId: string | null
+    targetId: string | null
   }
 
   export type ScanCountAggregateOutputType = {
@@ -6430,7 +7718,7 @@ export namespace Prisma {
     matches: number
     timeouts: number
     gigs_per_second: number
-    agentId: number
+    targetId: number
     _all: number
   }
 
@@ -6458,7 +7746,7 @@ export namespace Prisma {
     matches?: true
     timeouts?: true
     gigs_per_second?: true
-    agentId?: true
+    targetId?: true
   }
 
   export type ScanMaxAggregateInputType = {
@@ -6472,7 +7760,7 @@ export namespace Prisma {
     matches?: true
     timeouts?: true
     gigs_per_second?: true
-    agentId?: true
+    targetId?: true
   }
 
   export type ScanCountAggregateInputType = {
@@ -6486,7 +7774,7 @@ export namespace Prisma {
     matches?: true
     timeouts?: true
     gigs_per_second?: true
-    agentId?: true
+    targetId?: true
     _all?: true
   }
 
@@ -6587,7 +7875,7 @@ export namespace Prisma {
     matches: number
     timeouts: number
     gigs_per_second: number
-    agentId: string
+    targetId: string
     _count: ScanCountAggregateOutputType | null
     _avg: ScanAvgAggregateOutputType | null
     _sum: ScanSumAggregateOutputType | null
@@ -6620,10 +7908,10 @@ export namespace Prisma {
     matches?: boolean
     timeouts?: boolean
     gigs_per_second?: boolean
-    agentId?: boolean
+    targetId?: boolean
     errors?: boolean | Scan$errorsArgs<ExtArgs>
     results?: boolean | Scan$resultsArgs<ExtArgs>
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    target?: boolean | TargetDefaultArgs<ExtArgs>
     _count?: boolean | ScanCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["scan"]>
 
@@ -6638,8 +7926,8 @@ export namespace Prisma {
     matches?: boolean
     timeouts?: boolean
     gigs_per_second?: boolean
-    agentId?: boolean
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    targetId?: boolean
+    target?: boolean | TargetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["scan"]>
 
   export type ScanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6653,8 +7941,8 @@ export namespace Prisma {
     matches?: boolean
     timeouts?: boolean
     gigs_per_second?: boolean
-    agentId?: boolean
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    targetId?: boolean
+    target?: boolean | TargetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["scan"]>
 
   export type ScanSelectScalar = {
@@ -6668,21 +7956,21 @@ export namespace Prisma {
     matches?: boolean
     timeouts?: boolean
     gigs_per_second?: boolean
-    agentId?: boolean
+    targetId?: boolean
   }
 
-  export type ScanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "result_folder" | "root_path" | "start_time" | "end_time" | "matches" | "timeouts" | "gigs_per_second" | "agentId", ExtArgs["result"]["scan"]>
+  export type ScanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "result_folder" | "root_path" | "start_time" | "end_time" | "matches" | "timeouts" | "gigs_per_second" | "targetId", ExtArgs["result"]["scan"]>
   export type ScanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     errors?: boolean | Scan$errorsArgs<ExtArgs>
     results?: boolean | Scan$resultsArgs<ExtArgs>
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    target?: boolean | TargetDefaultArgs<ExtArgs>
     _count?: boolean | ScanCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ScanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    target?: boolean | TargetDefaultArgs<ExtArgs>
   }
   export type ScanIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    target?: boolean | TargetDefaultArgs<ExtArgs>
   }
 
   export type $ScanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6690,7 +7978,7 @@ export namespace Prisma {
     objects: {
       errors: Prisma.$ScanErrorPayload<ExtArgs>[]
       results: Prisma.$ScanResultPayload<ExtArgs>[]
-      agent: Prisma.$AgentPayload<ExtArgs>
+      target: Prisma.$TargetPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6703,7 +7991,7 @@ export namespace Prisma {
       matches: number
       timeouts: number
       gigs_per_second: number
-      agentId: string
+      targetId: string
     }, ExtArgs["result"]["scan"]>
     composites: {}
   }
@@ -7100,7 +8388,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     errors<T extends Scan$errorsArgs<ExtArgs> = {}>(args?: Subset<T, Scan$errorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ScanErrorPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     results<T extends Scan$resultsArgs<ExtArgs> = {}>(args?: Subset<T, Scan$resultsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ScanResultPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    agent<T extends AgentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AgentDefaultArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    target<T extends TargetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TargetDefaultArgs<ExtArgs>>): Prisma__TargetClient<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7140,7 +8428,7 @@ export namespace Prisma {
     readonly matches: FieldRef<"Scan", 'Int'>
     readonly timeouts: FieldRef<"Scan", 'Int'>
     readonly gigs_per_second: FieldRef<"Scan", 'Float'>
-    readonly agentId: FieldRef<"Scan", 'String'>
+    readonly targetId: FieldRef<"Scan", 'String'>
   }
     
 
@@ -9906,6 +11194,20 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const TargetScalarFieldEnum: {
+    id: 'id',
+    roots: 'roots',
+    skip_completed: 'skip_completed',
+    max_workers: 'max_workers',
+    mem_thresh: 'mem_thresh',
+    use_history: 'use_history',
+    default_timeout: 'default_timeout',
+    agentId: 'agentId'
+  };
+
+  export type TargetScalarFieldEnum = (typeof TargetScalarFieldEnum)[keyof typeof TargetScalarFieldEnum]
+
+
   export const AgentScalarFieldEnum: {
     id: 'id',
     created_at: 'created_at',
@@ -9943,7 +11245,7 @@ export namespace Prisma {
     end_time: 'end_time',
     throughput: 'throughput',
     unsupported_files: 'unsupported_files',
-    agentId: 'agentId'
+    targetId: 'targetId'
   };
 
   export type CrawlScalarFieldEnum = (typeof CrawlScalarFieldEnum)[keyof typeof CrawlScalarFieldEnum]
@@ -9986,7 +11288,7 @@ export namespace Prisma {
     matches: 'matches',
     timeouts: 'timeouts',
     gigs_per_second: 'gigs_per_second',
-    agentId: 'agentId'
+    targetId: 'targetId'
   };
 
   export type ScanScalarFieldEnum = (typeof ScanScalarFieldEnum)[keyof typeof ScanScalarFieldEnum]
@@ -10069,6 +11371,27 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -10097,20 +11420,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -10121,13 +11430,6 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -10176,6 +11478,85 @@ export namespace Prisma {
    */
 
 
+  export type TargetWhereInput = {
+    AND?: TargetWhereInput | TargetWhereInput[]
+    OR?: TargetWhereInput[]
+    NOT?: TargetWhereInput | TargetWhereInput[]
+    id?: StringFilter<"Target"> | string
+    roots?: StringNullableListFilter<"Target">
+    skip_completed?: BoolFilter<"Target"> | boolean
+    max_workers?: IntFilter<"Target"> | number
+    mem_thresh?: IntFilter<"Target"> | number
+    use_history?: BoolFilter<"Target"> | boolean
+    default_timeout?: IntFilter<"Target"> | number
+    agentId?: StringFilter<"Target"> | string
+    crawls?: CrawlListRelationFilter
+    scans?: ScanListRelationFilter
+    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+  }
+
+  export type TargetOrderByWithRelationInput = {
+    id?: SortOrder
+    roots?: SortOrder
+    skip_completed?: SortOrder
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    use_history?: SortOrder
+    default_timeout?: SortOrder
+    agentId?: SortOrder
+    crawls?: CrawlOrderByRelationAggregateInput
+    scans?: ScanOrderByRelationAggregateInput
+    agent?: AgentOrderByWithRelationInput
+  }
+
+  export type TargetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    agent_target?: TargetAgent_targetCompoundUniqueInput
+    AND?: TargetWhereInput | TargetWhereInput[]
+    OR?: TargetWhereInput[]
+    NOT?: TargetWhereInput | TargetWhereInput[]
+    roots?: StringNullableListFilter<"Target">
+    skip_completed?: BoolFilter<"Target"> | boolean
+    max_workers?: IntFilter<"Target"> | number
+    mem_thresh?: IntFilter<"Target"> | number
+    use_history?: BoolFilter<"Target"> | boolean
+    default_timeout?: IntFilter<"Target"> | number
+    agentId?: StringFilter<"Target"> | string
+    crawls?: CrawlListRelationFilter
+    scans?: ScanListRelationFilter
+    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+  }, "id" | "agent_target">
+
+  export type TargetOrderByWithAggregationInput = {
+    id?: SortOrder
+    roots?: SortOrder
+    skip_completed?: SortOrder
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    use_history?: SortOrder
+    default_timeout?: SortOrder
+    agentId?: SortOrder
+    _count?: TargetCountOrderByAggregateInput
+    _avg?: TargetAvgOrderByAggregateInput
+    _max?: TargetMaxOrderByAggregateInput
+    _min?: TargetMinOrderByAggregateInput
+    _sum?: TargetSumOrderByAggregateInput
+  }
+
+  export type TargetScalarWhereWithAggregatesInput = {
+    AND?: TargetScalarWhereWithAggregatesInput | TargetScalarWhereWithAggregatesInput[]
+    OR?: TargetScalarWhereWithAggregatesInput[]
+    NOT?: TargetScalarWhereWithAggregatesInput | TargetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Target"> | string
+    roots?: StringNullableListFilter<"Target">
+    skip_completed?: BoolWithAggregatesFilter<"Target"> | boolean
+    max_workers?: IntWithAggregatesFilter<"Target"> | number
+    mem_thresh?: IntWithAggregatesFilter<"Target"> | number
+    use_history?: BoolWithAggregatesFilter<"Target"> | boolean
+    default_timeout?: IntWithAggregatesFilter<"Target"> | number
+    agentId?: StringWithAggregatesFilter<"Target"> | string
+  }
+
   export type AgentWhereInput = {
     AND?: AgentWhereInput | AgentWhereInput[]
     OR?: AgentWhereInput[]
@@ -10193,8 +11574,7 @@ export namespace Prisma {
     cores?: IntFilter<"Agent"> | number
     logical_cpus?: IntFilter<"Agent"> | number
     ram_gb?: FloatFilter<"Agent"> | number
-    crawls?: CrawlListRelationFilter
-    scans?: ScanListRelationFilter
+    targets?: TargetListRelationFilter
   }
 
   export type AgentOrderByWithRelationInput = {
@@ -10211,8 +11591,7 @@ export namespace Prisma {
     cores?: SortOrder
     logical_cpus?: SortOrder
     ram_gb?: SortOrder
-    crawls?: CrawlOrderByRelationAggregateInput
-    scans?: ScanOrderByRelationAggregateInput
+    targets?: TargetOrderByRelationAggregateInput
   }
 
   export type AgentWhereUniqueInput = Prisma.AtLeast<{
@@ -10232,8 +11611,7 @@ export namespace Prisma {
     cores?: IntFilter<"Agent"> | number
     logical_cpus?: IntFilter<"Agent"> | number
     ram_gb?: FloatFilter<"Agent"> | number
-    crawls?: CrawlListRelationFilter
-    scans?: ScanListRelationFilter
+    targets?: TargetListRelationFilter
   }, "id">
 
   export type AgentOrderByWithAggregationInput = {
@@ -10297,10 +11675,10 @@ export namespace Prisma {
     end_time?: DateTimeFilter<"Crawl"> | Date | string
     throughput?: FloatFilter<"Crawl"> | number
     unsupported_files?: StringNullableListFilter<"Crawl">
-    agentId?: StringFilter<"Crawl"> | string
+    targetId?: StringFilter<"Crawl"> | string
     errors?: CrawlErrorListRelationFilter
     hashes?: CrawlHashListRelationFilter
-    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+    target?: XOR<TargetScalarRelationFilter, TargetWhereInput>
   }
 
   export type CrawlOrderByWithRelationInput = {
@@ -10321,14 +11699,15 @@ export namespace Prisma {
     end_time?: SortOrder
     throughput?: SortOrder
     unsupported_files?: SortOrder
-    agentId?: SortOrder
+    targetId?: SortOrder
     errors?: CrawlErrorOrderByRelationAggregateInput
     hashes?: CrawlHashOrderByRelationAggregateInput
-    agent?: AgentOrderByWithRelationInput
+    target?: TargetOrderByWithRelationInput
   }
 
   export type CrawlWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    crawl_target_result?: CrawlCrawl_target_resultCompoundUniqueInput
     AND?: CrawlWhereInput | CrawlWhereInput[]
     OR?: CrawlWhereInput[]
     NOT?: CrawlWhereInput | CrawlWhereInput[]
@@ -10348,11 +11727,11 @@ export namespace Prisma {
     end_time?: DateTimeFilter<"Crawl"> | Date | string
     throughput?: FloatFilter<"Crawl"> | number
     unsupported_files?: StringNullableListFilter<"Crawl">
-    agentId?: StringFilter<"Crawl"> | string
+    targetId?: StringFilter<"Crawl"> | string
     errors?: CrawlErrorListRelationFilter
     hashes?: CrawlHashListRelationFilter
-    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
-  }, "id">
+    target?: XOR<TargetScalarRelationFilter, TargetWhereInput>
+  }, "id" | "crawl_target_result">
 
   export type CrawlOrderByWithAggregationInput = {
     id?: SortOrder
@@ -10372,7 +11751,7 @@ export namespace Prisma {
     end_time?: SortOrder
     throughput?: SortOrder
     unsupported_files?: SortOrder
-    agentId?: SortOrder
+    targetId?: SortOrder
     _count?: CrawlCountOrderByAggregateInput
     _avg?: CrawlAvgOrderByAggregateInput
     _max?: CrawlMaxOrderByAggregateInput
@@ -10401,7 +11780,7 @@ export namespace Prisma {
     end_time?: DateTimeWithAggregatesFilter<"Crawl"> | Date | string
     throughput?: FloatWithAggregatesFilter<"Crawl"> | number
     unsupported_files?: StringNullableListFilter<"Crawl">
-    agentId?: StringWithAggregatesFilter<"Crawl"> | string
+    targetId?: StringWithAggregatesFilter<"Crawl"> | string
   }
 
   export type CrawlErrorWhereInput = {
@@ -10551,10 +11930,10 @@ export namespace Prisma {
     matches?: IntFilter<"Scan"> | number
     timeouts?: IntFilter<"Scan"> | number
     gigs_per_second?: FloatFilter<"Scan"> | number
-    agentId?: StringFilter<"Scan"> | string
+    targetId?: StringFilter<"Scan"> | string
     errors?: ScanErrorListRelationFilter
     results?: ScanResultListRelationFilter
-    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+    target?: XOR<TargetScalarRelationFilter, TargetWhereInput>
   }
 
   export type ScanOrderByWithRelationInput = {
@@ -10568,14 +11947,15 @@ export namespace Prisma {
     matches?: SortOrder
     timeouts?: SortOrder
     gigs_per_second?: SortOrder
-    agentId?: SortOrder
+    targetId?: SortOrder
     errors?: ScanErrorOrderByRelationAggregateInput
     results?: ScanResultOrderByRelationAggregateInput
-    agent?: AgentOrderByWithRelationInput
+    target?: TargetOrderByWithRelationInput
   }
 
   export type ScanWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    scan_target_result?: ScanScan_target_resultCompoundUniqueInput
     AND?: ScanWhereInput | ScanWhereInput[]
     OR?: ScanWhereInput[]
     NOT?: ScanWhereInput | ScanWhereInput[]
@@ -10588,11 +11968,11 @@ export namespace Prisma {
     matches?: IntFilter<"Scan"> | number
     timeouts?: IntFilter<"Scan"> | number
     gigs_per_second?: FloatFilter<"Scan"> | number
-    agentId?: StringFilter<"Scan"> | string
+    targetId?: StringFilter<"Scan"> | string
     errors?: ScanErrorListRelationFilter
     results?: ScanResultListRelationFilter
-    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
-  }, "id">
+    target?: XOR<TargetScalarRelationFilter, TargetWhereInput>
+  }, "id" | "scan_target_result">
 
   export type ScanOrderByWithAggregationInput = {
     id?: SortOrder
@@ -10605,7 +11985,7 @@ export namespace Prisma {
     matches?: SortOrder
     timeouts?: SortOrder
     gigs_per_second?: SortOrder
-    agentId?: SortOrder
+    targetId?: SortOrder
     _count?: ScanCountOrderByAggregateInput
     _avg?: ScanAvgOrderByAggregateInput
     _max?: ScanMaxOrderByAggregateInput
@@ -10627,7 +12007,7 @@ export namespace Prisma {
     matches?: IntWithAggregatesFilter<"Scan"> | number
     timeouts?: IntWithAggregatesFilter<"Scan"> | number
     gigs_per_second?: FloatWithAggregatesFilter<"Scan"> | number
-    agentId?: StringWithAggregatesFilter<"Scan"> | string
+    targetId?: StringWithAggregatesFilter<"Scan"> | string
   }
 
   export type ScanErrorWhereInput = {
@@ -10797,6 +12177,90 @@ export namespace Prisma {
     scanId?: StringWithAggregatesFilter<"ScanResult"> | string
   }
 
+  export type TargetCreateInput = {
+    id?: string
+    roots?: TargetCreaterootsInput | string[]
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    crawls?: CrawlCreateNestedManyWithoutTargetInput
+    scans?: ScanCreateNestedManyWithoutTargetInput
+    agent: AgentCreateNestedOneWithoutTargetsInput
+  }
+
+  export type TargetUncheckedCreateInput = {
+    id?: string
+    roots?: TargetCreaterootsInput | string[]
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    agentId: string
+    crawls?: CrawlUncheckedCreateNestedManyWithoutTargetInput
+    scans?: ScanUncheckedCreateNestedManyWithoutTargetInput
+  }
+
+  export type TargetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roots?: TargetUpdaterootsInput | string[]
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+    crawls?: CrawlUpdateManyWithoutTargetNestedInput
+    scans?: ScanUpdateManyWithoutTargetNestedInput
+    agent?: AgentUpdateOneRequiredWithoutTargetsNestedInput
+  }
+
+  export type TargetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roots?: TargetUpdaterootsInput | string[]
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+    agentId?: StringFieldUpdateOperationsInput | string
+    crawls?: CrawlUncheckedUpdateManyWithoutTargetNestedInput
+    scans?: ScanUncheckedUpdateManyWithoutTargetNestedInput
+  }
+
+  export type TargetCreateManyInput = {
+    id?: string
+    roots?: TargetCreaterootsInput | string[]
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    agentId: string
+  }
+
+  export type TargetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roots?: TargetUpdaterootsInput | string[]
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TargetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roots?: TargetUpdaterootsInput | string[]
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+    agentId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type AgentCreateInput = {
     id: string
     created_at?: Date | string
@@ -10811,8 +12275,7 @@ export namespace Prisma {
     cores: number
     logical_cpus: number
     ram_gb: number
-    crawls?: CrawlCreateNestedManyWithoutAgentInput
-    scans?: ScanCreateNestedManyWithoutAgentInput
+    targets?: TargetCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateInput = {
@@ -10829,8 +12292,7 @@ export namespace Prisma {
     cores: number
     logical_cpus: number
     ram_gb: number
-    crawls?: CrawlUncheckedCreateNestedManyWithoutAgentInput
-    scans?: ScanUncheckedCreateNestedManyWithoutAgentInput
+    targets?: TargetUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUpdateInput = {
@@ -10847,8 +12309,7 @@ export namespace Prisma {
     cores?: IntFieldUpdateOperationsInput | number
     logical_cpus?: IntFieldUpdateOperationsInput | number
     ram_gb?: FloatFieldUpdateOperationsInput | number
-    crawls?: CrawlUpdateManyWithoutAgentNestedInput
-    scans?: ScanUpdateManyWithoutAgentNestedInput
+    targets?: TargetUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateInput = {
@@ -10865,8 +12326,7 @@ export namespace Prisma {
     cores?: IntFieldUpdateOperationsInput | number
     logical_cpus?: IntFieldUpdateOperationsInput | number
     ram_gb?: FloatFieldUpdateOperationsInput | number
-    crawls?: CrawlUncheckedUpdateManyWithoutAgentNestedInput
-    scans?: ScanUncheckedUpdateManyWithoutAgentNestedInput
+    targets?: TargetUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentCreateManyInput = {
@@ -10937,7 +12397,7 @@ export namespace Prisma {
     unsupported_files?: CrawlCreateunsupported_filesInput | string[]
     errors?: CrawlErrorCreateNestedManyWithoutCrawlInput
     hashes?: CrawlHashCreateNestedManyWithoutCrawlInput
-    agent: AgentCreateNestedOneWithoutCrawlsInput
+    target: TargetCreateNestedOneWithoutCrawlsInput
   }
 
   export type CrawlUncheckedCreateInput = {
@@ -10958,7 +12418,7 @@ export namespace Prisma {
     end_time: Date | string
     throughput: number
     unsupported_files?: CrawlCreateunsupported_filesInput | string[]
-    agentId: string
+    targetId: string
     errors?: CrawlErrorUncheckedCreateNestedManyWithoutCrawlInput
     hashes?: CrawlHashUncheckedCreateNestedManyWithoutCrawlInput
   }
@@ -10983,7 +12443,7 @@ export namespace Prisma {
     unsupported_files?: CrawlUpdateunsupported_filesInput | string[]
     errors?: CrawlErrorUpdateManyWithoutCrawlNestedInput
     hashes?: CrawlHashUpdateManyWithoutCrawlNestedInput
-    agent?: AgentUpdateOneRequiredWithoutCrawlsNestedInput
+    target?: TargetUpdateOneRequiredWithoutCrawlsNestedInput
   }
 
   export type CrawlUncheckedUpdateInput = {
@@ -11004,7 +12464,7 @@ export namespace Prisma {
     end_time?: DateTimeFieldUpdateOperationsInput | Date | string
     throughput?: FloatFieldUpdateOperationsInput | number
     unsupported_files?: CrawlUpdateunsupported_filesInput | string[]
-    agentId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
     errors?: CrawlErrorUncheckedUpdateManyWithoutCrawlNestedInput
     hashes?: CrawlHashUncheckedUpdateManyWithoutCrawlNestedInput
   }
@@ -11027,7 +12487,7 @@ export namespace Prisma {
     end_time: Date | string
     throughput: number
     unsupported_files?: CrawlCreateunsupported_filesInput | string[]
-    agentId: string
+    targetId: string
   }
 
   export type CrawlUpdateManyMutationInput = {
@@ -11068,7 +12528,7 @@ export namespace Prisma {
     end_time?: DateTimeFieldUpdateOperationsInput | Date | string
     throughput?: FloatFieldUpdateOperationsInput | number
     unsupported_files?: CrawlUpdateunsupported_filesInput | string[]
-    agentId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
   }
 
   export type CrawlErrorCreateInput = {
@@ -11222,7 +12682,7 @@ export namespace Prisma {
     gigs_per_second: number
     errors?: ScanErrorCreateNestedManyWithoutScanInput
     results?: ScanResultCreateNestedManyWithoutScanInput
-    agent: AgentCreateNestedOneWithoutScansInput
+    target: TargetCreateNestedOneWithoutScansInput
   }
 
   export type ScanUncheckedCreateInput = {
@@ -11236,7 +12696,7 @@ export namespace Prisma {
     matches: number
     timeouts: number
     gigs_per_second: number
-    agentId: string
+    targetId: string
     errors?: ScanErrorUncheckedCreateNestedManyWithoutScanInput
     results?: ScanResultUncheckedCreateNestedManyWithoutScanInput
   }
@@ -11254,7 +12714,7 @@ export namespace Prisma {
     gigs_per_second?: FloatFieldUpdateOperationsInput | number
     errors?: ScanErrorUpdateManyWithoutScanNestedInput
     results?: ScanResultUpdateManyWithoutScanNestedInput
-    agent?: AgentUpdateOneRequiredWithoutScansNestedInput
+    target?: TargetUpdateOneRequiredWithoutScansNestedInput
   }
 
   export type ScanUncheckedUpdateInput = {
@@ -11268,7 +12728,7 @@ export namespace Prisma {
     matches?: IntFieldUpdateOperationsInput | number
     timeouts?: IntFieldUpdateOperationsInput | number
     gigs_per_second?: FloatFieldUpdateOperationsInput | number
-    agentId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
     errors?: ScanErrorUncheckedUpdateManyWithoutScanNestedInput
     results?: ScanResultUncheckedUpdateManyWithoutScanNestedInput
   }
@@ -11284,7 +12744,7 @@ export namespace Prisma {
     matches: number
     timeouts: number
     gigs_per_second: number
-    agentId: string
+    targetId: string
   }
 
   export type ScanUpdateManyMutationInput = {
@@ -11311,7 +12771,7 @@ export namespace Prisma {
     matches?: IntFieldUpdateOperationsInput | number
     timeouts?: IntFieldUpdateOperationsInput | number
     gigs_per_second?: FloatFieldUpdateOperationsInput | number
-    agentId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
   }
 
   export type ScanErrorCreateInput = {
@@ -11516,6 +12976,145 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type CrawlListRelationFilter = {
+    every?: CrawlWhereInput
+    some?: CrawlWhereInput
+    none?: CrawlWhereInput
+  }
+
+  export type ScanListRelationFilter = {
+    every?: ScanWhereInput
+    some?: ScanWhereInput
+    none?: ScanWhereInput
+  }
+
+  export type AgentScalarRelationFilter = {
+    is?: AgentWhereInput
+    isNot?: AgentWhereInput
+  }
+
+  export type CrawlOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ScanOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TargetAgent_targetCompoundUniqueInput = {
+    agentId: string
+    roots: string[]
+  }
+
+  export type TargetCountOrderByAggregateInput = {
+    id?: SortOrder
+    roots?: SortOrder
+    skip_completed?: SortOrder
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    use_history?: SortOrder
+    default_timeout?: SortOrder
+    agentId?: SortOrder
+  }
+
+  export type TargetAvgOrderByAggregateInput = {
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    default_timeout?: SortOrder
+  }
+
+  export type TargetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    skip_completed?: SortOrder
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    use_history?: SortOrder
+    default_timeout?: SortOrder
+    agentId?: SortOrder
+  }
+
+  export type TargetMinOrderByAggregateInput = {
+    id?: SortOrder
+    skip_completed?: SortOrder
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    use_history?: SortOrder
+    default_timeout?: SortOrder
+    agentId?: SortOrder
+  }
+
+  export type TargetSumOrderByAggregateInput = {
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    default_timeout?: SortOrder
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -11534,17 +13133,6 @@ export namespace Prisma {
     not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type FloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -11556,23 +13144,13 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type CrawlListRelationFilter = {
-    every?: CrawlWhereInput
-    some?: CrawlWhereInput
-    none?: CrawlWhereInput
+  export type TargetListRelationFilter = {
+    every?: TargetWhereInput
+    some?: TargetWhereInput
+    none?: TargetWhereInput
   }
 
-  export type ScanListRelationFilter = {
-    every?: ScanWhereInput
-    some?: ScanWhereInput
-    none?: ScanWhereInput
-  }
-
-  export type CrawlOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ScanOrderByRelationAggregateInput = {
+  export type TargetOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -11636,24 +13214,6 @@ export namespace Prisma {
     ram_gb?: SortOrder
   }
 
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -11678,22 +13238,6 @@ export namespace Prisma {
     _max?: NestedEnumStatusFilter<$PrismaModel>
   }
 
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -11710,11 +13254,6 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type BigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
@@ -11724,14 +13263,6 @@ export namespace Prisma {
     gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
-  }
-
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
   }
 
   export type CrawlErrorListRelationFilter = {
@@ -11746,9 +13277,9 @@ export namespace Prisma {
     none?: CrawlHashWhereInput
   }
 
-  export type AgentScalarRelationFilter = {
-    is?: AgentWhereInput
-    isNot?: AgentWhereInput
+  export type TargetScalarRelationFilter = {
+    is?: TargetWhereInput
+    isNot?: TargetWhereInput
   }
 
   export type CrawlErrorOrderByRelationAggregateInput = {
@@ -11757,6 +13288,11 @@ export namespace Prisma {
 
   export type CrawlHashOrderByRelationAggregateInput = {
     _count?: SortOrder
+  }
+
+  export type CrawlCrawl_target_resultCompoundUniqueInput = {
+    targetId: string
+    result_folder: string
   }
 
   export type CrawlCountOrderByAggregateInput = {
@@ -11777,7 +13313,7 @@ export namespace Prisma {
     end_time?: SortOrder
     throughput?: SortOrder
     unsupported_files?: SortOrder
-    agentId?: SortOrder
+    targetId?: SortOrder
   }
 
   export type CrawlAvgOrderByAggregateInput = {
@@ -11805,7 +13341,7 @@ export namespace Prisma {
     start_time?: SortOrder
     end_time?: SortOrder
     throughput?: SortOrder
-    agentId?: SortOrder
+    targetId?: SortOrder
   }
 
   export type CrawlMinOrderByAggregateInput = {
@@ -11824,7 +13360,7 @@ export namespace Prisma {
     start_time?: SortOrder
     end_time?: SortOrder
     throughput?: SortOrder
-    agentId?: SortOrder
+    targetId?: SortOrder
   }
 
   export type CrawlSumOrderByAggregateInput = {
@@ -11834,14 +13370,6 @@ export namespace Prisma {
     scan_size?: SortOrder
     largest_file_size?: SortOrder
     throughput?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -11972,6 +13500,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type ScanScan_target_resultCompoundUniqueInput = {
+    targetId: string
+    result_folder: string
+  }
+
   export type ScanCountOrderByAggregateInput = {
     id?: SortOrder
     created_at?: SortOrder
@@ -11983,7 +13516,7 @@ export namespace Prisma {
     matches?: SortOrder
     timeouts?: SortOrder
     gigs_per_second?: SortOrder
-    agentId?: SortOrder
+    targetId?: SortOrder
   }
 
   export type ScanAvgOrderByAggregateInput = {
@@ -12003,7 +13536,7 @@ export namespace Prisma {
     matches?: SortOrder
     timeouts?: SortOrder
     gigs_per_second?: SortOrder
-    agentId?: SortOrder
+    targetId?: SortOrder
   }
 
   export type ScanMinOrderByAggregateInput = {
@@ -12017,7 +13550,7 @@ export namespace Prisma {
     matches?: SortOrder
     timeouts?: SortOrder
     gigs_per_second?: SortOrder
-    agentId?: SortOrder
+    targetId?: SortOrder
   }
 
   export type ScanSumOrderByAggregateInput = {
@@ -12166,31 +13699,41 @@ export namespace Prisma {
     _max?: NestedEnumConfidenceFilter<$PrismaModel>
   }
 
-  export type CrawlCreateNestedManyWithoutAgentInput = {
-    create?: XOR<CrawlCreateWithoutAgentInput, CrawlUncheckedCreateWithoutAgentInput> | CrawlCreateWithoutAgentInput[] | CrawlUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: CrawlCreateOrConnectWithoutAgentInput | CrawlCreateOrConnectWithoutAgentInput[]
-    createMany?: CrawlCreateManyAgentInputEnvelope
+  export type TargetCreaterootsInput = {
+    set: string[]
+  }
+
+  export type CrawlCreateNestedManyWithoutTargetInput = {
+    create?: XOR<CrawlCreateWithoutTargetInput, CrawlUncheckedCreateWithoutTargetInput> | CrawlCreateWithoutTargetInput[] | CrawlUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: CrawlCreateOrConnectWithoutTargetInput | CrawlCreateOrConnectWithoutTargetInput[]
+    createMany?: CrawlCreateManyTargetInputEnvelope
     connect?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
   }
 
-  export type ScanCreateNestedManyWithoutAgentInput = {
-    create?: XOR<ScanCreateWithoutAgentInput, ScanUncheckedCreateWithoutAgentInput> | ScanCreateWithoutAgentInput[] | ScanUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: ScanCreateOrConnectWithoutAgentInput | ScanCreateOrConnectWithoutAgentInput[]
-    createMany?: ScanCreateManyAgentInputEnvelope
+  export type ScanCreateNestedManyWithoutTargetInput = {
+    create?: XOR<ScanCreateWithoutTargetInput, ScanUncheckedCreateWithoutTargetInput> | ScanCreateWithoutTargetInput[] | ScanUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: ScanCreateOrConnectWithoutTargetInput | ScanCreateOrConnectWithoutTargetInput[]
+    createMany?: ScanCreateManyTargetInputEnvelope
     connect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
   }
 
-  export type CrawlUncheckedCreateNestedManyWithoutAgentInput = {
-    create?: XOR<CrawlCreateWithoutAgentInput, CrawlUncheckedCreateWithoutAgentInput> | CrawlCreateWithoutAgentInput[] | CrawlUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: CrawlCreateOrConnectWithoutAgentInput | CrawlCreateOrConnectWithoutAgentInput[]
-    createMany?: CrawlCreateManyAgentInputEnvelope
+  export type AgentCreateNestedOneWithoutTargetsInput = {
+    create?: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
+    connectOrCreate?: AgentCreateOrConnectWithoutTargetsInput
+    connect?: AgentWhereUniqueInput
+  }
+
+  export type CrawlUncheckedCreateNestedManyWithoutTargetInput = {
+    create?: XOR<CrawlCreateWithoutTargetInput, CrawlUncheckedCreateWithoutTargetInput> | CrawlCreateWithoutTargetInput[] | CrawlUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: CrawlCreateOrConnectWithoutTargetInput | CrawlCreateOrConnectWithoutTargetInput[]
+    createMany?: CrawlCreateManyTargetInputEnvelope
     connect?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
   }
 
-  export type ScanUncheckedCreateNestedManyWithoutAgentInput = {
-    create?: XOR<ScanCreateWithoutAgentInput, ScanUncheckedCreateWithoutAgentInput> | ScanCreateWithoutAgentInput[] | ScanUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: ScanCreateOrConnectWithoutAgentInput | ScanCreateOrConnectWithoutAgentInput[]
-    createMany?: ScanCreateManyAgentInputEnvelope
+  export type ScanUncheckedCreateNestedManyWithoutTargetInput = {
+    create?: XOR<ScanCreateWithoutTargetInput, ScanUncheckedCreateWithoutTargetInput> | ScanCreateWithoutTargetInput[] | ScanUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: ScanCreateOrConnectWithoutTargetInput | ScanCreateOrConnectWithoutTargetInput[]
+    createMany?: ScanCreateManyTargetInputEnvelope
     connect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
   }
 
@@ -12198,12 +13741,13 @@ export namespace Prisma {
     set?: string
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
+  export type TargetUpdaterootsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
-  export type EnumStatusFieldUpdateOperationsInput = {
-    set?: $Enums.Status
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -12214,6 +13758,92 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type CrawlUpdateManyWithoutTargetNestedInput = {
+    create?: XOR<CrawlCreateWithoutTargetInput, CrawlUncheckedCreateWithoutTargetInput> | CrawlCreateWithoutTargetInput[] | CrawlUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: CrawlCreateOrConnectWithoutTargetInput | CrawlCreateOrConnectWithoutTargetInput[]
+    upsert?: CrawlUpsertWithWhereUniqueWithoutTargetInput | CrawlUpsertWithWhereUniqueWithoutTargetInput[]
+    createMany?: CrawlCreateManyTargetInputEnvelope
+    set?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
+    disconnect?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
+    delete?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
+    connect?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
+    update?: CrawlUpdateWithWhereUniqueWithoutTargetInput | CrawlUpdateWithWhereUniqueWithoutTargetInput[]
+    updateMany?: CrawlUpdateManyWithWhereWithoutTargetInput | CrawlUpdateManyWithWhereWithoutTargetInput[]
+    deleteMany?: CrawlScalarWhereInput | CrawlScalarWhereInput[]
+  }
+
+  export type ScanUpdateManyWithoutTargetNestedInput = {
+    create?: XOR<ScanCreateWithoutTargetInput, ScanUncheckedCreateWithoutTargetInput> | ScanCreateWithoutTargetInput[] | ScanUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: ScanCreateOrConnectWithoutTargetInput | ScanCreateOrConnectWithoutTargetInput[]
+    upsert?: ScanUpsertWithWhereUniqueWithoutTargetInput | ScanUpsertWithWhereUniqueWithoutTargetInput[]
+    createMany?: ScanCreateManyTargetInputEnvelope
+    set?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
+    disconnect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
+    delete?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
+    connect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
+    update?: ScanUpdateWithWhereUniqueWithoutTargetInput | ScanUpdateWithWhereUniqueWithoutTargetInput[]
+    updateMany?: ScanUpdateManyWithWhereWithoutTargetInput | ScanUpdateManyWithWhereWithoutTargetInput[]
+    deleteMany?: ScanScalarWhereInput | ScanScalarWhereInput[]
+  }
+
+  export type AgentUpdateOneRequiredWithoutTargetsNestedInput = {
+    create?: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
+    connectOrCreate?: AgentCreateOrConnectWithoutTargetsInput
+    upsert?: AgentUpsertWithoutTargetsInput
+    connect?: AgentWhereUniqueInput
+    update?: XOR<XOR<AgentUpdateToOneWithWhereWithoutTargetsInput, AgentUpdateWithoutTargetsInput>, AgentUncheckedUpdateWithoutTargetsInput>
+  }
+
+  export type CrawlUncheckedUpdateManyWithoutTargetNestedInput = {
+    create?: XOR<CrawlCreateWithoutTargetInput, CrawlUncheckedCreateWithoutTargetInput> | CrawlCreateWithoutTargetInput[] | CrawlUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: CrawlCreateOrConnectWithoutTargetInput | CrawlCreateOrConnectWithoutTargetInput[]
+    upsert?: CrawlUpsertWithWhereUniqueWithoutTargetInput | CrawlUpsertWithWhereUniqueWithoutTargetInput[]
+    createMany?: CrawlCreateManyTargetInputEnvelope
+    set?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
+    disconnect?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
+    delete?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
+    connect?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
+    update?: CrawlUpdateWithWhereUniqueWithoutTargetInput | CrawlUpdateWithWhereUniqueWithoutTargetInput[]
+    updateMany?: CrawlUpdateManyWithWhereWithoutTargetInput | CrawlUpdateManyWithWhereWithoutTargetInput[]
+    deleteMany?: CrawlScalarWhereInput | CrawlScalarWhereInput[]
+  }
+
+  export type ScanUncheckedUpdateManyWithoutTargetNestedInput = {
+    create?: XOR<ScanCreateWithoutTargetInput, ScanUncheckedCreateWithoutTargetInput> | ScanCreateWithoutTargetInput[] | ScanUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: ScanCreateOrConnectWithoutTargetInput | ScanCreateOrConnectWithoutTargetInput[]
+    upsert?: ScanUpsertWithWhereUniqueWithoutTargetInput | ScanUpsertWithWhereUniqueWithoutTargetInput[]
+    createMany?: ScanCreateManyTargetInputEnvelope
+    set?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
+    disconnect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
+    delete?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
+    connect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
+    update?: ScanUpdateWithWhereUniqueWithoutTargetInput | ScanUpdateWithWhereUniqueWithoutTargetInput[]
+    updateMany?: ScanUpdateManyWithWhereWithoutTargetInput | ScanUpdateManyWithWhereWithoutTargetInput[]
+    deleteMany?: ScanScalarWhereInput | ScanScalarWhereInput[]
+  }
+
+  export type TargetCreateNestedManyWithoutAgentInput = {
+    create?: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput> | TargetCreateWithoutAgentInput[] | TargetUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: TargetCreateOrConnectWithoutAgentInput | TargetCreateOrConnectWithoutAgentInput[]
+    createMany?: TargetCreateManyAgentInputEnvelope
+    connect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+  }
+
+  export type TargetUncheckedCreateNestedManyWithoutAgentInput = {
+    create?: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput> | TargetCreateWithoutAgentInput[] | TargetUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: TargetCreateOrConnectWithoutAgentInput | TargetCreateOrConnectWithoutAgentInput[]
+    createMany?: TargetCreateManyAgentInputEnvelope
+    connect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type EnumStatusFieldUpdateOperationsInput = {
+    set?: $Enums.Status
+  }
+
   export type FloatFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -12222,60 +13852,32 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type CrawlUpdateManyWithoutAgentNestedInput = {
-    create?: XOR<CrawlCreateWithoutAgentInput, CrawlUncheckedCreateWithoutAgentInput> | CrawlCreateWithoutAgentInput[] | CrawlUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: CrawlCreateOrConnectWithoutAgentInput | CrawlCreateOrConnectWithoutAgentInput[]
-    upsert?: CrawlUpsertWithWhereUniqueWithoutAgentInput | CrawlUpsertWithWhereUniqueWithoutAgentInput[]
-    createMany?: CrawlCreateManyAgentInputEnvelope
-    set?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
-    disconnect?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
-    delete?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
-    connect?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
-    update?: CrawlUpdateWithWhereUniqueWithoutAgentInput | CrawlUpdateWithWhereUniqueWithoutAgentInput[]
-    updateMany?: CrawlUpdateManyWithWhereWithoutAgentInput | CrawlUpdateManyWithWhereWithoutAgentInput[]
-    deleteMany?: CrawlScalarWhereInput | CrawlScalarWhereInput[]
+  export type TargetUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput> | TargetCreateWithoutAgentInput[] | TargetUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: TargetCreateOrConnectWithoutAgentInput | TargetCreateOrConnectWithoutAgentInput[]
+    upsert?: TargetUpsertWithWhereUniqueWithoutAgentInput | TargetUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: TargetCreateManyAgentInputEnvelope
+    set?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+    disconnect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+    delete?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+    connect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+    update?: TargetUpdateWithWhereUniqueWithoutAgentInput | TargetUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: TargetUpdateManyWithWhereWithoutAgentInput | TargetUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: TargetScalarWhereInput | TargetScalarWhereInput[]
   }
 
-  export type ScanUpdateManyWithoutAgentNestedInput = {
-    create?: XOR<ScanCreateWithoutAgentInput, ScanUncheckedCreateWithoutAgentInput> | ScanCreateWithoutAgentInput[] | ScanUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: ScanCreateOrConnectWithoutAgentInput | ScanCreateOrConnectWithoutAgentInput[]
-    upsert?: ScanUpsertWithWhereUniqueWithoutAgentInput | ScanUpsertWithWhereUniqueWithoutAgentInput[]
-    createMany?: ScanCreateManyAgentInputEnvelope
-    set?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
-    disconnect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
-    delete?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
-    connect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
-    update?: ScanUpdateWithWhereUniqueWithoutAgentInput | ScanUpdateWithWhereUniqueWithoutAgentInput[]
-    updateMany?: ScanUpdateManyWithWhereWithoutAgentInput | ScanUpdateManyWithWhereWithoutAgentInput[]
-    deleteMany?: ScanScalarWhereInput | ScanScalarWhereInput[]
-  }
-
-  export type CrawlUncheckedUpdateManyWithoutAgentNestedInput = {
-    create?: XOR<CrawlCreateWithoutAgentInput, CrawlUncheckedCreateWithoutAgentInput> | CrawlCreateWithoutAgentInput[] | CrawlUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: CrawlCreateOrConnectWithoutAgentInput | CrawlCreateOrConnectWithoutAgentInput[]
-    upsert?: CrawlUpsertWithWhereUniqueWithoutAgentInput | CrawlUpsertWithWhereUniqueWithoutAgentInput[]
-    createMany?: CrawlCreateManyAgentInputEnvelope
-    set?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
-    disconnect?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
-    delete?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
-    connect?: CrawlWhereUniqueInput | CrawlWhereUniqueInput[]
-    update?: CrawlUpdateWithWhereUniqueWithoutAgentInput | CrawlUpdateWithWhereUniqueWithoutAgentInput[]
-    updateMany?: CrawlUpdateManyWithWhereWithoutAgentInput | CrawlUpdateManyWithWhereWithoutAgentInput[]
-    deleteMany?: CrawlScalarWhereInput | CrawlScalarWhereInput[]
-  }
-
-  export type ScanUncheckedUpdateManyWithoutAgentNestedInput = {
-    create?: XOR<ScanCreateWithoutAgentInput, ScanUncheckedCreateWithoutAgentInput> | ScanCreateWithoutAgentInput[] | ScanUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: ScanCreateOrConnectWithoutAgentInput | ScanCreateOrConnectWithoutAgentInput[]
-    upsert?: ScanUpsertWithWhereUniqueWithoutAgentInput | ScanUpsertWithWhereUniqueWithoutAgentInput[]
-    createMany?: ScanCreateManyAgentInputEnvelope
-    set?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
-    disconnect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
-    delete?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
-    connect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
-    update?: ScanUpdateWithWhereUniqueWithoutAgentInput | ScanUpdateWithWhereUniqueWithoutAgentInput[]
-    updateMany?: ScanUpdateManyWithWhereWithoutAgentInput | ScanUpdateManyWithWhereWithoutAgentInput[]
-    deleteMany?: ScanScalarWhereInput | ScanScalarWhereInput[]
+  export type TargetUncheckedUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput> | TargetCreateWithoutAgentInput[] | TargetUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: TargetCreateOrConnectWithoutAgentInput | TargetCreateOrConnectWithoutAgentInput[]
+    upsert?: TargetUpsertWithWhereUniqueWithoutAgentInput | TargetUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: TargetCreateManyAgentInputEnvelope
+    set?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+    disconnect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+    delete?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+    connect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+    update?: TargetUpdateWithWhereUniqueWithoutAgentInput | TargetUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: TargetUpdateManyWithWhereWithoutAgentInput | TargetUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: TargetScalarWhereInput | TargetScalarWhereInput[]
   }
 
   export type CrawlCreateextensionsInput = {
@@ -12300,10 +13902,10 @@ export namespace Prisma {
     connect?: CrawlHashWhereUniqueInput | CrawlHashWhereUniqueInput[]
   }
 
-  export type AgentCreateNestedOneWithoutCrawlsInput = {
-    create?: XOR<AgentCreateWithoutCrawlsInput, AgentUncheckedCreateWithoutCrawlsInput>
-    connectOrCreate?: AgentCreateOrConnectWithoutCrawlsInput
-    connect?: AgentWhereUniqueInput
+  export type TargetCreateNestedOneWithoutCrawlsInput = {
+    create?: XOR<TargetCreateWithoutCrawlsInput, TargetUncheckedCreateWithoutCrawlsInput>
+    connectOrCreate?: TargetCreateOrConnectWithoutCrawlsInput
+    connect?: TargetWhereUniqueInput
   }
 
   export type CrawlErrorUncheckedCreateNestedManyWithoutCrawlInput = {
@@ -12318,10 +13920,6 @@ export namespace Prisma {
     connectOrCreate?: CrawlHashCreateOrConnectWithoutCrawlInput | CrawlHashCreateOrConnectWithoutCrawlInput[]
     createMany?: CrawlHashCreateManyCrawlInputEnvelope
     connect?: CrawlHashWhereUniqueInput | CrawlHashWhereUniqueInput[]
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type BigIntFieldUpdateOperationsInput = {
@@ -12370,12 +13968,12 @@ export namespace Prisma {
     deleteMany?: CrawlHashScalarWhereInput | CrawlHashScalarWhereInput[]
   }
 
-  export type AgentUpdateOneRequiredWithoutCrawlsNestedInput = {
-    create?: XOR<AgentCreateWithoutCrawlsInput, AgentUncheckedCreateWithoutCrawlsInput>
-    connectOrCreate?: AgentCreateOrConnectWithoutCrawlsInput
-    upsert?: AgentUpsertWithoutCrawlsInput
-    connect?: AgentWhereUniqueInput
-    update?: XOR<XOR<AgentUpdateToOneWithWhereWithoutCrawlsInput, AgentUpdateWithoutCrawlsInput>, AgentUncheckedUpdateWithoutCrawlsInput>
+  export type TargetUpdateOneRequiredWithoutCrawlsNestedInput = {
+    create?: XOR<TargetCreateWithoutCrawlsInput, TargetUncheckedCreateWithoutCrawlsInput>
+    connectOrCreate?: TargetCreateOrConnectWithoutCrawlsInput
+    upsert?: TargetUpsertWithoutCrawlsInput
+    connect?: TargetWhereUniqueInput
+    update?: XOR<XOR<TargetUpdateToOneWithWhereWithoutCrawlsInput, TargetUpdateWithoutCrawlsInput>, TargetUncheckedUpdateWithoutCrawlsInput>
   }
 
   export type CrawlErrorUncheckedUpdateManyWithoutCrawlNestedInput = {
@@ -12457,10 +14055,10 @@ export namespace Prisma {
     connect?: ScanResultWhereUniqueInput | ScanResultWhereUniqueInput[]
   }
 
-  export type AgentCreateNestedOneWithoutScansInput = {
-    create?: XOR<AgentCreateWithoutScansInput, AgentUncheckedCreateWithoutScansInput>
-    connectOrCreate?: AgentCreateOrConnectWithoutScansInput
-    connect?: AgentWhereUniqueInput
+  export type TargetCreateNestedOneWithoutScansInput = {
+    create?: XOR<TargetCreateWithoutScansInput, TargetUncheckedCreateWithoutScansInput>
+    connectOrCreate?: TargetCreateOrConnectWithoutScansInput
+    connect?: TargetWhereUniqueInput
   }
 
   export type ScanErrorUncheckedCreateNestedManyWithoutScanInput = {
@@ -12509,12 +14107,12 @@ export namespace Prisma {
     deleteMany?: ScanResultScalarWhereInput | ScanResultScalarWhereInput[]
   }
 
-  export type AgentUpdateOneRequiredWithoutScansNestedInput = {
-    create?: XOR<AgentCreateWithoutScansInput, AgentUncheckedCreateWithoutScansInput>
-    connectOrCreate?: AgentCreateOrConnectWithoutScansInput
-    upsert?: AgentUpsertWithoutScansInput
-    connect?: AgentWhereUniqueInput
-    update?: XOR<XOR<AgentUpdateToOneWithWhereWithoutScansInput, AgentUpdateWithoutScansInput>, AgentUncheckedUpdateWithoutScansInput>
+  export type TargetUpdateOneRequiredWithoutScansNestedInput = {
+    create?: XOR<TargetCreateWithoutScansInput, TargetUncheckedCreateWithoutScansInput>
+    connectOrCreate?: TargetCreateOrConnectWithoutScansInput
+    upsert?: TargetUpsertWithoutScansInput
+    connect?: TargetWhereUniqueInput
+    update?: XOR<XOR<TargetUpdateToOneWithWhereWithoutScansInput, TargetUpdateWithoutScansInput>, TargetUncheckedUpdateWithoutScansInput>
   }
 
   export type ScanErrorUncheckedUpdateManyWithoutScanNestedInput = {
@@ -12604,22 +14202,9 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type NestedEnumStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -12631,17 +14216,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -12659,6 +14233,59 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedEnumStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -12685,22 +14312,6 @@ export namespace Prisma {
     _max?: NestedEnumStatusFilter<$PrismaModel>
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -12717,11 +14328,6 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedBigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
@@ -12731,14 +14337,6 @@ export namespace Prisma {
     gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -12827,7 +14425,7 @@ export namespace Prisma {
     _max?: NestedEnumConfidenceFilter<$PrismaModel>
   }
 
-  export type CrawlCreateWithoutAgentInput = {
+  export type CrawlCreateWithoutTargetInput = {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
@@ -12849,7 +14447,7 @@ export namespace Prisma {
     hashes?: CrawlHashCreateNestedManyWithoutCrawlInput
   }
 
-  export type CrawlUncheckedCreateWithoutAgentInput = {
+  export type CrawlUncheckedCreateWithoutTargetInput = {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
@@ -12871,17 +14469,17 @@ export namespace Prisma {
     hashes?: CrawlHashUncheckedCreateNestedManyWithoutCrawlInput
   }
 
-  export type CrawlCreateOrConnectWithoutAgentInput = {
+  export type CrawlCreateOrConnectWithoutTargetInput = {
     where: CrawlWhereUniqueInput
-    create: XOR<CrawlCreateWithoutAgentInput, CrawlUncheckedCreateWithoutAgentInput>
+    create: XOR<CrawlCreateWithoutTargetInput, CrawlUncheckedCreateWithoutTargetInput>
   }
 
-  export type CrawlCreateManyAgentInputEnvelope = {
-    data: CrawlCreateManyAgentInput | CrawlCreateManyAgentInput[]
+  export type CrawlCreateManyTargetInputEnvelope = {
+    data: CrawlCreateManyTargetInput | CrawlCreateManyTargetInput[]
     skipDuplicates?: boolean
   }
 
-  export type ScanCreateWithoutAgentInput = {
+  export type ScanCreateWithoutTargetInput = {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
@@ -12896,7 +14494,7 @@ export namespace Prisma {
     results?: ScanResultCreateNestedManyWithoutScanInput
   }
 
-  export type ScanUncheckedCreateWithoutAgentInput = {
+  export type ScanUncheckedCreateWithoutTargetInput = {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
@@ -12911,30 +14509,67 @@ export namespace Prisma {
     results?: ScanResultUncheckedCreateNestedManyWithoutScanInput
   }
 
-  export type ScanCreateOrConnectWithoutAgentInput = {
+  export type ScanCreateOrConnectWithoutTargetInput = {
     where: ScanWhereUniqueInput
-    create: XOR<ScanCreateWithoutAgentInput, ScanUncheckedCreateWithoutAgentInput>
+    create: XOR<ScanCreateWithoutTargetInput, ScanUncheckedCreateWithoutTargetInput>
   }
 
-  export type ScanCreateManyAgentInputEnvelope = {
-    data: ScanCreateManyAgentInput | ScanCreateManyAgentInput[]
+  export type ScanCreateManyTargetInputEnvelope = {
+    data: ScanCreateManyTargetInput | ScanCreateManyTargetInput[]
     skipDuplicates?: boolean
   }
 
-  export type CrawlUpsertWithWhereUniqueWithoutAgentInput = {
-    where: CrawlWhereUniqueInput
-    update: XOR<CrawlUpdateWithoutAgentInput, CrawlUncheckedUpdateWithoutAgentInput>
-    create: XOR<CrawlCreateWithoutAgentInput, CrawlUncheckedCreateWithoutAgentInput>
+  export type AgentCreateWithoutTargetsInput = {
+    id: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    name: string
+    location: string
+    status?: $Enums.Status
+    os: string
+    os_version: string
+    arch: string
+    processor: string
+    cores: number
+    logical_cpus: number
+    ram_gb: number
   }
 
-  export type CrawlUpdateWithWhereUniqueWithoutAgentInput = {
-    where: CrawlWhereUniqueInput
-    data: XOR<CrawlUpdateWithoutAgentInput, CrawlUncheckedUpdateWithoutAgentInput>
+  export type AgentUncheckedCreateWithoutTargetsInput = {
+    id: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    name: string
+    location: string
+    status?: $Enums.Status
+    os: string
+    os_version: string
+    arch: string
+    processor: string
+    cores: number
+    logical_cpus: number
+    ram_gb: number
   }
 
-  export type CrawlUpdateManyWithWhereWithoutAgentInput = {
+  export type AgentCreateOrConnectWithoutTargetsInput = {
+    where: AgentWhereUniqueInput
+    create: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
+  }
+
+  export type CrawlUpsertWithWhereUniqueWithoutTargetInput = {
+    where: CrawlWhereUniqueInput
+    update: XOR<CrawlUpdateWithoutTargetInput, CrawlUncheckedUpdateWithoutTargetInput>
+    create: XOR<CrawlCreateWithoutTargetInput, CrawlUncheckedCreateWithoutTargetInput>
+  }
+
+  export type CrawlUpdateWithWhereUniqueWithoutTargetInput = {
+    where: CrawlWhereUniqueInput
+    data: XOR<CrawlUpdateWithoutTargetInput, CrawlUncheckedUpdateWithoutTargetInput>
+  }
+
+  export type CrawlUpdateManyWithWhereWithoutTargetInput = {
     where: CrawlScalarWhereInput
-    data: XOR<CrawlUpdateManyMutationInput, CrawlUncheckedUpdateManyWithoutAgentInput>
+    data: XOR<CrawlUpdateManyMutationInput, CrawlUncheckedUpdateManyWithoutTargetInput>
   }
 
   export type CrawlScalarWhereInput = {
@@ -12958,23 +14593,23 @@ export namespace Prisma {
     end_time?: DateTimeFilter<"Crawl"> | Date | string
     throughput?: FloatFilter<"Crawl"> | number
     unsupported_files?: StringNullableListFilter<"Crawl">
-    agentId?: StringFilter<"Crawl"> | string
+    targetId?: StringFilter<"Crawl"> | string
   }
 
-  export type ScanUpsertWithWhereUniqueWithoutAgentInput = {
+  export type ScanUpsertWithWhereUniqueWithoutTargetInput = {
     where: ScanWhereUniqueInput
-    update: XOR<ScanUpdateWithoutAgentInput, ScanUncheckedUpdateWithoutAgentInput>
-    create: XOR<ScanCreateWithoutAgentInput, ScanUncheckedCreateWithoutAgentInput>
+    update: XOR<ScanUpdateWithoutTargetInput, ScanUncheckedUpdateWithoutTargetInput>
+    create: XOR<ScanCreateWithoutTargetInput, ScanUncheckedCreateWithoutTargetInput>
   }
 
-  export type ScanUpdateWithWhereUniqueWithoutAgentInput = {
+  export type ScanUpdateWithWhereUniqueWithoutTargetInput = {
     where: ScanWhereUniqueInput
-    data: XOR<ScanUpdateWithoutAgentInput, ScanUncheckedUpdateWithoutAgentInput>
+    data: XOR<ScanUpdateWithoutTargetInput, ScanUncheckedUpdateWithoutTargetInput>
   }
 
-  export type ScanUpdateManyWithWhereWithoutAgentInput = {
+  export type ScanUpdateManyWithWhereWithoutTargetInput = {
     where: ScanScalarWhereInput
-    data: XOR<ScanUpdateManyMutationInput, ScanUncheckedUpdateManyWithoutAgentInput>
+    data: XOR<ScanUpdateManyMutationInput, ScanUncheckedUpdateManyWithoutTargetInput>
   }
 
   export type ScanScalarWhereInput = {
@@ -12991,7 +14626,114 @@ export namespace Prisma {
     matches?: IntFilter<"Scan"> | number
     timeouts?: IntFilter<"Scan"> | number
     gigs_per_second?: FloatFilter<"Scan"> | number
-    agentId?: StringFilter<"Scan"> | string
+    targetId?: StringFilter<"Scan"> | string
+  }
+
+  export type AgentUpsertWithoutTargetsInput = {
+    update: XOR<AgentUpdateWithoutTargetsInput, AgentUncheckedUpdateWithoutTargetsInput>
+    create: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
+    where?: AgentWhereInput
+  }
+
+  export type AgentUpdateToOneWithWhereWithoutTargetsInput = {
+    where?: AgentWhereInput
+    data: XOR<AgentUpdateWithoutTargetsInput, AgentUncheckedUpdateWithoutTargetsInput>
+  }
+
+  export type AgentUpdateWithoutTargetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    os?: StringFieldUpdateOperationsInput | string
+    os_version?: StringFieldUpdateOperationsInput | string
+    arch?: StringFieldUpdateOperationsInput | string
+    processor?: StringFieldUpdateOperationsInput | string
+    cores?: IntFieldUpdateOperationsInput | number
+    logical_cpus?: IntFieldUpdateOperationsInput | number
+    ram_gb?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type AgentUncheckedUpdateWithoutTargetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    os?: StringFieldUpdateOperationsInput | string
+    os_version?: StringFieldUpdateOperationsInput | string
+    arch?: StringFieldUpdateOperationsInput | string
+    processor?: StringFieldUpdateOperationsInput | string
+    cores?: IntFieldUpdateOperationsInput | number
+    logical_cpus?: IntFieldUpdateOperationsInput | number
+    ram_gb?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type TargetCreateWithoutAgentInput = {
+    id?: string
+    roots?: TargetCreaterootsInput | string[]
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    crawls?: CrawlCreateNestedManyWithoutTargetInput
+    scans?: ScanCreateNestedManyWithoutTargetInput
+  }
+
+  export type TargetUncheckedCreateWithoutAgentInput = {
+    id?: string
+    roots?: TargetCreaterootsInput | string[]
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    crawls?: CrawlUncheckedCreateNestedManyWithoutTargetInput
+    scans?: ScanUncheckedCreateNestedManyWithoutTargetInput
+  }
+
+  export type TargetCreateOrConnectWithoutAgentInput = {
+    where: TargetWhereUniqueInput
+    create: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput>
+  }
+
+  export type TargetCreateManyAgentInputEnvelope = {
+    data: TargetCreateManyAgentInput | TargetCreateManyAgentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TargetUpsertWithWhereUniqueWithoutAgentInput = {
+    where: TargetWhereUniqueInput
+    update: XOR<TargetUpdateWithoutAgentInput, TargetUncheckedUpdateWithoutAgentInput>
+    create: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput>
+  }
+
+  export type TargetUpdateWithWhereUniqueWithoutAgentInput = {
+    where: TargetWhereUniqueInput
+    data: XOR<TargetUpdateWithoutAgentInput, TargetUncheckedUpdateWithoutAgentInput>
+  }
+
+  export type TargetUpdateManyWithWhereWithoutAgentInput = {
+    where: TargetScalarWhereInput
+    data: XOR<TargetUpdateManyMutationInput, TargetUncheckedUpdateManyWithoutAgentInput>
+  }
+
+  export type TargetScalarWhereInput = {
+    AND?: TargetScalarWhereInput | TargetScalarWhereInput[]
+    OR?: TargetScalarWhereInput[]
+    NOT?: TargetScalarWhereInput | TargetScalarWhereInput[]
+    id?: StringFilter<"Target"> | string
+    roots?: StringNullableListFilter<"Target">
+    skip_completed?: BoolFilter<"Target"> | boolean
+    max_workers?: IntFilter<"Target"> | number
+    mem_thresh?: IntFilter<"Target"> | number
+    use_history?: BoolFilter<"Target"> | boolean
+    default_timeout?: IntFilter<"Target"> | number
+    agentId?: StringFilter<"Target"> | string
   }
 
   export type CrawlErrorCreateWithoutCrawlInput = {
@@ -13050,43 +14792,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AgentCreateWithoutCrawlsInput = {
-    id: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    name: string
-    location: string
-    status?: $Enums.Status
-    os: string
-    os_version: string
-    arch: string
-    processor: string
-    cores: number
-    logical_cpus: number
-    ram_gb: number
-    scans?: ScanCreateNestedManyWithoutAgentInput
+  export type TargetCreateWithoutCrawlsInput = {
+    id?: string
+    roots?: TargetCreaterootsInput | string[]
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    scans?: ScanCreateNestedManyWithoutTargetInput
+    agent: AgentCreateNestedOneWithoutTargetsInput
   }
 
-  export type AgentUncheckedCreateWithoutCrawlsInput = {
-    id: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    name: string
-    location: string
-    status?: $Enums.Status
-    os: string
-    os_version: string
-    arch: string
-    processor: string
-    cores: number
-    logical_cpus: number
-    ram_gb: number
-    scans?: ScanUncheckedCreateNestedManyWithoutAgentInput
+  export type TargetUncheckedCreateWithoutCrawlsInput = {
+    id?: string
+    roots?: TargetCreaterootsInput | string[]
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    agentId: string
+    scans?: ScanUncheckedCreateNestedManyWithoutTargetInput
   }
 
-  export type AgentCreateOrConnectWithoutCrawlsInput = {
-    where: AgentWhereUniqueInput
-    create: XOR<AgentCreateWithoutCrawlsInput, AgentUncheckedCreateWithoutCrawlsInput>
+  export type TargetCreateOrConnectWithoutCrawlsInput = {
+    where: TargetWhereUniqueInput
+    create: XOR<TargetCreateWithoutCrawlsInput, TargetUncheckedCreateWithoutCrawlsInput>
   }
 
   export type CrawlErrorUpsertWithWhereUniqueWithoutCrawlInput = {
@@ -13147,49 +14879,39 @@ export namespace Prisma {
     crawlId?: StringFilter<"CrawlHash"> | string
   }
 
-  export type AgentUpsertWithoutCrawlsInput = {
-    update: XOR<AgentUpdateWithoutCrawlsInput, AgentUncheckedUpdateWithoutCrawlsInput>
-    create: XOR<AgentCreateWithoutCrawlsInput, AgentUncheckedCreateWithoutCrawlsInput>
-    where?: AgentWhereInput
+  export type TargetUpsertWithoutCrawlsInput = {
+    update: XOR<TargetUpdateWithoutCrawlsInput, TargetUncheckedUpdateWithoutCrawlsInput>
+    create: XOR<TargetCreateWithoutCrawlsInput, TargetUncheckedCreateWithoutCrawlsInput>
+    where?: TargetWhereInput
   }
 
-  export type AgentUpdateToOneWithWhereWithoutCrawlsInput = {
-    where?: AgentWhereInput
-    data: XOR<AgentUpdateWithoutCrawlsInput, AgentUncheckedUpdateWithoutCrawlsInput>
+  export type TargetUpdateToOneWithWhereWithoutCrawlsInput = {
+    where?: TargetWhereInput
+    data: XOR<TargetUpdateWithoutCrawlsInput, TargetUncheckedUpdateWithoutCrawlsInput>
   }
 
-  export type AgentUpdateWithoutCrawlsInput = {
+  export type TargetUpdateWithoutCrawlsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    os?: StringFieldUpdateOperationsInput | string
-    os_version?: StringFieldUpdateOperationsInput | string
-    arch?: StringFieldUpdateOperationsInput | string
-    processor?: StringFieldUpdateOperationsInput | string
-    cores?: IntFieldUpdateOperationsInput | number
-    logical_cpus?: IntFieldUpdateOperationsInput | number
-    ram_gb?: FloatFieldUpdateOperationsInput | number
-    scans?: ScanUpdateManyWithoutAgentNestedInput
+    roots?: TargetUpdaterootsInput | string[]
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+    scans?: ScanUpdateManyWithoutTargetNestedInput
+    agent?: AgentUpdateOneRequiredWithoutTargetsNestedInput
   }
 
-  export type AgentUncheckedUpdateWithoutCrawlsInput = {
+  export type TargetUncheckedUpdateWithoutCrawlsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    os?: StringFieldUpdateOperationsInput | string
-    os_version?: StringFieldUpdateOperationsInput | string
-    arch?: StringFieldUpdateOperationsInput | string
-    processor?: StringFieldUpdateOperationsInput | string
-    cores?: IntFieldUpdateOperationsInput | number
-    logical_cpus?: IntFieldUpdateOperationsInput | number
-    ram_gb?: FloatFieldUpdateOperationsInput | number
-    scans?: ScanUncheckedUpdateManyWithoutAgentNestedInput
+    roots?: TargetUpdaterootsInput | string[]
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+    agentId?: StringFieldUpdateOperationsInput | string
+    scans?: ScanUncheckedUpdateManyWithoutTargetNestedInput
   }
 
   export type CrawlCreateWithoutErrorsInput = {
@@ -13211,7 +14933,7 @@ export namespace Prisma {
     throughput: number
     unsupported_files?: CrawlCreateunsupported_filesInput | string[]
     hashes?: CrawlHashCreateNestedManyWithoutCrawlInput
-    agent: AgentCreateNestedOneWithoutCrawlsInput
+    target: TargetCreateNestedOneWithoutCrawlsInput
   }
 
   export type CrawlUncheckedCreateWithoutErrorsInput = {
@@ -13232,7 +14954,7 @@ export namespace Prisma {
     end_time: Date | string
     throughput: number
     unsupported_files?: CrawlCreateunsupported_filesInput | string[]
-    agentId: string
+    targetId: string
     hashes?: CrawlHashUncheckedCreateNestedManyWithoutCrawlInput
   }
 
@@ -13271,7 +14993,7 @@ export namespace Prisma {
     throughput?: FloatFieldUpdateOperationsInput | number
     unsupported_files?: CrawlUpdateunsupported_filesInput | string[]
     hashes?: CrawlHashUpdateManyWithoutCrawlNestedInput
-    agent?: AgentUpdateOneRequiredWithoutCrawlsNestedInput
+    target?: TargetUpdateOneRequiredWithoutCrawlsNestedInput
   }
 
   export type CrawlUncheckedUpdateWithoutErrorsInput = {
@@ -13292,7 +15014,7 @@ export namespace Prisma {
     end_time?: DateTimeFieldUpdateOperationsInput | Date | string
     throughput?: FloatFieldUpdateOperationsInput | number
     unsupported_files?: CrawlUpdateunsupported_filesInput | string[]
-    agentId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
     hashes?: CrawlHashUncheckedUpdateManyWithoutCrawlNestedInput
   }
 
@@ -13315,7 +15037,7 @@ export namespace Prisma {
     throughput: number
     unsupported_files?: CrawlCreateunsupported_filesInput | string[]
     errors?: CrawlErrorCreateNestedManyWithoutCrawlInput
-    agent: AgentCreateNestedOneWithoutCrawlsInput
+    target: TargetCreateNestedOneWithoutCrawlsInput
   }
 
   export type CrawlUncheckedCreateWithoutHashesInput = {
@@ -13336,7 +15058,7 @@ export namespace Prisma {
     end_time: Date | string
     throughput: number
     unsupported_files?: CrawlCreateunsupported_filesInput | string[]
-    agentId: string
+    targetId: string
     errors?: CrawlErrorUncheckedCreateNestedManyWithoutCrawlInput
   }
 
@@ -13375,7 +15097,7 @@ export namespace Prisma {
     throughput?: FloatFieldUpdateOperationsInput | number
     unsupported_files?: CrawlUpdateunsupported_filesInput | string[]
     errors?: CrawlErrorUpdateManyWithoutCrawlNestedInput
-    agent?: AgentUpdateOneRequiredWithoutCrawlsNestedInput
+    target?: TargetUpdateOneRequiredWithoutCrawlsNestedInput
   }
 
   export type CrawlUncheckedUpdateWithoutHashesInput = {
@@ -13396,7 +15118,7 @@ export namespace Prisma {
     end_time?: DateTimeFieldUpdateOperationsInput | Date | string
     throughput?: FloatFieldUpdateOperationsInput | number
     unsupported_files?: CrawlUpdateunsupported_filesInput | string[]
-    agentId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
     errors?: CrawlErrorUncheckedUpdateManyWithoutCrawlNestedInput
   }
 
@@ -13470,43 +15192,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AgentCreateWithoutScansInput = {
-    id: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    name: string
-    location: string
-    status?: $Enums.Status
-    os: string
-    os_version: string
-    arch: string
-    processor: string
-    cores: number
-    logical_cpus: number
-    ram_gb: number
-    crawls?: CrawlCreateNestedManyWithoutAgentInput
+  export type TargetCreateWithoutScansInput = {
+    id?: string
+    roots?: TargetCreaterootsInput | string[]
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    crawls?: CrawlCreateNestedManyWithoutTargetInput
+    agent: AgentCreateNestedOneWithoutTargetsInput
   }
 
-  export type AgentUncheckedCreateWithoutScansInput = {
-    id: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    name: string
-    location: string
-    status?: $Enums.Status
-    os: string
-    os_version: string
-    arch: string
-    processor: string
-    cores: number
-    logical_cpus: number
-    ram_gb: number
-    crawls?: CrawlUncheckedCreateNestedManyWithoutAgentInput
+  export type TargetUncheckedCreateWithoutScansInput = {
+    id?: string
+    roots?: TargetCreaterootsInput | string[]
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    agentId: string
+    crawls?: CrawlUncheckedCreateNestedManyWithoutTargetInput
   }
 
-  export type AgentCreateOrConnectWithoutScansInput = {
-    where: AgentWhereUniqueInput
-    create: XOR<AgentCreateWithoutScansInput, AgentUncheckedCreateWithoutScansInput>
+  export type TargetCreateOrConnectWithoutScansInput = {
+    where: TargetWhereUniqueInput
+    create: XOR<TargetCreateWithoutScansInput, TargetUncheckedCreateWithoutScansInput>
   }
 
   export type ScanErrorUpsertWithWhereUniqueWithoutScanInput = {
@@ -13574,49 +15286,39 @@ export namespace Prisma {
     scanId?: StringFilter<"ScanResult"> | string
   }
 
-  export type AgentUpsertWithoutScansInput = {
-    update: XOR<AgentUpdateWithoutScansInput, AgentUncheckedUpdateWithoutScansInput>
-    create: XOR<AgentCreateWithoutScansInput, AgentUncheckedCreateWithoutScansInput>
-    where?: AgentWhereInput
+  export type TargetUpsertWithoutScansInput = {
+    update: XOR<TargetUpdateWithoutScansInput, TargetUncheckedUpdateWithoutScansInput>
+    create: XOR<TargetCreateWithoutScansInput, TargetUncheckedCreateWithoutScansInput>
+    where?: TargetWhereInput
   }
 
-  export type AgentUpdateToOneWithWhereWithoutScansInput = {
-    where?: AgentWhereInput
-    data: XOR<AgentUpdateWithoutScansInput, AgentUncheckedUpdateWithoutScansInput>
+  export type TargetUpdateToOneWithWhereWithoutScansInput = {
+    where?: TargetWhereInput
+    data: XOR<TargetUpdateWithoutScansInput, TargetUncheckedUpdateWithoutScansInput>
   }
 
-  export type AgentUpdateWithoutScansInput = {
+  export type TargetUpdateWithoutScansInput = {
     id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    os?: StringFieldUpdateOperationsInput | string
-    os_version?: StringFieldUpdateOperationsInput | string
-    arch?: StringFieldUpdateOperationsInput | string
-    processor?: StringFieldUpdateOperationsInput | string
-    cores?: IntFieldUpdateOperationsInput | number
-    logical_cpus?: IntFieldUpdateOperationsInput | number
-    ram_gb?: FloatFieldUpdateOperationsInput | number
-    crawls?: CrawlUpdateManyWithoutAgentNestedInput
+    roots?: TargetUpdaterootsInput | string[]
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+    crawls?: CrawlUpdateManyWithoutTargetNestedInput
+    agent?: AgentUpdateOneRequiredWithoutTargetsNestedInput
   }
 
-  export type AgentUncheckedUpdateWithoutScansInput = {
+  export type TargetUncheckedUpdateWithoutScansInput = {
     id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    os?: StringFieldUpdateOperationsInput | string
-    os_version?: StringFieldUpdateOperationsInput | string
-    arch?: StringFieldUpdateOperationsInput | string
-    processor?: StringFieldUpdateOperationsInput | string
-    cores?: IntFieldUpdateOperationsInput | number
-    logical_cpus?: IntFieldUpdateOperationsInput | number
-    ram_gb?: FloatFieldUpdateOperationsInput | number
-    crawls?: CrawlUncheckedUpdateManyWithoutAgentNestedInput
+    roots?: TargetUpdaterootsInput | string[]
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+    agentId?: StringFieldUpdateOperationsInput | string
+    crawls?: CrawlUncheckedUpdateManyWithoutTargetNestedInput
   }
 
   export type ScanCreateWithoutErrorsInput = {
@@ -13631,7 +15333,7 @@ export namespace Prisma {
     timeouts: number
     gigs_per_second: number
     results?: ScanResultCreateNestedManyWithoutScanInput
-    agent: AgentCreateNestedOneWithoutScansInput
+    target: TargetCreateNestedOneWithoutScansInput
   }
 
   export type ScanUncheckedCreateWithoutErrorsInput = {
@@ -13645,7 +15347,7 @@ export namespace Prisma {
     matches: number
     timeouts: number
     gigs_per_second: number
-    agentId: string
+    targetId: string
     results?: ScanResultUncheckedCreateNestedManyWithoutScanInput
   }
 
@@ -13677,7 +15379,7 @@ export namespace Prisma {
     timeouts?: IntFieldUpdateOperationsInput | number
     gigs_per_second?: FloatFieldUpdateOperationsInput | number
     results?: ScanResultUpdateManyWithoutScanNestedInput
-    agent?: AgentUpdateOneRequiredWithoutScansNestedInput
+    target?: TargetUpdateOneRequiredWithoutScansNestedInput
   }
 
   export type ScanUncheckedUpdateWithoutErrorsInput = {
@@ -13691,7 +15393,7 @@ export namespace Prisma {
     matches?: IntFieldUpdateOperationsInput | number
     timeouts?: IntFieldUpdateOperationsInput | number
     gigs_per_second?: FloatFieldUpdateOperationsInput | number
-    agentId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
     results?: ScanResultUncheckedUpdateManyWithoutScanNestedInput
   }
 
@@ -13707,7 +15409,7 @@ export namespace Prisma {
     timeouts: number
     gigs_per_second: number
     errors?: ScanErrorCreateNestedManyWithoutScanInput
-    agent: AgentCreateNestedOneWithoutScansInput
+    target: TargetCreateNestedOneWithoutScansInput
   }
 
   export type ScanUncheckedCreateWithoutResultsInput = {
@@ -13721,7 +15423,7 @@ export namespace Prisma {
     matches: number
     timeouts: number
     gigs_per_second: number
-    agentId: string
+    targetId: string
     errors?: ScanErrorUncheckedCreateNestedManyWithoutScanInput
   }
 
@@ -13753,7 +15455,7 @@ export namespace Prisma {
     timeouts?: IntFieldUpdateOperationsInput | number
     gigs_per_second?: FloatFieldUpdateOperationsInput | number
     errors?: ScanErrorUpdateManyWithoutScanNestedInput
-    agent?: AgentUpdateOneRequiredWithoutScansNestedInput
+    target?: TargetUpdateOneRequiredWithoutScansNestedInput
   }
 
   export type ScanUncheckedUpdateWithoutResultsInput = {
@@ -13767,11 +15469,11 @@ export namespace Prisma {
     matches?: IntFieldUpdateOperationsInput | number
     timeouts?: IntFieldUpdateOperationsInput | number
     gigs_per_second?: FloatFieldUpdateOperationsInput | number
-    agentId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
     errors?: ScanErrorUncheckedUpdateManyWithoutScanNestedInput
   }
 
-  export type CrawlCreateManyAgentInput = {
+  export type CrawlCreateManyTargetInput = {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
@@ -13791,7 +15493,7 @@ export namespace Prisma {
     unsupported_files?: CrawlCreateunsupported_filesInput | string[]
   }
 
-  export type ScanCreateManyAgentInput = {
+  export type ScanCreateManyTargetInput = {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
@@ -13804,7 +15506,7 @@ export namespace Prisma {
     gigs_per_second: number
   }
 
-  export type CrawlUpdateWithoutAgentInput = {
+  export type CrawlUpdateWithoutTargetInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13826,7 +15528,7 @@ export namespace Prisma {
     hashes?: CrawlHashUpdateManyWithoutCrawlNestedInput
   }
 
-  export type CrawlUncheckedUpdateWithoutAgentInput = {
+  export type CrawlUncheckedUpdateWithoutTargetInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13848,7 +15550,7 @@ export namespace Prisma {
     hashes?: CrawlHashUncheckedUpdateManyWithoutCrawlNestedInput
   }
 
-  export type CrawlUncheckedUpdateManyWithoutAgentInput = {
+  export type CrawlUncheckedUpdateManyWithoutTargetInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13868,7 +15570,7 @@ export namespace Prisma {
     unsupported_files?: CrawlUpdateunsupported_filesInput | string[]
   }
 
-  export type ScanUpdateWithoutAgentInput = {
+  export type ScanUpdateWithoutTargetInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13883,7 +15585,7 @@ export namespace Prisma {
     results?: ScanResultUpdateManyWithoutScanNestedInput
   }
 
-  export type ScanUncheckedUpdateWithoutAgentInput = {
+  export type ScanUncheckedUpdateWithoutTargetInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13898,7 +15600,7 @@ export namespace Prisma {
     results?: ScanResultUncheckedUpdateManyWithoutScanNestedInput
   }
 
-  export type ScanUncheckedUpdateManyWithoutAgentInput = {
+  export type ScanUncheckedUpdateManyWithoutTargetInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13909,6 +15611,50 @@ export namespace Prisma {
     matches?: IntFieldUpdateOperationsInput | number
     timeouts?: IntFieldUpdateOperationsInput | number
     gigs_per_second?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type TargetCreateManyAgentInput = {
+    id?: string
+    roots?: TargetCreaterootsInput | string[]
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+  }
+
+  export type TargetUpdateWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roots?: TargetUpdaterootsInput | string[]
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+    crawls?: CrawlUpdateManyWithoutTargetNestedInput
+    scans?: ScanUpdateManyWithoutTargetNestedInput
+  }
+
+  export type TargetUncheckedUpdateWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roots?: TargetUpdaterootsInput | string[]
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+    crawls?: CrawlUncheckedUpdateManyWithoutTargetNestedInput
+    scans?: ScanUncheckedUpdateManyWithoutTargetNestedInput
+  }
+
+  export type TargetUncheckedUpdateManyWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roots?: TargetUpdaterootsInput | string[]
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
   }
 
   export type CrawlErrorCreateManyCrawlInput = {

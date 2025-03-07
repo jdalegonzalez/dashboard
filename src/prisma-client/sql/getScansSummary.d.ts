@@ -8,7 +8,7 @@ export namespace getScansSummary {
   export type Parameters = []
   export type Result = {
     name: string
-    path: string
+    paths: string[] | null
     matches: number
     start_time: Date
     end_time: Date | null

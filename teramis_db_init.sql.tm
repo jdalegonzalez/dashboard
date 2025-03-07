@@ -1,11 +1,25 @@
 -- CreateEnum
-CREATE TYPE "Status" AS ENUM ('CRAWLING', 'SCANNING', 'IDLE', 'ERRORED', 'MISSING', 'PENDING');
+CREATE TYPE "Status" AS ENUM ('CRAWLING', 'SCANNING', 'IDLE', 'ERRORED', 'MISSING', 'PENDING', 'STOPPED');
 
 -- CreateEnum
 CREATE TYPE "Severity" AS ENUM ('HINT', 'WARNING', 'ERROR', 'FATAL');
 
 -- CreateEnum
 CREATE TYPE "Confidence" AS ENUM ('HIGH', 'MEDIUM', 'LOW', 'NONE');
+
+-- CreateTable
+CREATE TABLE "Target" (
+    "id" TEXT NOT NULL,
+    "roots" TEXT[],
+    "skip_completed" BOOLEAN NOT NULL,
+    "max_workers" INTEGER NOT NULL,
+    "mem_thresh" INTEGER NOT NULL,
+    "use_history" BOOLEAN NOT NULL,
+    "default_timeout" INTEGER NOT NULL,
+    "agentId" TEXT NOT NULL,
+
+    CONSTRAINT "Target_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Agent" (
@@ -45,7 +59,7 @@ CREATE TABLE "Crawl" (
     "end_time" TIMESTAMP(3) NOT NULL,
     "throughput" DOUBLE PRECISION NOT NULL,
     "unsupported_files" TEXT[],
-    "agentId" TEXT NOT NULL,
+    "targetId" TEXT NOT NULL,
 
     CONSTRAINT "Crawl_pkey" PRIMARY KEY ("id")
 );
@@ -88,7 +102,7 @@ CREATE TABLE "Scan" (
     "matches" INTEGER NOT NULL,
     "timeouts" INTEGER NOT NULL,
     "gigs_per_second" DOUBLE PRECISION NOT NULL,
-    "agentId" TEXT NOT NULL,
+    "targetId" TEXT NOT NULL,
 
     CONSTRAINT "Scan_pkey" PRIMARY KEY ("id")
 );
@@ -127,22 +141,31 @@ CREATE TABLE "ScanResult" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Target_agentId_roots_key" ON "Target"("agentId", "roots");
+
+-- CreateIndex
 CREATE INDEX "Crawl_updated_at_idx" ON "Crawl"("updated_at");
 
 -- CreateIndex
-CREATE INDEX "Crawl_result_folder_agentId_idx" ON "Crawl"("result_folder", "agentId");
+CREATE INDEX "Crawl_result_folder_targetId_idx" ON "Crawl"("result_folder", "targetId");
 
 -- CreateIndex
-CREATE INDEX "Crawl_end_time_agentId_idx" ON "Crawl"("end_time", "agentId");
+CREATE INDEX "Crawl_end_time_targetId_idx" ON "Crawl"("end_time", "targetId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Crawl_targetId_result_folder_key" ON "Crawl"("targetId", "result_folder");
 
 -- CreateIndex
 CREATE INDEX "Scan_updated_at_idx" ON "Scan"("updated_at");
 
 -- CreateIndex
-CREATE INDEX "Scan_result_folder_agentId_idx" ON "Scan"("result_folder", "agentId");
+CREATE INDEX "Scan_result_folder_targetId_idx" ON "Scan"("result_folder", "targetId");
 
 -- CreateIndex
-CREATE INDEX "Scan_end_time_agentId_idx" ON "Scan"("end_time", "agentId");
+CREATE INDEX "Scan_end_time_targetId_idx" ON "Scan"("end_time", "targetId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Scan_targetId_result_folder_key" ON "Scan"("targetId", "result_folder");
 
 -- CreateIndex
 CREATE INDEX "ScanResult_confidence_idx" ON "ScanResult"("confidence");
@@ -154,7 +177,10 @@ CREATE INDEX "ScanResult_hash_id_confidence_idx" ON "ScanResult"("hash", "id", "
 CREATE INDEX "ScanResult_updated_at_idx" ON "ScanResult"("updated_at");
 
 -- AddForeignKey
-ALTER TABLE "Crawl" ADD CONSTRAINT "Crawl_agentId_fkey" FOREIGN KEY ("agentId") REFERENCES "Agent"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Target" ADD CONSTRAINT "Target_agentId_fkey" FOREIGN KEY ("agentId") REFERENCES "Agent"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Crawl" ADD CONSTRAINT "Crawl_targetId_fkey" FOREIGN KEY ("targetId") REFERENCES "Target"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CrawlError" ADD CONSTRAINT "CrawlError_crawlId_fkey" FOREIGN KEY ("crawlId") REFERENCES "Crawl"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -163,7 +189,7 @@ ALTER TABLE "CrawlError" ADD CONSTRAINT "CrawlError_crawlId_fkey" FOREIGN KEY ("
 ALTER TABLE "CrawlHash" ADD CONSTRAINT "CrawlHash_crawlId_fkey" FOREIGN KEY ("crawlId") REFERENCES "Crawl"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Scan" ADD CONSTRAINT "Scan_agentId_fkey" FOREIGN KEY ("agentId") REFERENCES "Agent"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Scan" ADD CONSTRAINT "Scan_targetId_fkey" FOREIGN KEY ("targetId") REFERENCES "Target"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ScanError" ADD CONSTRAINT "ScanError_scanId_fkey" FOREIGN KEY ("scanId") REFERENCES "Scan"("id") ON DELETE CASCADE ON UPDATE CASCADE;

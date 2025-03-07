@@ -1,8 +1,0 @@
-Root Directory: C:\Users\Nate\Documents\Convergent\spillage\lib_test_data\data_org
-Start Time: 2025-02-05 09:38:43.661164
-End Time: 2025-02-05 09:38:48.588964
-Duration: 0:00:04.927800
-Matches: 48
-Errors: 4
-Timeout: 0
-Scan Rate: 1.01 GB per second

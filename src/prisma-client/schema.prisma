@@ -22,6 +22,7 @@ enum Status {
   ERRORED
   MISSING
   PENDING
+  STOPPED
 }
 
 enum Severity {
@@ -38,6 +39,22 @@ enum Confidence {
   NONE
 }
 
+model Target {
+  id              String   @id @default(cuid(2))
+  roots           String[]
+  skip_completed  Boolean
+  max_workers     Int
+  mem_thresh      Int
+  use_history     Boolean
+  default_timeout Int
+  crawls          Crawl[]
+  scans           Scan[]
+  agentId         String
+  agent           Agent    @relation(fields: [agentId], references: [id], onDelete: Restrict)
+
+  @@unique(name: "agent_target", [agentId, roots])
+}
+
 model Agent {
   id           String   @id
   created_at   DateTime @default(now())
@@ -45,8 +62,7 @@ model Agent {
   name         String
   location     String
   status       Status   @default(IDLE)
-  crawls       Crawl[]
-  scans        Scan[]
+  targets      Target[]
   os           String
   os_version   String
   arch         String
@@ -76,12 +92,13 @@ model Crawl {
   errors            CrawlError[]
   hashes            CrawlHash[]
   unsupported_files String[]
-  agent             Agent        @relation(fields: [agentId], references: [id], onDelete: Restrict)
-  agentId           String
+  target            Target       @relation(fields: [targetId], references: [id], onDelete: Restrict)
+  targetId          String
 
+  @@unique(name: "crawl_target_result", [targetId, result_folder])
   @@index(fields: [updated_at])
-  @@index(fields: [result_folder, agentId])
-  @@index(fields: [end_time, agentId])
+  @@index(fields: [result_folder, targetId])
+  @@index(fields: [end_time, targetId])
 }
 
 model CrawlError {
@@ -121,12 +138,13 @@ model Scan {
   gigs_per_second Float
   errors          ScanError[]
   results         ScanResult[]
-  agent           Agent        @relation(fields: [agentId], references: [id], onDelete: Restrict)
-  agentId         String
+  target          Target       @relation(fields: [targetId], references: [id], onDelete: Restrict)
+  targetId        String
 
+  @@unique(name: "scan_target_result", [targetId, result_folder])
   @@index(fields: [updated_at])
-  @@index(fields: [result_folder, agentId])
-  @@index(fields: [end_time, agentId])
+  @@index(fields: [result_folder, targetId])
+  @@index(fields: [end_time, targetId])
 }
 
 model ScanError {

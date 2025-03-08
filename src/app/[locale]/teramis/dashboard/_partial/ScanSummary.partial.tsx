@@ -124,7 +124,7 @@ const secondsToString = (seconds: number) => {
 }
 
 const arrayAverage = (arr:number[]) => {
-	return arr.reduce((acc, v) => acc + v, 0) || 0 / arr.length || 1;
+	return (arr??[]).reduce((acc, v) => acc + v, 0) || 0 / (arr?.length || 1);
 }
 
 const durationValue = (data?:ScanSummaryAPIResults ) => {

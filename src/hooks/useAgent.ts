@@ -22,8 +22,7 @@ export const blankAgent:IAgentResult = {
     ram_gb: 0.0,
     processor: '',
     status: 'ERRORED',
-    scans: [],
-    crawls: []
+    targets: []
 }
 
 const {id: agent_id, ...rest} = blankAgent;
@@ -31,6 +30,11 @@ const {id: agent_id, ...rest} = blankAgent;
 export const blankResult:getAgentDetails.Result = {
     agent_id,
     ...rest,
+    target_id: '',
+    skip_completed: false,
+    max_workers: 0,
+    mem_thresh: 0,
+    default_timeout: 0,
     scan_id: '',
     scan_start_time: emptyDate,
     scan_end_time: null,

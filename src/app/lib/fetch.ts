@@ -9,6 +9,7 @@ import {
 
 import { getAgentDetails } from '@/prisma-client/sql';
 import { NextRequest } from 'next/server';
+import { string } from 'slate';
 
 export default async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Promise<JSON> {
   const res = await fetch(input, init)
@@ -132,8 +133,11 @@ export const scanErrorsPath = (rows: number = defaultRows, page: number = 1, ext
 export type ScanErrorAPIResults = PagedAPIResults<ScanError>;
 
 export interface IAgentResult extends Agent {
-    crawls: {id: string}[],
-    scans: {id: string}[]
+    targets: {
+      id: string,
+      crawls: {id: string}[],
+      scans: {id: string}[]        
+    }[]
 }
 
 export interface ScanSummaryAPIResults {
@@ -172,7 +176,7 @@ const manyQuery = (dates: Date[]) => ({
     where: {end_time: {in: dates}}
 })
 const datesQuery = {
-    by:['agentId' as const],
+    by:['targetId' as const],
     _max: {
         end_time: true as const
     }
@@ -182,7 +186,6 @@ export const crawlIdFilter = async (prisma: PrismaClient, id: string | null) => 
     if (id) return def1Query('crawlId', id)
     const gb = prisma.crawl.groupBy
     const fm = prisma.crawl.findMany
-
     const newestDates = (await gb(datesQuery)).map(obj => obj._max.end_time) as Date[];
     const ids = (await fm(manyQuery(newestDates))).map(obj => obj.id)
     return defInQuery('crawlId', ids)

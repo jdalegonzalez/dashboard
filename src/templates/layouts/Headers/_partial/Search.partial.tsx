@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import { componentsPages } from '@/config/pages.config';
 import Icon from '../../../../components/icon/Icon';
 import Button from '../../../../components/ui/Button';
 import Input from '../../../../components/form/Input';
@@ -47,15 +46,16 @@ const SearchPartial = () => {
 		</Button>
 	);
 
-	const list = [
-		...Object.values(componentsPages.uiPages.subPages).map((i) => ({
-			...i,
-			category: 'Component',
-		})),
-		...Object.values(componentsPages.formPages.subPages).map((i) => ({
-			...i,
-			category: 'Form',
-		})),
+	type stub = {text: string, category: string, icon:string, id:string, to:string}
+	const list:stub[] = [
+		// ...Object.values(componentsPages.uiPages.subPages).map((i) => ({
+		// 	...i,
+		// 	category: 'Component',
+		// })),
+		// ...Object.values(componentsPages.formPages.subPages).map((i) => ({
+		// 	...i,
+		// 	category: 'Form',
+		// })),
 		// ...Object.values(componentsPages.integratedPages.subPages).map((i) => ({
 		// 	...i,
 		// 	category: 'Other',

@@ -60,8 +60,8 @@ const AgentDetails = () => {
 	const { data: agent, isLoading: agentLoading, triggerScan } = useAgent(agentId, setIsSaving, 5000);
 	const { data: details, isLoading: detailsLoading } = useAgentDetails(agentId);
 
-	const scanId = agentLoading  ? '' : agent.scans[0]?.id;
-	const crawlId = agentLoading ? '' : agent.crawls[0]?.id;
+	const scanId = agentLoading  ? '' : agent.targets[0]?.scans[0]?.id;
+	const crawlId = agentLoading ? '' : agent.targets[0]?.crawls[0]?.id;
 
 	const { saveBtnDisable } = useSaveBtn({
 		isNewItem: false,

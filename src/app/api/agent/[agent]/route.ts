@@ -17,11 +17,16 @@ export async function GET(req: NextRequest) {
             id
         },
         include: {
-            scans: {
-                select: {id: true }
-            },
-            crawls: {
-                select: {id: true}
+            targets: {
+                select: {
+                    id: true,
+                    scans: {
+                        select: {id: true }
+                    },
+                    crawls: {
+                        select: {id: true}
+                    }
+                }
             }
         }
     });

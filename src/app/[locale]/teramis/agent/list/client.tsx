@@ -30,7 +30,7 @@ import { useAgentDetails, blankResult } from '@/hooks/useAgent';
 
 const columnHelper = createColumnHelper<getAgentDetails.Result>();
 
-const editLinkPath = `${appPages.teramisAppPages.subPages.agentPage.subPages.editPageLink.to}/`;
+const editLinkPath = `/teramis/agents/`;
 
 const darkIconIntensity = '500';
 

@@ -6,6 +6,7 @@ import { pagingParams, defaultRows, booleanParam, idParam, enumParam, enumWhere,
 export async function GET(request: NextRequest) {
     const { skip, rowsPerPage } = pagingParams(request, defaultRows);
     const allRows = booleanParam(request, 'allResults');
+
     const scanId = idParam(request, 'scanId');
     const idPart = await idFilter(prisma, scanId)
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import { pagingParams, defaultRows, idParam, crawlIdFilter as idFilter } from '@/app/lib/fetch';
 
+
 export async function GET(req: NextRequest) {
     const { skip, rowsPerPage } = pagingParams(req, defaultRows);
     const crawlId = idParam(req, 'crawlId');
@@ -14,7 +15,6 @@ export async function GET(req: NextRequest) {
     
     // TODO: Rewrite as a single query.
     const idPart = await idFilter(prisma, crawlId)
-
     const sortOrder = { file: 'asc' as const}
     const whereClause = {...idPart };
 

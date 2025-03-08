@@ -10,13 +10,11 @@ import Link from 'next/link';
 import { useCurrentLocale } from 'next-i18n-router/client';
 import TranslationsProvider from '@/components/TranslationsProvider';
 import { useTranslation } from 'react-i18next';
-import { StaticImageData } from 'next/image';
 import purePathnameUtil from '@/utils/purePathname.util';
 import Icon, { IIconProps } from '../../icon/Icon';
 import useAsideStatus from '../../../hooks/useAsideStatus';
 import themeConfig from '../../../config/theme.config';
 import Tooltip from '../../ui/Tooltip';
-import Avatar from '../../Avatar';
 import i18nConfig from '../../../../i18nConfig';
 
 const i18nNamespaces = ['translation'];
@@ -386,123 +384,6 @@ export const NavTitle: FC<INavTitleProps> = (props) => {
 	);
 };
 NavTitle.displayName = 'NavTitle';
-
-interface INavUserProps extends HTMLAttributes<HTMLLIElement> {
-	children?: ReactNode;
-	image?: string | StaticImageData;
-	text: string;
-	to?: string;
-	className?: string;
-}
-export const NavUser: FC<INavUserProps> = (props) => {
-	const { children, image, text, to, className, ...rest } = props;
-
-	const { t } = useTranslation();
-
-	const { asideStatus, setAsideStatus } = useAsideStatus();
-
-	// @ts-expect-error This is fine
-	const isChildrenNavButton = navItemChildCheck(children);
-
-	const CONTENT = (
-		<>
-			<Avatar
-				src={image}
-				name={text}
-				className={classNames('w-6 rounded-full', {
-					'me-3': asideStatus,
-				})}
-				rounded='rounded'
-			/>
-			<NavItemContent>
-				<NavItemText>{t(text)}</NavItemText>
-				{children && !isChildrenNavButton && <div>{children as ReactNode}</div>}
-			</NavItemContent>
-		</>
-	);
-
-	const pathname = usePathname();
-	const purePath = purePathnameUtil(pathname);
-
-	return (
-		<Tooltip text={asideStatus ? '' : t(text)} placement='right'>
-			<li
-				data-component-name='Nav/NavUser'
-				className={classNames(
-					'flex list-none items-center overflow-hidden whitespace-nowrap',
-					className,
-				)}
-				{...rest}>
-				{to ? (
-					<>
-						{/* For Desktop */}
-						<Link
-							href={to}
-							className={
-								purePath === to
-									? classNames(
-											navItemClasses.default,
-											navItemClasses.active,
-											'max-md:hidden',
-										)
-									: classNames(
-											navItemClasses.default,
-											navItemClasses.inactive,
-											'max-md:hidden',
-										)
-							}>
-							{CONTENT}
-						</Link>
-						{/* For Mobile */}
-						<Link
-							href={to}
-							onClick={() => setAsideStatus(false)}
-							className={
-								purePath === to
-									? classNames(
-											navItemClasses.default,
-											navItemClasses.active,
-											'md:hidden',
-										)
-									: classNames(
-											navItemClasses.default,
-											navItemClasses.inactive,
-											'md:hidden',
-										)
-							}>
-							{CONTENT}
-						</Link>
-					</>
-				) : (
-					<>
-						{/* For Desktop */}
-						<div
-							className={classNames(
-								navItemClasses.default,
-								navItemClasses.inactive,
-								'max-md:hidden',
-							)}>
-							{CONTENT}
-						</div>
-						{/* For Mobile */}
-						<div
-							className={classNames(
-								navItemClasses.default,
-								navItemClasses.inactive,
-								'md:hidden',
-							)}>
-							{CONTENT}
-						</div>
-					</>
-				)}
-				{asideStatus && children && isChildrenNavButton && (
-					<div className='mb-2 flex items-center gap-3 px-3'>{children as ReactNode}</div>
-				)}
-			</li>
-		</Tooltip>
-	);
-};
-NavUser.displayName = 'NavUser';
 
 interface INavSeparatorProps extends HTMLAttributes<HTMLLIElement> {
 	className?: string;

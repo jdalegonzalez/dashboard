@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import { pagingParams, defaultRows, idParam, crawlIdFilter as idFilter } from '@/app/lib/fetch';
 
-
 export async function GET(req: NextRequest) {
     const { skip, rowsPerPage } = pagingParams(req, defaultRows);
     const crawlId = idParam(req, 'crawlId');

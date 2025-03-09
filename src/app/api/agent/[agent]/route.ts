@@ -53,7 +53,14 @@ export async function POST(req: NextRequest) {
 
 interface IQueueEntry {
     root: string,
-    status: string
+    status: string,
+    settings?: {
+        skip_completed?: boolean,
+        max_workers?: number,
+        mem_thresh?: number,
+        use_history?: boolean,
+        default_timeout?: number
+    }    
 }
 
 interface IQueue {
@@ -103,8 +110,16 @@ export async function PUT(req: NextRequest) {
     const paths = req.nextUrl.pathname
     const id = paths.split('/').pop();
     const data = await req.json();
-    const pathToScan = data?.pathToScan ?? ''
 
+    const {
+        skipCompleted: skip_completed,
+        maxWorkers: max_workers,
+        memoryThreshold: mem_thresh,
+        useHistory: use_history,
+        defaultTimeout: default_timeout
+    } = data;
+    const pathToScan = data?.pathToScan ?? ''
+    
     if (!id) {
         console.error('Agent ID is undefined',404);
         return NextResponse.json(
@@ -159,11 +174,18 @@ export async function PUT(req: NextRequest) {
         if (existing >= 0) delete queue.targets[existing]
         queue.targets.push({
             root: pathToScan,
-            status: 'queued'
+            status: 'queued',
+            settings: {
+                skip_completed,
+                max_workers,
+                mem_thresh,
+                use_history,
+                default_timeout
+            }
         });
         await writeFile(queueFile, JSON.stringify(queue, undefined, 2), {encoding:'utf-8', flag:'w+'});
         // If we got here, we need to update the agent to let it know it's know crawling.
-        const res = await prisma.agent.update({
+        await prisma.agent.update({
             data: {status: Status.PENDING},
             where: {
                 id

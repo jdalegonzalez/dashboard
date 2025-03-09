@@ -9,7 +9,6 @@ import {
 
 import { getAgentDetails } from '@/prisma-client/sql';
 import { NextRequest } from 'next/server';
-import { string } from 'slate';
 
 export default async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Promise<JSON> {
   const res = await fetch(input, init)
@@ -162,8 +161,6 @@ export const fetchPath = (details:boolean = false) => {
     return unpagedUrl('/api/agent', details ? {details} : undefined)
 }
 
-
-
 // TODO: It would be great to find a way to make crawlIdFilter and scanIdFilter
 // a single function since they're almost identical but TypeScript is making that
 // exceedingly challenging.  Rather than give up on type safety or wrestle with
@@ -171,10 +168,12 @@ export const fetchPath = (details:boolean = false) => {
 
 const def1Query = ((field: string, id: string) => ({[field]: id}))
 const defInQuery = ((field: string, ids: string[]) => ({[field]: { in: ids }}));
+
 const manyQuery = (dates: Date[]) => ({
     select: {id: true},
-    where: {end_time: {in: dates}}
-})
+        where: {end_time: {in: dates}}
+    }
+)
 const datesQuery = {
     by:['targetId' as const],
     _max: {
@@ -195,9 +194,7 @@ export const scanIdFilter = async (prisma: PrismaClient, id: string | null) => {
     if (id) return def1Query('scanId', id)
     const gb = prisma.scan.groupBy
     const fm = prisma.scan.findMany
-
     const newestDates = (await gb(datesQuery)).map(obj => obj._max.end_time) as Date[];
     const ids = (await fm(manyQuery(newestDates))).map(obj => obj.id)
     return defInQuery('scanId', ids)
 }
-

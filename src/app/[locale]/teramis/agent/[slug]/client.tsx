@@ -37,6 +37,7 @@ import CrawlErrorList from '@/app/[locale]/teramis/dashboard/_partial/CrawlError
 import ScanErrorList from '@/app/[locale]/teramis/dashboard/_partial/ScanErrorList.partial';
 import CrawlResults from '@/app/[locale]/teramis/dashboard/_partial/CrawlResultsList.partial';
 import { Status } from '@/prisma-client';
+import LaunchScanModal from './_partial/Launch.partial';
 
 const TABS: {
 	[key in 'SCANRESULTS' | 'SCANERRORS' | 'CRAWLRESULTS' | 'CRAWLERRORS']: 
@@ -143,21 +144,20 @@ const AgentDetails = () => {
 												}
 											</div>
 											<div>
-												{agentLoading ? 
+												{(agentLoading || detailsLoading) ? 
 												<Skeleton />
-												:	
-												<Button
-													icon='HeroRocketLaunch'
-													variant='solid'
-													color='sky'
-													colorIntensity='700'
-													isDisable={saveBtnDisable}
-													onClick={() => triggerScan({
-														status: 'PENDING',
-														pathToScan: details[0]?.scan_root_path 
-													})}>
-													Scan Now
-												</Button>
+												:
+												<LaunchScanModal
+													roots={details[0]?.roots??[]}
+													skipCompleted={details[0]?.skip_completed}
+													maxWorkers={details[0]?.max_workers}
+													memoryThreshold={details[0]?.mem_thresh}
+													useHistory={details[0]?.use_history}
+													defaultTimeout={details[0]?.default_timeout}
+													logicalCPUs={agent.logical_cpus}
+													saveBtnDisable={saveBtnDisable}
+													triggerScan={triggerScan}
+												/>	
 												}
 											</div>
 										</div>

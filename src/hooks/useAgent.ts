@@ -31,6 +31,7 @@ export const blankResult:getAgentDetails.Result = {
     agent_id,
     ...rest,
     target_id: '',
+    roots: [],
     skip_completed: false,
     max_workers: 0,
     mem_thresh: 0,
@@ -72,7 +73,17 @@ export const useAgentDetails = (id:string='') => {
     }
 }
 
-async function scanTrigger<T = any>(url: RequestInfo, data:Partial<T>): Promise<JSON> {
+export interface ITriggerPayload {
+    status: Status;
+    pathToScan: string;
+    skipCompleted?: boolean;
+    maxWorkers?: number;
+    memoryThreshold?: number;
+    useHistory?: boolean;
+    defaultTimeout?: number;  
+  }
+  
+async function scanTrigger(url: RequestInfo, data:Partial<ITriggerPayload>): Promise<JSON> {
     // TODO: There will need to be CORS and credentials added here.
     const options = {
         headers: new Headers({
@@ -82,11 +93,6 @@ async function scanTrigger<T = any>(url: RequestInfo, data:Partial<T>): Promise<
         body: JSON.stringify(data)
     }
     return fetcher(url, options)
-}
-
-interface ITriggerPayload {
-  status: Status,
-  pathToScan: string
 }
 
 type TSavingStateAction = React.Dispatch<React.SetStateAction<boolean>>
@@ -102,9 +108,9 @@ export const useAgent = (id: string|string[]|undefined, setIsSaving?: TSavingSta
     }
     const triggerScan = async (newData:ITriggerPayload) => {
         if (setIsSaving) setIsSaving(true);
-        const {pathToScan, ...rest} = newData;
-        await scanTrigger<ITriggerPayload>(path, {pathToScan})
-        mutate({...data, ...rest} as IAgentResult)
+        const {status, ...rest} = newData;
+        await scanTrigger(path, rest)
+        mutate({...data, status} as IAgentResult)
         if (setIsSaving) setIsSaving(false); 
     }
     return {

@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import { pagingParams, defaultRows, idParam,  scanIdFilter as idFilter } from '@/app/lib/fetch';
@@ -8,7 +9,7 @@ export async function GET(req: NextRequest) {
     const idPart = await idFilter(prisma, scanId)
     const sortOrder = { file: 'asc' as const}
     const whereClause = {...idPart };
-
+    
     const [totalRows, results] = await prisma.$transaction([
         prisma.scanError.count({ where: whereClause }),
         prisma.scanError.findMany( {where: whereClause, skip: skip, take: rowsPerPage, orderBy: sortOrder })

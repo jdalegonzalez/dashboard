@@ -21,6 +21,7 @@ export namespace getAgentDetails {
     processor: string
     ram_gb: number
     target_id: string
+    roots: string[] | null
     skip_completed: boolean
     max_workers: number
     mem_thresh: number

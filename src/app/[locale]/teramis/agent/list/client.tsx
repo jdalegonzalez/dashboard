@@ -17,7 +17,6 @@ import {
 	CellContext,
 	RowData
 } from '@tanstack/react-table';
-import { appPages } from '@/config/pages.config';
 import Link from 'next/link';
 import Container from '@/components/layouts/Container/Container';
 import Card, { CardBody, CardHeader, CardHeaderChild, CardTitle } from '@/components/ui/Card';
@@ -30,7 +29,7 @@ import { useAgentDetails, blankResult } from '@/hooks/useAgent';
 
 const columnHelper = createColumnHelper<getAgentDetails.Result>();
 
-const editLinkPath = `/teramis/agents/`;
+const editLinkPath = `/teramis/agent/`;
 
 const darkIconIntensity = '500';
 

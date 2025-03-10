@@ -119,6 +119,8 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.TargetScalarFieldEnum = {
   id: 'id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
   roots: 'roots',
   skip_completed: 'skip_completed',
   max_workers: 'max_workers',
@@ -148,6 +150,7 @@ exports.Prisma.CrawlScalarFieldEnum = {
   id: 'id',
   created_at: 'created_at',
   updated_at: 'updated_at',
+  targeted_date: 'targeted_date',
   result_folder: 'result_folder',
   root_path: 'root_path',
   use_history: 'use_history',
@@ -189,6 +192,7 @@ exports.Prisma.ScanScalarFieldEnum = {
   id: 'id',
   created_at: 'created_at',
   updated_at: 'updated_at',
+  targeted_date: 'targeted_date',
   result_folder: 'result_folder',
   root_path: 'root_path',
   start_time: 'start_time',

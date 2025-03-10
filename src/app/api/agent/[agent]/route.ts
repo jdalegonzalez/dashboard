@@ -1,10 +1,10 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from '@/app/lib/prisma';
-import { IAgentResult } from '@/app/lib/fetch';
+import { IAgentResult, IAgentWithComplete } from '@/app/lib/fetch';
 import path from "path";
 import { readFile, mkdir, writeFile, open } from "fs/promises";
 import lockfile from 'proper-lockfile';
-import { Status } from "@/prisma-client";
+import { Agent, Status } from "@/prisma-client";
 
 export const dynamic = "force-dynamic";
 
@@ -30,8 +30,10 @@ export async function GET(req: NextRequest) {
             }
         }
     });
+
     // TODO: If res is empty, respond with 404
-    return NextResponse.json(res);
+    const extendedAgent = await agentStatusAndComplete(res as IAgentWithComplete)
+    return NextResponse.json(extendedAgent);
 }
 
 export async function POST(req: NextRequest) {
@@ -63,8 +65,33 @@ interface IQueueEntry {
     }    
 }
 
+const agentStatusAndComplete = async (agent:IAgentWithComplete) => {
+
+    agent.percentComplete = 100
+    if (agent.status === Status.IDLE) {
+        // It could be that the agent hasn't picked 
+        // up the queue request yet, so we need to see
+        // if there are any queued requests.
+        const queue = await readJsonFile<IQueue>(getQueueFile(agent.id),{ targets: [] });
+        const queued = (queue?.targets??[]).some(itm => itm?.status === 'queued');
+        if (queued) agent.status = Status.PENDING
+    }
+    else if (agent.status === Status.CRAWLING || agent.status === Status.SCANNING) {
+        // If it's crawling or scanning, grab the % complete
+        const status = await readJsonFile<IAgentStatus>(getStatusFile(agent.id),{task: 'Stopped', progress: '0%'})
+        agent.percentComplete = Math.round(Number(status.progress.replace(/\D/g, '')));
+    }
+
+    return agent
+}
+
 interface IQueue {
     targets: IQueueEntry[]
+}
+
+interface IAgentStatus {
+    task: string;
+    progress: string;
 }
 
 const getLock = async (queueFolder: string, file:string) => {
@@ -87,20 +114,33 @@ const getLock = async (queueFolder: string, file:string) => {
     }
 }
 
-const readExistingQueue = async (queueFile: string) => {
+const readJsonFile = async <T>(jsonFile: string, defaultJson: T) => {
     // We'll return the JSON from the existing queue
     // or an empty array if the file isn't found.
     // Any other error just gets thrown.
-    const emptyTarget: IQueue = { targets: [] }
     try {
-        const fileContent = await readFile(queueFile, {encoding: 'utf-8'});
-        if (!fileContent) return emptyTarget;
-        return JSON.parse(fileContent) as IQueue;
+        const fileContent = await readFile(jsonFile, {encoding: 'utf-8'});
+        if (!fileContent) return defaultJson;
+        return JSON.parse(fileContent) as T;
     }
     catch (e: any) {
-        if (e.code === 'ENOENT') return emptyTarget;
+        if (e.code === 'ENOENT') return defaultJson;
         throw e;
     }
+}
+
+const getStatusFile = (id: string) => {
+    const target = process.env.TERAMIS_SCAN_TARGET ?? ''
+    const queueFolder = path.join(target, id)
+    const queueFile = path.join(queueFolder,'agent_status.json')
+    return queueFile
+}
+
+const getQueueFile = (id:string) => {
+    const target = process.env.TERAMIS_SCAN_TARGET ?? ''
+    const queueFolder = path.join(target, id)
+    const queueFile = path.join(queueFolder,'queue.json')
+    return queueFile
 }
 
 export async function PUT(req: NextRequest) {
@@ -111,6 +151,7 @@ export async function PUT(req: NextRequest) {
     const id = paths.split('/').pop();
     const data = await req.json();
 
+    console.log(data)
     const {
         skipCompleted: skip_completed,
         maxWorkers: max_workers,
@@ -145,12 +186,19 @@ export async function PUT(req: NextRequest) {
     }
 
     const queueFolder = path.join(target, id)
-    const queueFile = path.join(queueFolder,'queue.json')
+    const queueFile = getQueueFile(id)
 
     // Try to create the queue folder, we're not going to worry if we can't
     // because apparently the Node way is to just try it.  Passing recursive
     // here means we don't get an error if it already exists.  Yay.
-    await mkdir(queueFolder, {recursive: true} )
+
+    console.log(`Trying to create the queue folder "${queueFolder}"`)
+    try {
+        await mkdir(queueFolder, {recursive: true} )
+    }
+    catch (e) {
+        console.log(e)
+    }    
     
     const releaseLock = await getLock(queueFolder,'queue.json');
     if (!releaseLock) {
@@ -162,7 +210,7 @@ export async function PUT(req: NextRequest) {
     }
 
     try {
-        const queue = await readExistingQueue(queueFile);
+        const queue = await readJsonFile<IQueue>(queueFile, { targets: [] });
         const existing = queue.targets.findIndex((e:IQueueEntry) => e.root === pathToScan);
         const stat = (existing >= 0) ? (queue.targets[existing]??'').status?.trim().toUpperCase() ?? '' : ''
         if (stat && !stat.startsWith('ERROR')) {

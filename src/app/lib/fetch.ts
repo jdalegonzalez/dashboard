@@ -131,7 +131,11 @@ export const scanErrorsPath = (rows: number = defaultRows, page: number = 1, ext
 }
 export type ScanErrorAPIResults = PagedAPIResults<ScanError>;
 
-export interface IAgentResult extends Agent {
+export interface IAgentWithComplete extends Agent {
+  percentComplete?: number
+}
+
+export interface IAgentResult extends IAgentWithComplete {
     targets: {
       id: string,
       crawls: {id: string}[],

@@ -1,16 +1,14 @@
 services:
   gui:
-    image: teramis-gui
-    build:
-      context: .
-      dockerfile: Dockerfile.gui
+    image: teramis-gui:latest
     ports:
       - 8080:3000
-      
     depends_on:
       database:
         condition: service_healthy
         restart: true
+    volumes:
+      - ${TERAMIS_SCAN_TARGET}:/teramis-watchdog/agents
     environment:
       - PGHOST=database
       - PGPORT=5432
@@ -19,11 +17,9 @@ services:
       - PGDATABASE=${PGDATABASE:-teramis}
       - TERAMIS_SCAN_TARGET=/teramis-watchdog/agents
       - NEXTAUTH_URL=http://localhost:8080
+      - NEXT_PUBLIC_COMPANY_NAME=${TERAMIS_COMPANY_NAME}
   watchdog:
-    image: teramis-watchdog
-    build:
-      context: .
-      dockerfile: Dockerfile.watchdog
+    image: teramis-watchdog:latest
     depends_on:
       database:
         condition: service_healthy
@@ -44,10 +40,7 @@ services:
     #extra_hosts:
     #  - "database:${PGHOST:-172.17.0.1}"
   database:
-    image: teramis-postgres
-    build:
-      context: .
-      dockerfile: Dockerfile.postgres
+    image: teramis-postgres:latest
     ports:
       - 6868:5432
     volumes:
@@ -61,7 +54,7 @@ services:
       - PGDATABASE=${PGDATABASE:-teramis}
       - PGPORT=5432
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${PGUSER} -d ${PGDATABASE}" ]
+      test: ["CMD-SHELL", "pg_isready -U ${PGUSER} -d ${PGDATABASE}; && sleep 2" ]
       interval: 10s
       retries: 5
       start_period: 30s

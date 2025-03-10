@@ -135,7 +135,6 @@
   },
   "pnpm": {
     "overrides": {
-      "prisma-client-0052dd0f262df0914183270515691da38cd18ec7069dd69425f4b8c3a6c45631": "link:prisma/prisma-client"
     }
   }
 }

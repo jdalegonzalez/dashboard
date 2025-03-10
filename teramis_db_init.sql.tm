@@ -10,6 +10,8 @@ CREATE TYPE "Confidence" AS ENUM ('HIGH', 'MEDIUM', 'LOW', 'NONE');
 -- CreateTable
 CREATE TABLE "Target" (
     "id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "roots" TEXT[],
     "skip_completed" BOOLEAN NOT NULL,
     "max_workers" INTEGER NOT NULL,
@@ -45,6 +47,7 @@ CREATE TABLE "Crawl" (
     "id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "targeted_date" TIMESTAMP(3) NOT NULL,
     "result_folder" TEXT NOT NULL,
     "root_path" TEXT NOT NULL,
     "use_history" BOOLEAN NOT NULL DEFAULT true,
@@ -95,6 +98,7 @@ CREATE TABLE "Scan" (
     "id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "targeted_date" TIMESTAMP(3) NOT NULL,
     "result_folder" TEXT NOT NULL,
     "root_path" TEXT NOT NULL,
     "start_time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

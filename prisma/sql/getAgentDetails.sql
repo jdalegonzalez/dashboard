@@ -11,6 +11,7 @@ SELECT
     processor,
     ram_gb,
     t.id AS target_id,
+    roots,
     skip_completed,
     max_workers,
     mem_thresh,

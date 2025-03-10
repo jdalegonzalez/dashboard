@@ -35,11 +35,14 @@ const LaunchScanPartial = (props: ILaunchProps) => {
     } = props;
 
     const target = (roots??[]).length ? roots[0] : '';
+	const [modalStatus, setModalStatus] = useState<boolean>(false);
 	const formik = useFormik({
-		onSubmit(): void | Promise<never> {
+		onSubmit(values): void | Promise<never> {
+            setModalStatus(false);
             triggerScan({
                 status: 'PENDING',
-                pathToScan: target 
+                pathToScan: target, 
+                ...values
             })
         },
 		initialValues: {
@@ -51,8 +54,6 @@ const LaunchScanPartial = (props: ILaunchProps) => {
             defaultTimeout
 		},
 	});
-	const [modalStatus, setModalStatus] = useState<boolean>(false);
-
 
     return (
 		<div className='relative'>
@@ -89,7 +90,7 @@ const LaunchScanPartial = (props: ILaunchProps) => {
                                     Skip completed folders
                                 </div>
                                 <div className='text-zinc-500'>
-                                    Only scan folders that weren't successfully scanned the last time.
+                                    Only scan folders that weren&apos;t successfully scanned the last time.
                                 </div>
                             </Label>
                         </div>
@@ -149,7 +150,7 @@ const LaunchScanPartial = (props: ILaunchProps) => {
                                 Max Timeout
                             </div>
                             <div className='text-zinc-500'>
-                                Number of seconds to try opening a file before giving up. "0" means wait as long as it takes.
+                                Number of seconds to try opening a file before giving up. &quot;0&quot; means wait as long as it takes.
                             </div>
                         </Label>
                         <Input

@@ -522,13 +522,19 @@ def add_folder_to_target(target_id:str, root:str, folder:str, crawl_id:str, scan
 
     existing = map.get(root)
     if existing:
-        item = existing['folders'][folder]
+        item = existing['folders'].get(folder,None)
+       
         if not item: 
             existing['folders'][folder] = {}
             item = existing['folders'][folder]
-        if crawl_id: item['crawl_id'] = crawl_id
-        if scan_id: item['scan_id'] = scan_id
-        existing['folders'][folder] = {'scan_id': scan_id, 'crawl_id': crawl_id}
+
+        # If crawl_id is unset, we'll set it to blank.  Then, if a value is passed in, we'll
+        # override the blank value.
+        if not item.get('crawl_id'): item['crawl_id'] = crawl_id
+        elif crawl_id: item['crawl_id'] = crawl_id
+        if not item.get('scan_id'): item['scan_id'] = scan_id
+        elif scan_id: item['scan_id'] = scan_id
+
     else:
         map[root] = {
             'id': target_id,
@@ -735,6 +741,14 @@ def sync_agent_results(cursor, agent_id, agent_data, source: str):
             root_path, existing_targets, target_settings, default_settings
         )
     
+def targeted_string_to_date(targeted: str) -> datetime:
+    format_string ="%Y_%m_%d_%H_%M_%S"
+    try:
+        return datetime.strptime(targeted, format_string)
+    except Exception:
+        logger.warning(f"Couldn't covert '{targeted}' to a date using '{format_string}'.  Returning current time.")
+        return datetime.now()
+    
 def write_scan_to_db(cursor, target_id:str, folder: str, source:str) -> str:
     """
     Reads the scan_stats.txt file and creates a Scan from it.
@@ -747,6 +761,7 @@ def write_scan_to_db(cursor, target_id:str, folder: str, source:str) -> str:
             'id': cuid_generator(),
             'result_folder': folder,
             'root_path': "",
+            'targeted_date': targeted_string_to_date(folder),
             'matches': 0,
             'timeouts': 0,
             'gigs_per_second': 0,
@@ -790,6 +805,7 @@ def write_crawl_to_db(cursor, target_id:str, folder, source) -> str:
         json_data['id'] = crawl_id
         json_data['targetId'] = target_id
         json_data['result_folder'] = folder
+        json_data['targeted_date'] = targeted_string_to_date(folder)
         json_data['unsupported_files'] = json_data.pop('unsupported')
 
     hash_map = json_data.pop('hash_map', {})
@@ -856,7 +872,7 @@ def create_new_target(cursor, agent_id:str, root_path:str, target_settings:dict,
     """
     Creates a new Target for this agent and returns the ID.
     """
-
+    logger.info(f"Creating new target.  Root: {root_path}")
     settings = target_settings.get(root_path, default_settings)
     new_target = {
         'id': cuid_generator(),
@@ -887,7 +903,8 @@ def create_thing_from_directory(cursor, thing:str, agent_id:str, folder:str, sou
     target_id = existing_info['id'] if existing_info else None
     if not target_id:
         target_id = create_new_target(cursor, agent_id, root_path, target_settings, default_settings)
-        existing_info = add_folder_to_target(target_id, root_path, folder, '', '', existing_targets)
+
+    existing_info = add_folder_to_target(target_id, root_path, folder, '', '', existing_targets)
 
     crawl_id = existing_info['folders'][folder]['crawl_id']
     scan_id = existing_info['folders'][folder]['scan_id']

@@ -1743,6 +1743,8 @@ export namespace Prisma {
 
   export type TargetMinAggregateOutputType = {
     id: string | null
+    created_at: Date | null
+    updated_at: Date | null
     skip_completed: boolean | null
     max_workers: number | null
     mem_thresh: number | null
@@ -1753,6 +1755,8 @@ export namespace Prisma {
 
   export type TargetMaxAggregateOutputType = {
     id: string | null
+    created_at: Date | null
+    updated_at: Date | null
     skip_completed: boolean | null
     max_workers: number | null
     mem_thresh: number | null
@@ -1763,6 +1767,8 @@ export namespace Prisma {
 
   export type TargetCountAggregateOutputType = {
     id: number
+    created_at: number
+    updated_at: number
     roots: number
     skip_completed: number
     max_workers: number
@@ -1788,6 +1794,8 @@ export namespace Prisma {
 
   export type TargetMinAggregateInputType = {
     id?: true
+    created_at?: true
+    updated_at?: true
     skip_completed?: true
     max_workers?: true
     mem_thresh?: true
@@ -1798,6 +1806,8 @@ export namespace Prisma {
 
   export type TargetMaxAggregateInputType = {
     id?: true
+    created_at?: true
+    updated_at?: true
     skip_completed?: true
     max_workers?: true
     mem_thresh?: true
@@ -1808,6 +1818,8 @@ export namespace Prisma {
 
   export type TargetCountAggregateInputType = {
     id?: true
+    created_at?: true
+    updated_at?: true
     roots?: true
     skip_completed?: true
     max_workers?: true
@@ -1906,6 +1918,8 @@ export namespace Prisma {
 
   export type TargetGroupByOutputType = {
     id: string
+    created_at: Date
+    updated_at: Date
     roots: string[]
     skip_completed: boolean
     max_workers: number
@@ -1936,6 +1950,8 @@ export namespace Prisma {
 
   export type TargetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     roots?: boolean
     skip_completed?: boolean
     max_workers?: boolean
@@ -1951,6 +1967,8 @@ export namespace Prisma {
 
   export type TargetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     roots?: boolean
     skip_completed?: boolean
     max_workers?: boolean
@@ -1963,6 +1981,8 @@ export namespace Prisma {
 
   export type TargetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     roots?: boolean
     skip_completed?: boolean
     max_workers?: boolean
@@ -1975,6 +1995,8 @@ export namespace Prisma {
 
   export type TargetSelectScalar = {
     id?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     roots?: boolean
     skip_completed?: boolean
     max_workers?: boolean
@@ -1984,7 +2006,7 @@ export namespace Prisma {
     agentId?: boolean
   }
 
-  export type TargetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roots" | "skip_completed" | "max_workers" | "mem_thresh" | "use_history" | "default_timeout" | "agentId", ExtArgs["result"]["target"]>
+  export type TargetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "roots" | "skip_completed" | "max_workers" | "mem_thresh" | "use_history" | "default_timeout" | "agentId", ExtArgs["result"]["target"]>
   export type TargetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     crawls?: boolean | Target$crawlsArgs<ExtArgs>
     scans?: boolean | Target$scansArgs<ExtArgs>
@@ -2007,6 +2029,8 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      created_at: Date
+      updated_at: Date
       roots: string[]
       skip_completed: boolean
       max_workers: number
@@ -2441,6 +2465,8 @@ export namespace Prisma {
    */ 
   interface TargetFieldRefs {
     readonly id: FieldRef<"Target", 'String'>
+    readonly created_at: FieldRef<"Target", 'DateTime'>
+    readonly updated_at: FieldRef<"Target", 'DateTime'>
     readonly roots: FieldRef<"Target", 'String[]'>
     readonly skip_completed: FieldRef<"Target", 'Boolean'>
     readonly max_workers: FieldRef<"Target", 'Int'>
@@ -4160,6 +4186,7 @@ export namespace Prisma {
     id: string | null
     created_at: Date | null
     updated_at: Date | null
+    targeted_date: Date | null
     result_folder: string | null
     root_path: string | null
     use_history: boolean | null
@@ -4179,6 +4206,7 @@ export namespace Prisma {
     id: string | null
     created_at: Date | null
     updated_at: Date | null
+    targeted_date: Date | null
     result_folder: string | null
     root_path: string | null
     use_history: boolean | null
@@ -4198,6 +4226,7 @@ export namespace Prisma {
     id: number
     created_at: number
     updated_at: number
+    targeted_date: number
     result_folder: number
     root_path: number
     use_history: number
@@ -4239,6 +4268,7 @@ export namespace Prisma {
     id?: true
     created_at?: true
     updated_at?: true
+    targeted_date?: true
     result_folder?: true
     root_path?: true
     use_history?: true
@@ -4258,6 +4288,7 @@ export namespace Prisma {
     id?: true
     created_at?: true
     updated_at?: true
+    targeted_date?: true
     result_folder?: true
     root_path?: true
     use_history?: true
@@ -4277,6 +4308,7 @@ export namespace Prisma {
     id?: true
     created_at?: true
     updated_at?: true
+    targeted_date?: true
     result_folder?: true
     root_path?: true
     use_history?: true
@@ -4385,6 +4417,7 @@ export namespace Prisma {
     id: string
     created_at: Date
     updated_at: Date
+    targeted_date: Date
     result_folder: string
     root_path: string
     use_history: boolean
@@ -4425,6 +4458,7 @@ export namespace Prisma {
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
+    targeted_date?: boolean
     result_folder?: boolean
     root_path?: boolean
     use_history?: boolean
@@ -4450,6 +4484,7 @@ export namespace Prisma {
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
+    targeted_date?: boolean
     result_folder?: boolean
     root_path?: boolean
     use_history?: boolean
@@ -4472,6 +4507,7 @@ export namespace Prisma {
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
+    targeted_date?: boolean
     result_folder?: boolean
     root_path?: boolean
     use_history?: boolean
@@ -4494,6 +4530,7 @@ export namespace Prisma {
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
+    targeted_date?: boolean
     result_folder?: boolean
     root_path?: boolean
     use_history?: boolean
@@ -4511,7 +4548,7 @@ export namespace Prisma {
     targetId?: boolean
   }
 
-  export type CrawlOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "result_folder" | "root_path" | "use_history" | "file_count" | "dir_count" | "total_size" | "scan_size" | "largest_file_size" | "largest_file_path" | "extensions" | "start_time" | "end_time" | "throughput" | "unsupported_files" | "targetId", ExtArgs["result"]["crawl"]>
+  export type CrawlOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "targeted_date" | "result_folder" | "root_path" | "use_history" | "file_count" | "dir_count" | "total_size" | "scan_size" | "largest_file_size" | "largest_file_path" | "extensions" | "start_time" | "end_time" | "throughput" | "unsupported_files" | "targetId", ExtArgs["result"]["crawl"]>
   export type CrawlInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     errors?: boolean | Crawl$errorsArgs<ExtArgs>
     hashes?: boolean | Crawl$hashesArgs<ExtArgs>
@@ -4536,6 +4573,7 @@ export namespace Prisma {
       id: string
       created_at: Date
       updated_at: Date
+      targeted_date: Date
       result_folder: string
       root_path: string
       use_history: boolean
@@ -4980,6 +5018,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Crawl", 'String'>
     readonly created_at: FieldRef<"Crawl", 'DateTime'>
     readonly updated_at: FieldRef<"Crawl", 'DateTime'>
+    readonly targeted_date: FieldRef<"Crawl", 'DateTime'>
     readonly result_folder: FieldRef<"Crawl", 'String'>
     readonly root_path: FieldRef<"Crawl", 'String'>
     readonly use_history: FieldRef<"Crawl", 'Boolean'>
@@ -7683,6 +7722,7 @@ export namespace Prisma {
     id: string | null
     created_at: Date | null
     updated_at: Date | null
+    targeted_date: Date | null
     result_folder: string | null
     root_path: string | null
     start_time: Date | null
@@ -7697,6 +7737,7 @@ export namespace Prisma {
     id: string | null
     created_at: Date | null
     updated_at: Date | null
+    targeted_date: Date | null
     result_folder: string | null
     root_path: string | null
     start_time: Date | null
@@ -7711,6 +7752,7 @@ export namespace Prisma {
     id: number
     created_at: number
     updated_at: number
+    targeted_date: number
     result_folder: number
     root_path: number
     start_time: number
@@ -7739,6 +7781,7 @@ export namespace Prisma {
     id?: true
     created_at?: true
     updated_at?: true
+    targeted_date?: true
     result_folder?: true
     root_path?: true
     start_time?: true
@@ -7753,6 +7796,7 @@ export namespace Prisma {
     id?: true
     created_at?: true
     updated_at?: true
+    targeted_date?: true
     result_folder?: true
     root_path?: true
     start_time?: true
@@ -7767,6 +7811,7 @@ export namespace Prisma {
     id?: true
     created_at?: true
     updated_at?: true
+    targeted_date?: true
     result_folder?: true
     root_path?: true
     start_time?: true
@@ -7868,6 +7913,7 @@ export namespace Prisma {
     id: string
     created_at: Date
     updated_at: Date
+    targeted_date: Date
     result_folder: string
     root_path: string
     start_time: Date
@@ -7901,6 +7947,7 @@ export namespace Prisma {
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
+    targeted_date?: boolean
     result_folder?: boolean
     root_path?: boolean
     start_time?: boolean
@@ -7919,6 +7966,7 @@ export namespace Prisma {
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
+    targeted_date?: boolean
     result_folder?: boolean
     root_path?: boolean
     start_time?: boolean
@@ -7934,6 +7982,7 @@ export namespace Prisma {
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
+    targeted_date?: boolean
     result_folder?: boolean
     root_path?: boolean
     start_time?: boolean
@@ -7949,6 +7998,7 @@ export namespace Prisma {
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
+    targeted_date?: boolean
     result_folder?: boolean
     root_path?: boolean
     start_time?: boolean
@@ -7959,7 +8009,7 @@ export namespace Prisma {
     targetId?: boolean
   }
 
-  export type ScanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "result_folder" | "root_path" | "start_time" | "end_time" | "matches" | "timeouts" | "gigs_per_second" | "targetId", ExtArgs["result"]["scan"]>
+  export type ScanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "targeted_date" | "result_folder" | "root_path" | "start_time" | "end_time" | "matches" | "timeouts" | "gigs_per_second" | "targetId", ExtArgs["result"]["scan"]>
   export type ScanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     errors?: boolean | Scan$errorsArgs<ExtArgs>
     results?: boolean | Scan$resultsArgs<ExtArgs>
@@ -7984,6 +8034,7 @@ export namespace Prisma {
       id: string
       created_at: Date
       updated_at: Date
+      targeted_date: Date
       result_folder: string
       root_path: string
       start_time: Date
@@ -8421,6 +8472,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Scan", 'String'>
     readonly created_at: FieldRef<"Scan", 'DateTime'>
     readonly updated_at: FieldRef<"Scan", 'DateTime'>
+    readonly targeted_date: FieldRef<"Scan", 'DateTime'>
     readonly result_folder: FieldRef<"Scan", 'String'>
     readonly root_path: FieldRef<"Scan", 'String'>
     readonly start_time: FieldRef<"Scan", 'DateTime'>
@@ -11196,6 +11248,8 @@ export namespace Prisma {
 
   export const TargetScalarFieldEnum: {
     id: 'id',
+    created_at: 'created_at',
+    updated_at: 'updated_at',
     roots: 'roots',
     skip_completed: 'skip_completed',
     max_workers: 'max_workers',
@@ -11231,6 +11285,7 @@ export namespace Prisma {
     id: 'id',
     created_at: 'created_at',
     updated_at: 'updated_at',
+    targeted_date: 'targeted_date',
     result_folder: 'result_folder',
     root_path: 'root_path',
     use_history: 'use_history',
@@ -11281,6 +11336,7 @@ export namespace Prisma {
     id: 'id',
     created_at: 'created_at',
     updated_at: 'updated_at',
+    targeted_date: 'targeted_date',
     result_folder: 'result_folder',
     root_path: 'root_path',
     start_time: 'start_time',
@@ -11371,6 +11427,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -11388,20 +11458,6 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime'
-   */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime[]'
-   */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -11483,6 +11539,8 @@ export namespace Prisma {
     OR?: TargetWhereInput[]
     NOT?: TargetWhereInput | TargetWhereInput[]
     id?: StringFilter<"Target"> | string
+    created_at?: DateTimeFilter<"Target"> | Date | string
+    updated_at?: DateTimeFilter<"Target"> | Date | string
     roots?: StringNullableListFilter<"Target">
     skip_completed?: BoolFilter<"Target"> | boolean
     max_workers?: IntFilter<"Target"> | number
@@ -11497,6 +11555,8 @@ export namespace Prisma {
 
   export type TargetOrderByWithRelationInput = {
     id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
     roots?: SortOrder
     skip_completed?: SortOrder
     max_workers?: SortOrder
@@ -11515,6 +11575,8 @@ export namespace Prisma {
     AND?: TargetWhereInput | TargetWhereInput[]
     OR?: TargetWhereInput[]
     NOT?: TargetWhereInput | TargetWhereInput[]
+    created_at?: DateTimeFilter<"Target"> | Date | string
+    updated_at?: DateTimeFilter<"Target"> | Date | string
     roots?: StringNullableListFilter<"Target">
     skip_completed?: BoolFilter<"Target"> | boolean
     max_workers?: IntFilter<"Target"> | number
@@ -11529,6 +11591,8 @@ export namespace Prisma {
 
   export type TargetOrderByWithAggregationInput = {
     id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
     roots?: SortOrder
     skip_completed?: SortOrder
     max_workers?: SortOrder
@@ -11548,6 +11612,8 @@ export namespace Prisma {
     OR?: TargetScalarWhereWithAggregatesInput[]
     NOT?: TargetScalarWhereWithAggregatesInput | TargetScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Target"> | string
+    created_at?: DateTimeWithAggregatesFilter<"Target"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"Target"> | Date | string
     roots?: StringNullableListFilter<"Target">
     skip_completed?: BoolWithAggregatesFilter<"Target"> | boolean
     max_workers?: IntWithAggregatesFilter<"Target"> | number
@@ -11661,6 +11727,7 @@ export namespace Prisma {
     id?: StringFilter<"Crawl"> | string
     created_at?: DateTimeFilter<"Crawl"> | Date | string
     updated_at?: DateTimeFilter<"Crawl"> | Date | string
+    targeted_date?: DateTimeFilter<"Crawl"> | Date | string
     result_folder?: StringFilter<"Crawl"> | string
     root_path?: StringFilter<"Crawl"> | string
     use_history?: BoolFilter<"Crawl"> | boolean
@@ -11685,6 +11752,7 @@ export namespace Prisma {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    targeted_date?: SortOrder
     result_folder?: SortOrder
     root_path?: SortOrder
     use_history?: SortOrder
@@ -11713,6 +11781,7 @@ export namespace Prisma {
     NOT?: CrawlWhereInput | CrawlWhereInput[]
     created_at?: DateTimeFilter<"Crawl"> | Date | string
     updated_at?: DateTimeFilter<"Crawl"> | Date | string
+    targeted_date?: DateTimeFilter<"Crawl"> | Date | string
     result_folder?: StringFilter<"Crawl"> | string
     root_path?: StringFilter<"Crawl"> | string
     use_history?: BoolFilter<"Crawl"> | boolean
@@ -11737,6 +11806,7 @@ export namespace Prisma {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    targeted_date?: SortOrder
     result_folder?: SortOrder
     root_path?: SortOrder
     use_history?: SortOrder
@@ -11766,6 +11836,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Crawl"> | string
     created_at?: DateTimeWithAggregatesFilter<"Crawl"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"Crawl"> | Date | string
+    targeted_date?: DateTimeWithAggregatesFilter<"Crawl"> | Date | string
     result_folder?: StringWithAggregatesFilter<"Crawl"> | string
     root_path?: StringWithAggregatesFilter<"Crawl"> | string
     use_history?: BoolWithAggregatesFilter<"Crawl"> | boolean
@@ -11923,6 +11994,7 @@ export namespace Prisma {
     id?: StringFilter<"Scan"> | string
     created_at?: DateTimeFilter<"Scan"> | Date | string
     updated_at?: DateTimeFilter<"Scan"> | Date | string
+    targeted_date?: DateTimeFilter<"Scan"> | Date | string
     result_folder?: StringFilter<"Scan"> | string
     root_path?: StringFilter<"Scan"> | string
     start_time?: DateTimeFilter<"Scan"> | Date | string
@@ -11940,6 +12012,7 @@ export namespace Prisma {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    targeted_date?: SortOrder
     result_folder?: SortOrder
     root_path?: SortOrder
     start_time?: SortOrder
@@ -11961,6 +12034,7 @@ export namespace Prisma {
     NOT?: ScanWhereInput | ScanWhereInput[]
     created_at?: DateTimeFilter<"Scan"> | Date | string
     updated_at?: DateTimeFilter<"Scan"> | Date | string
+    targeted_date?: DateTimeFilter<"Scan"> | Date | string
     result_folder?: StringFilter<"Scan"> | string
     root_path?: StringFilter<"Scan"> | string
     start_time?: DateTimeFilter<"Scan"> | Date | string
@@ -11978,6 +12052,7 @@ export namespace Prisma {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    targeted_date?: SortOrder
     result_folder?: SortOrder
     root_path?: SortOrder
     start_time?: SortOrder
@@ -12000,6 +12075,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Scan"> | string
     created_at?: DateTimeWithAggregatesFilter<"Scan"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"Scan"> | Date | string
+    targeted_date?: DateTimeWithAggregatesFilter<"Scan"> | Date | string
     result_folder?: StringWithAggregatesFilter<"Scan"> | string
     root_path?: StringWithAggregatesFilter<"Scan"> | string
     start_time?: DateTimeWithAggregatesFilter<"Scan"> | Date | string
@@ -12179,6 +12255,8 @@ export namespace Prisma {
 
   export type TargetCreateInput = {
     id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
     roots?: TargetCreaterootsInput | string[]
     skip_completed: boolean
     max_workers: number
@@ -12192,6 +12270,8 @@ export namespace Prisma {
 
   export type TargetUncheckedCreateInput = {
     id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
     roots?: TargetCreaterootsInput | string[]
     skip_completed: boolean
     max_workers: number
@@ -12205,6 +12285,8 @@ export namespace Prisma {
 
   export type TargetUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     roots?: TargetUpdaterootsInput | string[]
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
@@ -12218,6 +12300,8 @@ export namespace Prisma {
 
   export type TargetUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     roots?: TargetUpdaterootsInput | string[]
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
@@ -12231,6 +12315,8 @@ export namespace Prisma {
 
   export type TargetCreateManyInput = {
     id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
     roots?: TargetCreaterootsInput | string[]
     skip_completed: boolean
     max_workers: number
@@ -12242,6 +12328,8 @@ export namespace Prisma {
 
   export type TargetUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     roots?: TargetUpdaterootsInput | string[]
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
@@ -12252,6 +12340,8 @@ export namespace Prisma {
 
   export type TargetUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     roots?: TargetUpdaterootsInput | string[]
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
@@ -12381,6 +12471,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     use_history?: boolean
@@ -12404,6 +12495,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     use_history?: boolean
@@ -12427,6 +12519,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     use_history?: BoolFieldUpdateOperationsInput | boolean
@@ -12450,6 +12543,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     use_history?: BoolFieldUpdateOperationsInput | boolean
@@ -12473,6 +12567,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     use_history?: boolean
@@ -12494,6 +12589,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     use_history?: BoolFieldUpdateOperationsInput | boolean
@@ -12514,6 +12610,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     use_history?: BoolFieldUpdateOperationsInput | boolean
@@ -12673,6 +12770,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     start_time?: Date | string
@@ -12689,6 +12787,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     start_time?: Date | string
@@ -12705,6 +12804,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     start_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12721,6 +12821,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     start_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12737,6 +12838,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     start_time?: Date | string
@@ -12751,6 +12853,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     start_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12764,6 +12867,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     start_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12976,6 +13080,17 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type StringNullableListFilter<$PrismaModel = never> = {
     equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     has?: string | StringFieldRefInput<$PrismaModel> | null
@@ -13032,6 +13147,8 @@ export namespace Prisma {
 
   export type TargetCountOrderByAggregateInput = {
     id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
     roots?: SortOrder
     skip_completed?: SortOrder
     max_workers?: SortOrder
@@ -13049,6 +13166,8 @@ export namespace Prisma {
 
   export type TargetMaxOrderByAggregateInput = {
     id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
     skip_completed?: SortOrder
     max_workers?: SortOrder
     mem_thresh?: SortOrder
@@ -13059,6 +13178,8 @@ export namespace Prisma {
 
   export type TargetMinOrderByAggregateInput = {
     id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
     skip_completed?: SortOrder
     max_workers?: SortOrder
     mem_thresh?: SortOrder
@@ -13091,6 +13212,20 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -13113,17 +13248,6 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type EnumStatusFilter<$PrismaModel = never> = {
@@ -13214,20 +13338,6 @@ export namespace Prisma {
     ram_gb?: SortOrder
   }
 
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
   export type EnumStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
@@ -13299,6 +13409,7 @@ export namespace Prisma {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    targeted_date?: SortOrder
     result_folder?: SortOrder
     root_path?: SortOrder
     use_history?: SortOrder
@@ -13329,6 +13440,7 @@ export namespace Prisma {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    targeted_date?: SortOrder
     result_folder?: SortOrder
     root_path?: SortOrder
     use_history?: SortOrder
@@ -13348,6 +13460,7 @@ export namespace Prisma {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    targeted_date?: SortOrder
     result_folder?: SortOrder
     root_path?: SortOrder
     use_history?: SortOrder
@@ -13509,6 +13622,7 @@ export namespace Prisma {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    targeted_date?: SortOrder
     result_folder?: SortOrder
     root_path?: SortOrder
     start_time?: SortOrder
@@ -13529,6 +13643,7 @@ export namespace Prisma {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    targeted_date?: SortOrder
     result_folder?: SortOrder
     root_path?: SortOrder
     start_time?: SortOrder
@@ -13543,6 +13658,7 @@ export namespace Prisma {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    targeted_date?: SortOrder
     result_folder?: SortOrder
     root_path?: SortOrder
     start_time?: SortOrder
@@ -13741,6 +13857,10 @@ export namespace Prisma {
     set?: string
   }
 
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
   export type TargetUpdaterootsInput = {
     set?: string[]
     push?: string | string[]
@@ -13834,10 +13954,6 @@ export namespace Prisma {
     connectOrCreate?: TargetCreateOrConnectWithoutAgentInput | TargetCreateOrConnectWithoutAgentInput[]
     createMany?: TargetCreateManyAgentInputEnvelope
     connect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
   }
 
   export type EnumStatusFieldUpdateOperationsInput = {
@@ -14202,6 +14318,17 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -14233,6 +14360,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -14270,36 +14411,11 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
   export type NestedEnumStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
-  }
-
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedEnumStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -14429,6 +14545,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     use_history?: boolean
@@ -14451,6 +14568,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     use_history?: boolean
@@ -14483,6 +14601,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     start_time?: Date | string
@@ -14498,6 +14617,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     start_time?: Date | string
@@ -14579,6 +14699,7 @@ export namespace Prisma {
     id?: StringFilter<"Crawl"> | string
     created_at?: DateTimeFilter<"Crawl"> | Date | string
     updated_at?: DateTimeFilter<"Crawl"> | Date | string
+    targeted_date?: DateTimeFilter<"Crawl"> | Date | string
     result_folder?: StringFilter<"Crawl"> | string
     root_path?: StringFilter<"Crawl"> | string
     use_history?: BoolFilter<"Crawl"> | boolean
@@ -14619,6 +14740,7 @@ export namespace Prisma {
     id?: StringFilter<"Scan"> | string
     created_at?: DateTimeFilter<"Scan"> | Date | string
     updated_at?: DateTimeFilter<"Scan"> | Date | string
+    targeted_date?: DateTimeFilter<"Scan"> | Date | string
     result_folder?: StringFilter<"Scan"> | string
     root_path?: StringFilter<"Scan"> | string
     start_time?: DateTimeFilter<"Scan"> | Date | string
@@ -14674,6 +14796,8 @@ export namespace Prisma {
 
   export type TargetCreateWithoutAgentInput = {
     id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
     roots?: TargetCreaterootsInput | string[]
     skip_completed: boolean
     max_workers: number
@@ -14686,6 +14810,8 @@ export namespace Prisma {
 
   export type TargetUncheckedCreateWithoutAgentInput = {
     id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
     roots?: TargetCreaterootsInput | string[]
     skip_completed: boolean
     max_workers: number
@@ -14727,6 +14853,8 @@ export namespace Prisma {
     OR?: TargetScalarWhereInput[]
     NOT?: TargetScalarWhereInput | TargetScalarWhereInput[]
     id?: StringFilter<"Target"> | string
+    created_at?: DateTimeFilter<"Target"> | Date | string
+    updated_at?: DateTimeFilter<"Target"> | Date | string
     roots?: StringNullableListFilter<"Target">
     skip_completed?: BoolFilter<"Target"> | boolean
     max_workers?: IntFilter<"Target"> | number
@@ -14794,6 +14922,8 @@ export namespace Prisma {
 
   export type TargetCreateWithoutCrawlsInput = {
     id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
     roots?: TargetCreaterootsInput | string[]
     skip_completed: boolean
     max_workers: number
@@ -14806,6 +14936,8 @@ export namespace Prisma {
 
   export type TargetUncheckedCreateWithoutCrawlsInput = {
     id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
     roots?: TargetCreaterootsInput | string[]
     skip_completed: boolean
     max_workers: number
@@ -14892,6 +15024,8 @@ export namespace Prisma {
 
   export type TargetUpdateWithoutCrawlsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     roots?: TargetUpdaterootsInput | string[]
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
@@ -14904,6 +15038,8 @@ export namespace Prisma {
 
   export type TargetUncheckedUpdateWithoutCrawlsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     roots?: TargetUpdaterootsInput | string[]
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
@@ -14918,6 +15054,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     use_history?: boolean
@@ -14940,6 +15077,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     use_history?: boolean
@@ -14978,6 +15116,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     use_history?: BoolFieldUpdateOperationsInput | boolean
@@ -15000,6 +15139,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     use_history?: BoolFieldUpdateOperationsInput | boolean
@@ -15022,6 +15162,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     use_history?: boolean
@@ -15044,6 +15185,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     use_history?: boolean
@@ -15082,6 +15224,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     use_history?: BoolFieldUpdateOperationsInput | boolean
@@ -15104,6 +15247,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     use_history?: BoolFieldUpdateOperationsInput | boolean
@@ -15194,6 +15338,8 @@ export namespace Prisma {
 
   export type TargetCreateWithoutScansInput = {
     id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
     roots?: TargetCreaterootsInput | string[]
     skip_completed: boolean
     max_workers: number
@@ -15206,6 +15352,8 @@ export namespace Prisma {
 
   export type TargetUncheckedCreateWithoutScansInput = {
     id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
     roots?: TargetCreaterootsInput | string[]
     skip_completed: boolean
     max_workers: number
@@ -15299,6 +15447,8 @@ export namespace Prisma {
 
   export type TargetUpdateWithoutScansInput = {
     id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     roots?: TargetUpdaterootsInput | string[]
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
@@ -15311,6 +15461,8 @@ export namespace Prisma {
 
   export type TargetUncheckedUpdateWithoutScansInput = {
     id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     roots?: TargetUpdaterootsInput | string[]
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
@@ -15325,6 +15477,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     start_time?: Date | string
@@ -15340,6 +15493,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     start_time?: Date | string
@@ -15371,6 +15525,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     start_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15386,6 +15541,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     start_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15401,6 +15557,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     start_time?: Date | string
@@ -15416,6 +15573,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     start_time?: Date | string
@@ -15447,6 +15605,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     start_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15462,6 +15621,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     start_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15477,6 +15637,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     use_history?: boolean
@@ -15497,6 +15658,7 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
+    targeted_date: Date | string
     result_folder: string
     root_path: string
     start_time?: Date | string
@@ -15510,6 +15672,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     use_history?: BoolFieldUpdateOperationsInput | boolean
@@ -15532,6 +15695,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     use_history?: BoolFieldUpdateOperationsInput | boolean
@@ -15554,6 +15718,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     use_history?: BoolFieldUpdateOperationsInput | boolean
@@ -15574,6 +15739,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     start_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15589,6 +15755,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     start_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15604,6 +15771,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    targeted_date?: DateTimeFieldUpdateOperationsInput | Date | string
     result_folder?: StringFieldUpdateOperationsInput | string
     root_path?: StringFieldUpdateOperationsInput | string
     start_time?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15615,6 +15783,8 @@ export namespace Prisma {
 
   export type TargetCreateManyAgentInput = {
     id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
     roots?: TargetCreaterootsInput | string[]
     skip_completed: boolean
     max_workers: number
@@ -15625,6 +15795,8 @@ export namespace Prisma {
 
   export type TargetUpdateWithoutAgentInput = {
     id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     roots?: TargetUpdaterootsInput | string[]
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
@@ -15637,6 +15809,8 @@ export namespace Prisma {
 
   export type TargetUncheckedUpdateWithoutAgentInput = {
     id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     roots?: TargetUpdaterootsInput | string[]
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
@@ -15649,6 +15823,8 @@ export namespace Prisma {
 
   export type TargetUncheckedUpdateManyWithoutAgentInput = {
     id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     roots?: TargetUpdaterootsInput | string[]
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number

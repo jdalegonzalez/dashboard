@@ -39,8 +39,43 @@ enum Confidence {
   NONE
 }
 
+/*
+TODO: Once we get partial scanning working,
+* Add in the idea of multiple agents hitting the same location
+* Add UI to define locations, name them, etc...
+* Change reporting to be by location.
+model Location {
+  id               String   @id @default(cuid(2))
+  created_at       DateTime @default(now())
+  updated_at       DateTime @default(now()) @updatedAt
+  name             String
+  root             String
+  skip_completed   Boolean
+  max_workers      Int
+  mem_thresh       Int
+  use_history      Boolean
+  default_timeout  Int
+  agents           AgentsReachingLocation[]
+  crawls           Crawl[]
+  scans            Scan[]
+  @@unique(name: "location_root", [root])
+}
+
+model AgentsReachingLocation {
+  location      Location @relation(fields: [locationId], references: [id])
+  locationId    String
+  agent         Agent @relation(fields: [agentId], references: [id])
+  agentId       String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now()) @updatedAt
+  @@id([locationId, agentId])
+}
+*/
+
 model Target {
   id               String   @id @default(cuid(2))
+  created_at       DateTime @default(now())
+  updated_at       DateTime @default(now()) @updatedAt
   roots            String[]
   skip_completed   Boolean
   max_workers      Int
@@ -51,7 +86,6 @@ model Target {
   scans            Scan[]
   agentId          String
   agent            Agent @relation(fields: [agentId], references: [id], onDelete: Restrict)
- 
   @@unique(name: "agent_target", [agentId, roots])
 }
 
@@ -76,6 +110,7 @@ model Crawl {
   id                 String   @id @default(cuid(2))
   created_at         DateTime @default(now())
   updated_at         DateTime @default(now()) @updatedAt
+  targeted_date      DateTime  
   result_folder      String
   root_path          String
   use_history        Boolean  @default(true)
@@ -127,6 +162,7 @@ model Scan {
   id              String   @id @default(cuid(2))
   created_at      DateTime @default(now())
   updated_at      DateTime @default(now()) @updatedAt
+  targeted_date   DateTime  
   result_folder   String
   root_path       String
   start_time      DateTime @default(now())

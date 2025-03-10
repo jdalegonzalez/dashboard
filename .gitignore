@@ -46,6 +46,6 @@ yarn.lock
 deploy.tar.gz
 next.tar.gz
 deploy/
-
+install/
 # runtime directories
 data/

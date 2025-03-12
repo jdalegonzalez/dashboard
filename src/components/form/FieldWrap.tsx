@@ -26,14 +26,24 @@ const FieldWrap = forwardRef<HTMLDivElement, IFieldWrapProps>((props, ref) => {
 		firstSuffix,
 
 		lastSuffix,
+<<<<<<< HEAD
 			isValidMessage,
+=======
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		isValidMessage,
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 
 		isValid,
 
 		isTouched,
 
 		invalidFeedback,
+<<<<<<< HEAD
 			validFeedback,
+=======
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		validFeedback,
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 		...rest
 	} = props;
 
@@ -42,11 +52,19 @@ const FieldWrap = forwardRef<HTMLDivElement, IFieldWrapProps>((props, ref) => {
 	);
 
 	const divFirstRef = useRef<HTMLDivElement>(null);
+<<<<<<< HEAD
 	// @ts-expect-error This is fine
 	const [domFirstRect] = useDomRect(divFirstRef);
 
 	const divLastRef = useRef<HTMLDivElement>(null);
 	// @ts-expect-error This is fine
+=======
+	// @ts-ignore
+	const [domFirstRect] = useDomRect(divFirstRef);
+
+	const divLastRef = useRef<HTMLDivElement>(null);
+	// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 	const [domLastRect] = useDomRect(divLastRef);
 
 	const { isLTR } = useDir();
@@ -63,7 +81,11 @@ const FieldWrap = forwardRef<HTMLDivElement, IFieldWrapProps>((props, ref) => {
 				</div>
 			)}
 			{cloneElement(children, {
+<<<<<<< HEAD
 				// @ts-expect-error This is fine
+=======
+				// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 				isValid,
 				isTouched,
 				invalidFeedback,

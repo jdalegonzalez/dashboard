@@ -1,6 +1,9 @@
 import React, {
 	FC,
+<<<<<<< HEAD
 	forwardRef,
+=======
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 	HTMLAttributes,
 	ReactNode,
 	TableHTMLAttributes,
@@ -80,21 +83,32 @@ export const Tr: FC<ITrProps> = (props) => {
 };
 Tr.displayName = 'Tr';
 
+<<<<<<< HEAD
 interface IThProps extends ThHTMLAttributes<HTMLTableCellElement> {
+=======
+interface IThProps extends ThHTMLAttributes<HTMLTableHeaderCellElement> {
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 	children: ReactNode;
 	className?: string;
 	isResizable?: boolean;
 	isColumnBorder?: boolean;
 }
+<<<<<<< HEAD
 const paddingClass = 'p-2';
+=======
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 export const Th: FC<IThProps> = (props) => {
 	const { children, className, isResizable = false, isColumnBorder = true, ...rest } = props;
 
 	const classes = classNames(
 		'bg-zinc-950/10',
 		'dark:bg-zinc-950/90',
+<<<<<<< HEAD
 		paddingClass,
 		'font-medium',
+=======
+		'p-4',
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 		'ltr:group-[&:first-child]/Tr:[&:first-child]:rounded-tl-lg ltr:group-[&:first-child]/Tr:[&:last-child]:rounded-tr-lg',
 		'ltr:group-[&:last-child]/Tr:[&:first-child]:rounded-bl-lg ltr:group-[&:last-child]/Tr:[&:last-child]:rounded-br-lg',
 		'rtl:group-[&:first-child]/Tr:[&:first-child]:rounded-tr-lg rtl:group-[&:first-child]/Tr:[&:last-child]:rounded-tl-lg',
@@ -163,7 +177,11 @@ export const Td: FC<ITdProps> = (props) => {
 		'group-hover/Tr:bg-zinc-500/10',
 		'dark:group-even/Tr:bg-zinc-950/50',
 		'dark:group-hover/Tr:bg-zinc-950/90',
+<<<<<<< HEAD
 		paddingClass,
+=======
+		'p-4',
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 		themeConfig.transition,
 		className,
 	);
@@ -180,17 +198,29 @@ export interface ITableProps extends TableHTMLAttributes<HTMLTableElement> {
 	children: ReactNode;
 	className?: string;
 }
+<<<<<<< HEAD
 const Table: React.ForwardRefRenderFunction<HTMLTableElement, ITableProps> = (props, ref) => {
+=======
+const Table: FC<ITableProps> = (props) => {
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 	const { children, className, ...rest } = props;
 
 	const classes = classNames('w-full', className);
 
 	return (
+<<<<<<< HEAD
 		<table ref={ref} data-component-name='Table' className={classes} {...rest}>
+=======
+		<table data-component-name='Table' className={classes} {...rest}>
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 			{children}
 		</table>
 	);
 };
 Table.displayName = 'Table';
 
+<<<<<<< HEAD
 export default forwardRef(Table);
+=======
+export default Table;
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)

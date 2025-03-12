@@ -10,9 +10,18 @@ import { TColorIntensity } from '@/types/colorIntensities.type';
 import { textColor } from '@/utils/textColor.util';
 import { TFontSizes } from '@/types/fontSizes.type';
 
+<<<<<<< HEAD
 interface IRefWrapperProps extends Record<string, any> {
 	children: ReactNode;
 }
+=======
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface IRefWrapperProps extends Record<string, any> {
+	children: ReactNode;
+}
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 const RefWrapper = forwardRef<HTMLSpanElement, IRefWrapperProps>(({ children }, ref) => {
 	if (ref) {
 		return (
@@ -36,11 +45,25 @@ const Icon = forwardRef<HTMLSpanElement, IIconProps>((props, ref) => {
 	const { icon, className, color, colorIntensity, size, ...rest } = props;
 	const IconName = pascalcase(icon);
 
+<<<<<<< HEAD
 	// @ts-expect-error This is fine
 	const SvgIconWrapper = SvgIcon[IconName];
 	// @ts-expect-error This is fine
 	const DuoToneWrapper = DuoToneIcon[IconName];
 	// @ts-expect-error This is fine
+=======
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+	const SvgIconWrapper = SvgIcon[IconName];
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+	const DuoToneWrapper = DuoToneIcon[IconName];
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 	const HeroWrapper = HeroIcon[IconName];
 
 	const CLASS_NAMES = classNames(
@@ -57,6 +80,10 @@ const Icon = forwardRef<HTMLSpanElement, IIconProps>((props, ref) => {
 					data-component-name='Icon-A'
 					data-name={`SvgIcon--${IconName}`}
 					className={CLASS_NAMES}
+<<<<<<< HEAD
+=======
+					// eslint-disable-next-line react/jsx-props-no-spreading
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 					{...rest}
 				/>
 			</RefWrapper>
@@ -69,6 +96,10 @@ const Icon = forwardRef<HTMLSpanElement, IIconProps>((props, ref) => {
 					data-component-name='Icon-B'
 					data-name={`Duotone--${icon}`}
 					className={CLASS_NAMES}
+<<<<<<< HEAD
+=======
+					// eslint-disable-next-line react/jsx-props-no-spreading
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 					{...rest}
 				/>
 			</RefWrapper>
@@ -81,6 +112,10 @@ const Icon = forwardRef<HTMLSpanElement, IIconProps>((props, ref) => {
 					data-component-name='Icon-C'
 					data-name={`Hero--${icon}`}
 					className={CLASS_NAMES}
+<<<<<<< HEAD
+=======
+					// eslint-disable-next-line react/jsx-props-no-spreading
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 					{...rest}
 				/>
 			</RefWrapper>

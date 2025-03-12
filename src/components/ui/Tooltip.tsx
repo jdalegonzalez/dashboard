@@ -11,7 +11,11 @@ import { TRounded } from '../../types/rounded.type';
 import themeConfig from '../../config/theme.config';
 
 const getComponentName = (child: ReactNode): string => {
+<<<<<<< HEAD
 	// @ts-expect-error This is fine - ts doesn't know displayName will be there.
+=======
+	// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 	return child?.props['data-component-name'] || child?.type?.displayName || child?.type;
 };
 
@@ -66,10 +70,17 @@ const Tooltip: FC<ITooltipProps> = (props) => {
 				</span>
 			) : (
 				cloneElement(children as ReactElement, {
+<<<<<<< HEAD
 					// @ts-expect-error This is fine This is fine
 					'data-component-name': `${getComponentName(children)} is cloned with Tooltip`,
 					ref: setReferenceElement,
 					// @ts-expect-error This is fine This is also fine
+=======
+					// @ts-ignore
+					'data-component-name': `${getComponentName(children)} is cloned with Tooltip`,
+					ref: setReferenceElement,
+					// @ts-expect-error
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 					className: classNames('cursor-pointer', children.props.className),
 					...REFERENCE_PROPS,
 				})

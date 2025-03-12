@@ -16,7 +16,11 @@ export interface IChartProps extends Props {
 }
 
 const Chart: FC<IChartProps> = (props) => {
+<<<<<<< HEAD
 	const { series, options, type, width = '100%', height = '100%' } = props;
+=======
+	const { series, options, type, width = '100%', height = 'auto' } = props;
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 
 	const defaultOptions: Props['options'] = {
 		chart: {

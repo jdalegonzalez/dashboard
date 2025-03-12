@@ -43,16 +43,34 @@ const Radio: FC<IRadioProps> = (props) => {
 		isInline = false,
 		label,
 		name,
+<<<<<<< HEAD
 			rounded = themeConfig.rounded,
+=======
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		rounded = themeConfig.rounded,
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 		selectedValue,
 		dimension = 'default',
 		value,
 		disabled = false,
+<<<<<<< HEAD
 			isValid,
 			isTouched,
 			invalidFeedback,
 			isValidMessage,
 			validFeedback,
+=======
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		isValid,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		isTouched,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		invalidFeedback,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		isValidMessage,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		validFeedback,
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 		...rest
 	} = props;
 
@@ -165,7 +183,12 @@ export const RadioGroup: FC<IRadioGroupProps> = (props) => {
 		isInline = false,
 		isTouched = false,
 		isValid = false,
+<<<<<<< HEAD
 			isValidMessage = true,
+=======
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		isValidMessage = true,
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 		validFeedback,
 		...rest
 	} = props;

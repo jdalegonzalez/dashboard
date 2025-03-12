@@ -13,6 +13,7 @@ const LoaderDotsCommon = () => {
 	);
 };
 
+<<<<<<< HEAD
 type TFormatter = (val: any) => string;
 export function loadingOrProperty<T>(obj: T|undefined, key:keyof T, wrapperClass:string='', formatter?:TFormatter) {
 	const cname = wrapperClass ? {className: wrapperClass} : {};
@@ -21,4 +22,6 @@ export function loadingOrProperty<T>(obj: T|undefined, key:keyof T, wrapperClass
 		: <div {...cname} ><LoaderDotsCommon /></div>;
 }
 
+=======
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 export default LoaderDotsCommon;

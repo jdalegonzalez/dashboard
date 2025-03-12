@@ -23,7 +23,11 @@ const Validation: FC<IValidationProps> = (props) => {
 	return (
 		<>
 			{cloneElement(children, {
+<<<<<<< HEAD
 				// @ts-expect-error This is fine
+=======
+				// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 				isValid,
 				isTouched,
 				invalidFeedback,

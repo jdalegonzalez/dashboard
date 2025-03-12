@@ -47,7 +47,11 @@ const Dropdown: FC<IDropdownProps> = (props) => {
 	const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 
 	const setRefs = useCallback((node: HTMLElement | null) => {
+<<<<<<< HEAD
 		// @ts-expect-error This is fine
+=======
+		// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 		dropdownRef.current = node;
 		setReferenceElement(node);
 	}, []);
@@ -62,7 +66,11 @@ const Dropdown: FC<IDropdownProps> = (props) => {
 			setState(false);
 		}
 	}, [isOpen, setIsOpen]);
+<<<<<<< HEAD
 	// @ts-expect-error This is fine
+=======
+	// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 	useOnClickOutside(dropdownRef, closeMenu);
 
 	return (
@@ -71,10 +79,17 @@ const Dropdown: FC<IDropdownProps> = (props) => {
 			ref={setRefs}
 			className={classNames(classes, className)}>
 			{children.map((child: ReactElement, index: number) =>
+<<<<<<< HEAD
 				// @ts-expect-error This is fine
 				['DropdownMenu', 'DropdownToggle'].includes(child.type.displayName as string)
 					? cloneElement(child, {
 							// @ts-expect-error This is fine
+=======
+				// @ts-expect-error
+				['DropdownMenu', 'DropdownToggle'].includes(child.type.displayName as string)
+					? cloneElement(child, {
+							// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 							isOpen: isOpen !== null && !!setIsOpen ? isOpen : state,
 							setIsOpen: isOpen !== null && !!setIsOpen ? setIsOpen : setState,
 							referenceElement: referenceElement,
@@ -99,11 +114,19 @@ export const DropdownToggle: FC<IDropdownToggleProps> = (props) => {
 	const { children, isOpen = false, setIsOpen, hasIcon = true, setReferenceElement } = props;
 
 	return cloneElement(children, {
+<<<<<<< HEAD
 		// @ts-expect-error This is fine
 		'data-component-name': `Dropdown/DropdownToggle [${children.type.displayName}]`,
 		ref: setReferenceElement,
 		onClick: () => {
 			// @ts-expect-error This is fine
+=======
+		// @ts-expect-error
+		'data-component-name': `Dropdown/DropdownToggle [${children.type.displayName}]`,
+		ref: setReferenceElement,
+		onClick: () => {
+			// @ts-expect-error
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 			children?.props?.onClick ? children.props.onClick() : null;
 			if (setIsOpen) {
@@ -111,7 +134,11 @@ export const DropdownToggle: FC<IDropdownToggleProps> = (props) => {
 			}
 		},
 		rightIcon: hasIcon
+<<<<<<< HEAD
 			? // @ts-expect-error This is fine
+=======
+			? // @ts-expect-error
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 				(children.type.displayName === 'Button' && 'HeroChevronDown') || 'HeroChevronRight'
 			: undefined,
 		isActive: isOpen,
@@ -138,7 +165,10 @@ interface IDropdownMenuProps extends HTMLAttributes<HTMLUListElement> {
 	rounded?: TRounded;
 	setIsOpen?: Dispatch<SetStateAction<boolean>>;
 	referenceElement?: HTMLElement;
+<<<<<<< HEAD
 	setReferenceElement?: Dispatch<SetStateAction<HTMLElement>>;
+=======
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 }
 export const DropdownMenu: FC<IDropdownMenuProps> = (props) => {
 	const {
@@ -152,7 +182,10 @@ export const DropdownMenu: FC<IDropdownMenuProps> = (props) => {
 		rounded = themeConfig.rounded,
 		fallbackPlacements = [`top-start`, `bottom-start`],
 		referenceElement,
+<<<<<<< HEAD
 		setReferenceElement,
+=======
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 		...rest
 	} = props;
 

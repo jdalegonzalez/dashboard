@@ -44,11 +44,21 @@ const Checkbox = forwardRef<HTMLInputElement, ICheckboxProps>((props, ref) => {
 		id,
 		inputClassName,
 		isInline = false,
+<<<<<<< HEAD
 			isValidMessage,
 		label,
 		rounded = themeConfig.rounded,
 		dimension = 'default',
 			validFeedback,
+=======
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		isValidMessage,
+		label,
+		rounded = themeConfig.rounded,
+		dimension = 'default',
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		validFeedback,
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 		variant = 'default',
 		isValid,
 		isTouched,
@@ -195,7 +205,12 @@ export const CheckboxGroup: FC<ICheckboxGroupProps> = (props) => {
 		isInline = false,
 		isTouched = false,
 		isValid = false,
+<<<<<<< HEAD
 			isValidMessage = true,
+=======
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		isValidMessage = true,
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 		validFeedback,
 		...rest
 	} = props;

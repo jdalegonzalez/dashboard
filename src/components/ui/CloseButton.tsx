@@ -19,6 +19,10 @@ const CloseButton: FC<ICloseButtonProps> = (props) => {
 			color='red'
 			className={classes}
 			onClick={() => (setIsOpen ? setIsOpen(false) : undefined)}
+<<<<<<< HEAD
+=======
+			// eslint-disable-next-line react/jsx-props-no-spreading
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 			{...rest}
 		/>
 	);

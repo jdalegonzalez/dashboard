@@ -10,11 +10,19 @@ import Link from 'next/link';
 import { useCurrentLocale } from 'next-i18n-router/client';
 import TranslationsProvider from '@/components/TranslationsProvider';
 import { useTranslation } from 'react-i18next';
+<<<<<<< HEAD
+=======
+import { StaticImageData } from 'next/image';
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 import purePathnameUtil from '@/utils/purePathname.util';
 import Icon, { IIconProps } from '../../icon/Icon';
 import useAsideStatus from '../../../hooks/useAsideStatus';
 import themeConfig from '../../../config/theme.config';
 import Tooltip from '../../ui/Tooltip';
+<<<<<<< HEAD
+=======
+import Avatar from '../../Avatar';
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 import i18nConfig from '../../../../i18nConfig';
 
 const i18nNamespaces = ['translation'];
@@ -49,6 +57,7 @@ const navItemChildCheck = (
 		| undefined
 		| INavButtonProps,
 ): boolean => {
+<<<<<<< HEAD
 	// @ts-expect-error This is fine
 
 	return children?.length > 1
@@ -56,6 +65,15 @@ const navItemChildCheck = (
 
 			children?.map((child) => child.type.displayName).includes('NavButton')
 		: // @ts-expect-error This is fine
+=======
+	// @ts-ignore
+
+	return children?.length > 1
+		? // @ts-ignore
+
+			children?.map((child) => child.type.displayName).includes('NavButton')
+		: // @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 
 			children?.type?.displayName === 'NavButton';
 };
@@ -176,7 +194,11 @@ export const NavItem: FC<INavItemProps> = (props) => {
 
 	const { asideStatus, setAsideStatus } = useAsideStatus();
 
+<<<<<<< HEAD
 	// @ts-expect-error This is fine
+=======
+	// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 	const isChildrenNavButton = navItemChildCheck(children);
 
 	const CONTENT = (
@@ -385,6 +407,126 @@ export const NavTitle: FC<INavTitleProps> = (props) => {
 };
 NavTitle.displayName = 'NavTitle';
 
+<<<<<<< HEAD
+=======
+interface INavUserProps extends HTMLAttributes<HTMLLIElement> {
+	children?: ReactNode;
+	image?: string | StaticImageData;
+	text: string;
+	to?: string;
+	className?: string;
+}
+export const NavUser: FC<INavUserProps> = (props) => {
+	const { children, image, text, to, className, ...rest } = props;
+
+	const { t } = useTranslation();
+
+	const { asideStatus, setAsideStatus } = useAsideStatus();
+
+	// @ts-ignore
+	const isChildrenNavButton = navItemChildCheck(children);
+
+	const CONTENT = (
+		<>
+			<Avatar
+				src={image}
+				name={text}
+				className={classNames('w-6 rounded-full', {
+					'me-3': asideStatus,
+				})}
+				rounded='rounded'
+			/>
+			<NavItemContent>
+				<NavItemText>{t(text)}</NavItemText>
+				{children && !isChildrenNavButton && <div>{children as ReactNode}</div>}
+			</NavItemContent>
+		</>
+	);
+
+	const pathname = usePathname();
+	const purePath = purePathnameUtil(pathname);
+
+	return (
+		<Tooltip text={asideStatus ? '' : t(text)} placement='right'>
+			<li
+				data-component-name='Nav/NavUser'
+				className={classNames(
+					'flex list-none items-center overflow-hidden whitespace-nowrap',
+					className,
+				)}
+				{...rest}>
+				{to ? (
+					<>
+						{/* For Desktop */}
+						<Link
+							href={to}
+							className={
+								purePath === to
+									? classNames(
+											navItemClasses.default,
+											navItemClasses.active,
+											'max-md:hidden',
+										)
+									: classNames(
+											navItemClasses.default,
+											navItemClasses.inactive,
+											'max-md:hidden',
+										)
+							}>
+							{CONTENT}
+						</Link>
+						{/* For Mobile */}
+						<Link
+							href={to}
+							onClick={() => setAsideStatus(false)}
+							className={
+								purePath === to
+									? classNames(
+											navItemClasses.default,
+											navItemClasses.active,
+											'md:hidden',
+										)
+									: classNames(
+											navItemClasses.default,
+											navItemClasses.inactive,
+											'md:hidden',
+										)
+							}>
+							{CONTENT}
+						</Link>
+					</>
+				) : (
+					<>
+						{/* For Desktop */}
+						<div
+							className={classNames(
+								navItemClasses.default,
+								navItemClasses.inactive,
+								'max-md:hidden',
+							)}>
+							{CONTENT}
+						</div>
+						{/* For Mobile */}
+						<div
+							className={classNames(
+								navItemClasses.default,
+								navItemClasses.inactive,
+								'md:hidden',
+							)}>
+							{CONTENT}
+						</div>
+					</>
+				)}
+				{asideStatus && children && isChildrenNavButton && (
+					<div className='mb-2 flex items-center gap-3 px-3'>{children as ReactNode}</div>
+				)}
+			</li>
+		</Tooltip>
+	);
+};
+NavUser.displayName = 'NavUser';
+
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 interface INavSeparatorProps extends HTMLAttributes<HTMLLIElement> {
 	className?: string;
 }

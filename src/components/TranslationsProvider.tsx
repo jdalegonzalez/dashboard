@@ -24,7 +24,13 @@ const TranslationsProvider = ({
 		const init = async () => {
 			if (!i18n) {
 				const newInstance = await initTranslations(locale, namespaces);
+<<<<<<< HEAD
 				i18n = newInstance;
+=======
+				// @ts-ignore
+				i18n = newInstance;
+				// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 				setInstance(newInstance);
 			} else if (i18n.language !== locale) {
 				await i18n.changeLanguage(locale);

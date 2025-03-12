@@ -41,7 +41,11 @@ const checkComp = (
 		| ReactElement<IModalFooterProps>,
 ): boolean => {
 	return [componentName].includes(
+<<<<<<< HEAD
 		// @ts-expect-error This is fine
+=======
+		// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 
 		child?.type?.displayName,
 	);
@@ -292,8 +296,14 @@ const Modal: FC<IModalProps> = (props) => {
 		size;
 
 	// Backdrop close function
+<<<<<<< HEAD
 	const closeModal = (event: { target: any }) => {
 		// @ts-expect-error This is fine
+=======
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const closeModal = (event: { target: any }) => {
+		// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 
 		if (ref.current && !ref.current.contains(event.target) && !isStaticBackdrop) {
 			setIsOpen(false);
@@ -303,6 +313,7 @@ const Modal: FC<IModalProps> = (props) => {
 	useEventListener('touchstart', closeModal); // Touchscreen
 
 	// Backdrop static function
+<<<<<<< HEAD
 	const modalStatic = (event: { target: any }) => {
 		// @ts-expect-error This is fine
 
@@ -311,6 +322,17 @@ const Modal: FC<IModalProps> = (props) => {
 
 			refModal.current.classList.add('!scale-105');
 			// @ts-expect-error This is fine
+=======
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const modalStatic = (event: { target: any }) => {
+		// @ts-ignore
+
+		if (ref.current && !ref.current.contains(event.target) && isStaticBackdrop) {
+			// @ts-ignore
+
+			refModal.current.classList.add('!scale-105');
+			// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 
 			setTimeout(() => refModal.current.classList.remove('!scale-105'), 300);
 		}
@@ -371,13 +393,21 @@ const Modal: FC<IModalProps> = (props) => {
 										(child) =>
 											(checkComp('ModalHeader', child) &&
 												cloneElement(child, {
+<<<<<<< HEAD
 													// @ts-expect-error This is fine
+=======
+													// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 													setIsOpen,
 													titleId,
 												})) ||
 											(checkComp('ModalBody', child) &&
 												cloneElement(child, {
+<<<<<<< HEAD
 													// @ts-expect-error This is fine
+=======
+													// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 													isScrollable,
 												})) ||
 											child,

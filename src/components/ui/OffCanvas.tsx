@@ -36,7 +36,11 @@ const checkComp = (
 		| ReactElement<IOffCanvasFooterProps>,
 ): boolean => {
 	return [componentName].includes(
+<<<<<<< HEAD
 		// @ts-expect-error This is fine
+=======
+		// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 
 		child?.type?.displayName,
 	);
@@ -241,8 +245,14 @@ const OffCanvas: FC<IOffCanvasProps> = (props) => {
 	const titleId = useId();
 
 	// Backdrop close function
+<<<<<<< HEAD
 	const closeOffCanvas = (event: { target: any }) => {
 		// @ts-expect-error This is fine
+=======
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const closeOffCanvas = (event: { target: any }) => {
+		// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 
 		if (ref.current && !ref.current.contains(event.target) && !isStaticBackdrop) {
 			setIsOpen(false);
@@ -252,6 +262,7 @@ const OffCanvas: FC<IOffCanvasProps> = (props) => {
 	useEventListener('touchstart', closeOffCanvas); // Touchscreen
 
 	// Backdrop static function
+<<<<<<< HEAD
 	const offCanvasStatic = (event: { target: any }) => {
 		// @ts-expect-error This is fine
 
@@ -260,6 +271,17 @@ const OffCanvas: FC<IOffCanvasProps> = (props) => {
 
 			refOffCanvas.current.classList.add('!scale-105');
 			// @ts-expect-error This is fine
+=======
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const offCanvasStatic = (event: { target: any }) => {
+		// @ts-ignore
+
+		if (ref.current && !ref.current.contains(event.target) && isStaticBackdrop) {
+			// @ts-ignore
+
+			refOffCanvas.current.classList.add('!scale-105');
+			// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 
 			setTimeout(() => refOffCanvas.current.classList.remove('!scale-105'), 300);
 		}
@@ -332,7 +354,11 @@ const OffCanvas: FC<IOffCanvasProps> = (props) => {
 										(child) =>
 											(checkComp('OffCanvasHeader', child) &&
 												cloneElement(child, {
+<<<<<<< HEAD
 													// @ts-expect-error This is fine
+=======
+													// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 													setIsOpen,
 													titleId,
 												})) ||

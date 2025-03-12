@@ -42,6 +42,7 @@ type TThemeConfigs = {
 };
 
 const themeConfig: TThemeConfigs = {
+<<<<<<< HEAD
 	projectTitle: 'Teramis',
 	projectName: 'Default dashboard theme for the Teramis control panel.',
 	language: 'en',
@@ -53,6 +54,15 @@ const themeConfig: TThemeConfigs = {
 	warningColorShade: '600',
 	errorColor: 'red',
 	errorColorShade: '800',
+=======
+	projectTitle: 'Fyr',
+	projectName: 'React TypeScript Tailwind Admin & AI Chat Template',
+	language: 'en',
+
+	theme: DARK_MODE.SYSTEM,
+	themeColor: 'blue',
+	themeColorShade: '500',
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 	rounded: 'rounded-lg',
 	borderWidth: 'border-2',
 	transition: 'transition-all duration-300 ease-in-out',

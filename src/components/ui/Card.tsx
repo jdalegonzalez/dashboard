@@ -15,7 +15,11 @@ interface ICardTitleProps extends HTMLAttributes<HTMLDivElement> {
 export const CardTitle: FC<ICardTitleProps> = (props) => {
 	const { children, className, ...rest } = props;
 
+<<<<<<< HEAD
 	const classes = classNames('flex items-center text-2xl', className);
+=======
+	const classes = classNames('flex items-center text-2xl font-semibold', className);
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 
 	return (
 		<div data-component-name='Card/CardTitle' className={classes} {...rest}>

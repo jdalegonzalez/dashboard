@@ -69,11 +69,21 @@ const SelectReact: FC<ISelectReactProps> = (props) => {
 		className,
 		color = themeConfig.themeColor,
 		colorIntensity = themeConfig.themeColorShade,
+<<<<<<< HEAD
 			isValidMessage,
 		name,
 		rounded = themeConfig.rounded,
 		dimension = 'default',
 			validFeedback,
+=======
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		isValidMessage,
+		name,
+		rounded = themeConfig.rounded,
+		dimension = 'default',
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		validFeedback,
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 		variant = 'solid',
 		isValid,
 		isTouched,

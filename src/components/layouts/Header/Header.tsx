@@ -70,7 +70,11 @@ const Header: FC<IHeaderProps> = (props) => {
 	const { children, className, ...rest } = props;
 
 	const divRef = useRef<HTMLDivElement>(null);
+<<<<<<< HEAD
 	// @ts-expect-error This is fine
+=======
+	// @ts-ignore
+>>>>>>> bd4d433 (Initial incorporation of the dashboard.  Fixed some warnings)
 	const [domRect] = useDomRect(divRef);
 
 	return (

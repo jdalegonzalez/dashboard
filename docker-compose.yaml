@@ -54,7 +54,7 @@ services:
       - PGDATABASE=${PGDATABASE:-teramis}
       - PGPORT=5432
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${PGUSER} -d ${PGDATABASE}; && sleep 2" ]
+      test: ["CMD-SHELL", "pg_isready -U ${PGUSER} -d ${PGDATABASE} && sleep 2" ]
       interval: 10s
       retries: 5
       start_period: 30s

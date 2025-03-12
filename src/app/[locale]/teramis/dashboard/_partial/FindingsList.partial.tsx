@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
 	createColumnHelper,
 	getCoreRowModel,
-	getFilteredRowModel,
 	getSortedRowModel,
 	SortingState,
 	useReactTable,
@@ -19,10 +18,6 @@ import usePagedResponse from '@/hooks/usePagedResponse';
 import { FindingsAPIResults, findingsPath as fetchPath } from '@/app/lib/fetch'
 import { Confidence, type ScanResult } from '@/prisma-client';
 
-// import FieldWrap from '@/components/form/FieldWrap';
-// import Input from '@/components/form/Input';
-// import Icon from '@/components/icon/Icon';
-
 import MimeIcon from '@/components/icon/MimetypeIcons';
 import Badge from '@/components/ui/Badge';
 import Skeleton from '@/components/utils/ThemedSkeleton';
@@ -33,8 +28,6 @@ import TableTemplate, { TableCardFooterTemplate } from '@/templates/common/Table
 import Dropdown, { DropdownMenu, DropdownToggle } from '@/components/ui/Dropdown';
 import Checkbox from '@/components/form/Checkbox';
 import Button from '@/components/ui/Button';
-import { filter } from 'lodash';
-import { json } from 'd3-fetch';
 
 declare module '@tanstack/react-table' {
 	interface ColumnMeta<TData extends RowData, TValue> {
@@ -207,9 +200,7 @@ const FindingsListPartial = (props:IFindingsListProps) => {
 		onGlobalFilterChange: setGlobalFilter,
 		onPaginationChange: setPagination,
 		getCoreRowModel: getCoreRowModel(),
-		//getFilteredRowModel: getFilteredRowModel(),
 		getSortedRowModel: getSortedRowModel(),
-		//getPaginationRowModel: getPaginationRowModel(),
 		manualPagination: true,
 		rowCount,
 		// debugTable: true,

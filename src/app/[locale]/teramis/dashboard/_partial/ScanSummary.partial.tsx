@@ -8,12 +8,12 @@ import Chart from '@/components/Chart';
 import Icon from '@/components/icon/Icon';
 import useSWR from 'swr';
 import fetch from '@/app/lib/fetch';
-import { AgentAPIResults, ScanSummaryAPIResults } from '@/app/lib/fetch';
-import useAgentOverview from '@/hooks/useAgent';
+import { TeramisAPIResults, ScanSummaryAPIResults } from '@/app/lib/fetch';
+import useTeramisOverview from '@/hooks/useOverview';
 import themeConfig from '@/config/theme.config';
 import LoaderDotsCommon from '@/components/LoaderDots.common';
 
-const truncateLeft = (path: any, maxLength = 20) => {
+const truncateLeft = (path: any, maxLength = 30) => {
 	if (typeof path != 'string') return String(path);
 	return (path && path.length > maxLength) ? "..." + path.slice(-maxLength) : path
 }
@@ -22,7 +22,7 @@ const discoveryChart = (data?:ScanSummaryAPIResults) => {
 	const chartColors = data ? [colors.sky[900], colors.red[800]] : [colors.rose[50], colors.slate[50]];
 	const series = data ? data.series : [ { name: ' Errors', data: [0, 10, 30] },{ name:' Discoveries', data: [100, 300, 500] }];
 	const categories = (
-		data ? data.agents : ['...', '...', '...']
+		data ? data.targets : ['...', '...', '...']
 	);
 	const res:IChartOptions = {
 		series: series,
@@ -69,13 +69,13 @@ const discoveryChart = (data?:ScanSummaryAPIResults) => {
 			grid: {
 			  xaxis: { lines: { show: false } }
 			},
-			yaxis: { stepSize: 1, labels: { formatter: (val:any) => truncateLeft(val) }},
+			yaxis: { stepSize: 1, labels: { formatter: (val:any) => val }},
 			tooltip: {
 				shared: false,
 				y: { formatter: (val: number) => String(Math.abs(val)) }
 			},
 			title: { text: 
-				'Discoveries by Agent',
+				'Discoveries by Target',
 				style: {
 					fontSize:  '14px',
 					fontWeight:  'normal',
@@ -133,7 +133,7 @@ const durationValue = (data?:ScanSummaryAPIResults ) => {
 	return secondsToString(average);
 }
 
-const findingsChart = (data?: AgentAPIResults) => {
+const findingsChart = (data?: TeramisAPIResults) => {
 	
 	const totalFiles = data?.totalFilesCount??0;
 	const cuiFiles = data?.warningCount??0;
@@ -215,8 +215,8 @@ const findingsChart = (data?: AgentAPIResults) => {
 }
 
 const ScanSummaryPartial = () => {
-	const { data } = useSWR<ScanSummaryAPIResults>('/api/agent/scans', fetch);
-	const { agentInfo } = useAgentOverview();
+	const { data } = useSWR<ScanSummaryAPIResults>('/api/scans', fetch);
+	const { agentInfo } = useTeramisOverview();
 	
 	const state = findingsChart(agentInfo);
 	const discoveryChartDef = discoveryChart(data);

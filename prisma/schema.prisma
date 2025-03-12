@@ -39,44 +39,22 @@ enum Confidence {
   NONE
 }
 
-/*
-TODO: Once we get partial scanning working,
-* Add in the idea of multiple agents hitting the same location
-* Add UI to define locations, name them, etc...
-* Change reporting to be by location.
-model Location {
-  id               String   @id @default(cuid(2))
-  created_at       DateTime @default(now())
-  updated_at       DateTime @default(now()) @updatedAt
-  name             String
-  root             String
-  skip_completed   Boolean
-  max_workers      Int
-  mem_thresh       Int
-  use_history      Boolean
-  default_timeout  Int
-  agents           AgentsReachingLocation[]
-  crawls           Crawl[]
-  scans            Scan[]
-  @@unique(name: "location_root", [root])
-}
-
-model AgentsReachingLocation {
-  location      Location @relation(fields: [locationId], references: [id])
-  locationId    String
+model AgentsToTarget {
+  target        Target @relation(fields: [targetId], references: [id])
+  targetId      String
   agent         Agent @relation(fields: [agentId], references: [id])
   agentId       String
   created_at    DateTime @default(now())
   updated_at    DateTime @default(now()) @updatedAt
-  @@id([locationId, agentId])
+  @@id([targetId, agentId])
 }
-*/
 
 model Target {
   id               String   @id @default(cuid(2))
   created_at       DateTime @default(now())
   updated_at       DateTime @default(now()) @updatedAt
-  roots            String[]
+  root             String
+  name             String
   skip_completed   Boolean
   max_workers      Int
   mem_thresh       Int
@@ -84,9 +62,7 @@ model Target {
   default_timeout  Int
   crawls           Crawl[]
   scans            Scan[]
-  agentId          String
-  agent            Agent @relation(fields: [agentId], references: [id], onDelete: Restrict)
-  @@unique(name: "agent_target", [agentId, roots])
+  agents           AgentsToTarget[]
 }
 
 model Agent {
@@ -96,7 +72,6 @@ model Agent {
   name         String
   location     String
   status       Status   @default(IDLE)
-  targets      Target[]
   os           String
   os_version   String
   arch         String
@@ -104,6 +79,7 @@ model Agent {
   cores        Int
   logical_cpus Int
   ram_gb       Float
+  targets      AgentsToTarget[]
 }
 
 model Crawl {

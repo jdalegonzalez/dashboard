@@ -3,14 +3,14 @@ import Card, { CardBody } from '@/components/ui/Card';
 import Icon from '@/components/icon/Icon';
 import themeConfig from '@/config/theme.config';
 import {loadingOrProperty} from '@/components/LoaderDots.common';
-import {AgentAPIResults} from '@/app/lib/fetch';
+import {TeramisAPIResults} from '@/app/lib/fetch';
 
-import useAgentOverview from '@/hooks/useAgent';
+import useTeramisOverview from '@/hooks/useOverview';
 import useDarkMode from '@/hooks/useDarkMode';
 import Link from 'next/link';
 
 const MiniAgent = () => {
-	const { agentInfo } = useAgentOverview();
+	const { agentInfo } = useTeramisOverview();
 	const {isDarkTheme} = useDarkMode();
 
 	const circleColor = isDarkTheme ? 'bg-stone-950/50' : 'bg-sky-800'; 
@@ -36,7 +36,7 @@ const MiniAgent = () => {
 						<div>
 							<div className='text-zinc-500'>Total Agents</div>
 							<div className='text-3xl font-semibold'>
-								{ loadingOrProperty<AgentAPIResults>(agentInfo, 'agentCount', 'mt-4 mb-3') }
+								{ loadingOrProperty<TeramisAPIResults>(agentInfo, 'agentCount', 'mt-4 mb-3') }
 							</div>
 						</div>
 					</div>

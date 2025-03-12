@@ -1,14 +1,15 @@
 import useSWR from 'swr';
 import fetch, { updater } from '@/app/lib/fetch';
-import fetcher, {AgentAPIResults, AgentAPIDetailResults} from '@/app/lib/fetch';
+import fetcher, {AgentAPIResults} from '@/app/lib/fetch';
 import { unpagedUrl } from '@/app/lib/fetch';
-import { getAgentDetails } from '@/prisma-client/sql';
 import { IAgentResult } from '@/app/lib/fetch';
 import { Status } from '@/prisma-client';
+import { getAgentAndTarget } from '@/prisma-client/sql';
+import { string } from 'slate';
 
 const emptyDate = new Date(0)
 
-export const blankAgent:IAgentResult = {
+export const blankResult:IAgentResult = {
     id: 'loading',
     created_at: emptyDate,
     updated_at: emptyDate,
@@ -25,47 +26,60 @@ export const blankAgent:IAgentResult = {
     targets: []
 }
 
-const {id: agent_id, ...rest} = blankAgent;
-
-export const blankResult:getAgentDetails.Result = {
-    agent_id,
+const {id, ...rest} = blankResult;
+const emptySize: any = 0;
+export const blankExtendedResult: getAgentAndTarget.Result = {
+    agent_id: id,
     ...rest,
     target_id: '',
-    roots: [],
+    root: '',
     skip_completed: false,
     max_workers: 0,
     mem_thresh: 0,
+    use_history: false,
     default_timeout: 0,
     scan_id: '',
+    scan_root_path: '',
     scan_start_time: emptyDate,
     scan_end_time: null,
-    scan_root_path: '',
-    crawl_scan_size: 0 as unknown as bigint,
-    crawl_root_path: '',
     matches: 0,
     timeouts: 0,
+    gigs_per_second: 0,
     scan_errors: null,
-    crawl_id:'',
+    crawl_id: '',
+    crawl_root_path: '',
     crawl_start_time: emptyDate,
     crawl_end_time: emptyDate,
-    use_history: true,
-    throughput: 0.0,
-    gigs_per_second: 0,
-    crawl_errors: null, 
     file_count: 0,
     dir_count: 0,
-    total_size: 0 as unknown as bigint,
-    largest_file_size: 0 as unknown as bigint,
-    largest_file_path: ''
+    total_size: emptySize,
+    crawl_scan_size: emptySize,
+    largest_file_size: emptySize,
+    largest_file_path: '',
+    throughput: 0,
+    crawl_used_history: false,
+    crawl_errors: null
 }
 
-export const blankResults:AgentAPIDetailResults = [blankResult]
-const apiPath = '/api/agent';
+export const blankResults:AgentAPIResults = [blankResult]
+const apiPath = '/api/agents';
 
 export const useAgentDetails = (id:string='') => {
     const idPiece = id ? {agentId: id} : {};
-    const { data, error, isLoading } = useSWR<AgentAPIDetailResults>(unpagedUrl(apiPath, {'details': true, ...idPiece}), fetch);
-    const res: AgentAPIDetailResults = data ?? blankResults;
+    const { data, error, isLoading } = useSWR<AgentAPIResults>(unpagedUrl(apiPath, {...idPiece}), fetch);
+    const res: AgentAPIResults = data ?? blankResults;
+    return {
+        data: res,
+        isLoading,
+        isError: error
+    }
+}
+
+export const useAgentAndTarget = (id:string='') => {
+    const idPiece = id ? {agentId: id} : {};
+    const { data, error, isLoading } = useSWR<getAgentAndTarget.Result[]>(unpagedUrl(apiPath, {extended: true, ...idPiece}), fetch);
+
+    const res: getAgentAndTarget.Result[] = data ?? [blankExtendedResult];
     return {
         data: res,
         isLoading,
@@ -114,19 +128,10 @@ export const useAgent = (id: string|string[]|undefined, setIsSaving?: TSavingSta
         if (setIsSaving) setIsSaving(false); 
     }
     return {
-        data: data ?? blankAgent,
+        data: data ?? blankResult,
         isLoading,
         isError: error,
         performUpdate,
         triggerScan
-    }
-}
-
-export default function useAgentOverview() {
-    const { data, error, isLoading } = useSWR<AgentAPIResults>(apiPath, fetch)
-    return {
-        agentInfo: data,
-        isLoading,
-        isError: error
     }
 }

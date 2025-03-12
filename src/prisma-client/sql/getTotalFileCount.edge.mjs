@@ -1,2 +1,2 @@
 import { makeTypedQueryFactory as $mkFactory } from "../runtime/edge.js"
-export const getTotalFileCount = /*#__PURE__*/ $mkFactory("SELECT SUM(CARDINALITY(file_paths)) AS count\nFROM \"CrawlHash\"\nJOIN (\nSELECT \"Crawl\".id AS crawl_id\nFROM \"Crawl\"\nINNER JOIN (\nSELECT MAX(\"end_time\") AS \"end_time\" FROM \"Crawl\" GROUP BY \"targetId\"\n) newest_crawl\nON \"Crawl\".end_time = newest_crawl.end_time\n) c\nON c.crawl_id = \"CrawlHash\".\"crawlId\"")
+export const getTotalFileCount = /*#__PURE__*/ $mkFactory("\n\nSELECT SUM(CARDINALITY(file_paths)) AS count\nFROM \"CrawlHash\"\nINNER JOIN (SELECT id, row_number() OVER (PARTITION BY \"targetId\" ORDER BY targeted_date DESC) rn FROM \"Crawl\") c\nON rn = 1 AND \"CrawlHash\".\"crawlId\" = c.id")

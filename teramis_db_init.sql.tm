@@ -8,17 +8,27 @@ CREATE TYPE "Severity" AS ENUM ('HINT', 'WARNING', 'ERROR', 'FATAL');
 CREATE TYPE "Confidence" AS ENUM ('HIGH', 'MEDIUM', 'LOW', 'NONE');
 
 -- CreateTable
+CREATE TABLE "AgentsToTarget" (
+    "targetId" TEXT NOT NULL,
+    "agentId" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "AgentsToTarget_pkey" PRIMARY KEY ("targetId","agentId")
+);
+
+-- CreateTable
 CREATE TABLE "Target" (
     "id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "roots" TEXT[],
+    "root" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "skip_completed" BOOLEAN NOT NULL,
     "max_workers" INTEGER NOT NULL,
     "mem_thresh" INTEGER NOT NULL,
     "use_history" BOOLEAN NOT NULL,
     "default_timeout" INTEGER NOT NULL,
-    "agentId" TEXT NOT NULL,
 
     CONSTRAINT "Target_pkey" PRIMARY KEY ("id")
 );
@@ -145,9 +155,6 @@ CREATE TABLE "ScanResult" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Target_agentId_roots_key" ON "Target"("agentId", "roots");
-
--- CreateIndex
 CREATE INDEX "Crawl_updated_at_idx" ON "Crawl"("updated_at");
 
 -- CreateIndex
@@ -181,7 +188,10 @@ CREATE INDEX "ScanResult_hash_id_confidence_idx" ON "ScanResult"("hash", "id", "
 CREATE INDEX "ScanResult_updated_at_idx" ON "ScanResult"("updated_at");
 
 -- AddForeignKey
-ALTER TABLE "Target" ADD CONSTRAINT "Target_agentId_fkey" FOREIGN KEY ("agentId") REFERENCES "Agent"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AgentsToTarget" ADD CONSTRAINT "AgentsToTarget_targetId_fkey" FOREIGN KEY ("targetId") REFERENCES "Target"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "AgentsToTarget" ADD CONSTRAINT "AgentsToTarget_agentId_fkey" FOREIGN KEY ("agentId") REFERENCES "Agent"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Crawl" ADD CONSTRAINT "Crawl_targetId_fkey" FOREIGN KEY ("targetId") REFERENCES "Target"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -117,17 +117,24 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.AgentsToTargetScalarFieldEnum = {
+  targetId: 'targetId',
+  agentId: 'agentId',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.TargetScalarFieldEnum = {
   id: 'id',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  roots: 'roots',
+  root: 'root',
+  name: 'name',
   skip_completed: 'skip_completed',
   max_workers: 'max_workers',
   mem_thresh: 'mem_thresh',
   use_history: 'use_history',
-  default_timeout: 'default_timeout',
-  agentId: 'agentId'
+  default_timeout: 'default_timeout'
 };
 
 exports.Prisma.AgentScalarFieldEnum = {
@@ -269,6 +276,7 @@ exports.Confidence = exports.$Enums.Confidence = {
 };
 
 exports.Prisma.ModelName = {
+  AgentsToTarget: 'AgentsToTarget',
   Target: 'Target',
   Agent: 'Agent',
   Crawl: 'Crawl',

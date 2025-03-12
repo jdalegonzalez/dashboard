@@ -1,7 +1,7 @@
 'use client';
 
 import React, {FC} from 'react';
-import { getAgentDetails } from '@/prisma-client/sql';
+import { getAgentAndTarget } from '@/prisma-client/sql';
 
 import Card, {
 	CardBody,
@@ -32,7 +32,7 @@ import Link from 'next/link';
 
 const monsterThroughput = 2 * bytesToGigRatio;
 
-const speedometer = (agent: getAgentDetails.Result) => {
+const speedometer = (agent: getAgentAndTarget.Result) => {
     const v1 = (agent.throughput / monsterThroughput) * 100;
     const v2 = 100 - v1;
     return ({
@@ -111,7 +111,7 @@ const speedometer = (agent: getAgentDetails.Result) => {
 const skelClass = 'bg-opacity-5'
 
 interface IAgentItemProps {
-	agent: getAgentDetails.Result;
+	agent: getAgentAndTarget.Result;
     className?: string;
 }
 

@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PageWrapper from '@/components/layouts/PageWrapper/PageWrapper';
 import { useParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import useSaveBtn from '@/hooks/useSaveBtn';
 import Subheader, {
 	SubheaderLeft,
+	SubheaderRight,
 	// SubheaderRight,
 	SubheaderSeparator,
 } from '@/components/layouts/Subheader/Subheader';
@@ -26,7 +27,7 @@ import Card, {
 import themeConfig from '@/config/theme.config';
 import Icon from '@/components/icon/Icon';
 import dayjs from 'dayjs';
-import { useAgent, useAgentDetails } from '@/hooks/useAgent';
+import { useAgent } from '@/hooks/useAgent';
 import { bytesToGigRatio, bytesToHuman, statusToColor } from '@/utils/dataDisplay.util';
 import useDarkMode from '@/hooks/useDarkMode';
 import { TColorIntensity } from '@/types/colorIntensities.type';
@@ -38,6 +39,8 @@ import ScanErrorList from '@/app/[locale]/teramis/dashboard/_partial/ScanErrorLi
 import CrawlResults from '@/app/[locale]/teramis/dashboard/_partial/CrawlResultsList.partial';
 import { Status } from '@/prisma-client';
 import LaunchScanModal from './_partial/Launch.partial';
+import { useTargetDetails } from '@/hooks/useTarget';
+import TargetSelectPartial  from './_partial/SelectTarget.partial';
 
 const TABS: {
 	[key in 'SCANRESULTS' | 'SCANERRORS' | 'CRAWLRESULTS' | 'CRAWLERRORS']: 
@@ -59,18 +62,25 @@ const AgentDetails = () => {
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 
 	const { data: agent, isLoading: agentLoading, triggerScan } = useAgent(agentId, setIsSaving, 5000);
-	const { data: details, isLoading: detailsLoading } = useAgentDetails(agentId);
 
-	const scanId = agentLoading  ? '' : agent.targets[0]?.scans[0]?.id;
-	const crawlId = agentLoading ? '' : agent.targets[0]?.crawls[0]?.id;
+	const [targetId, setTargetId ] = useState<string>(agent.targets[0]?.target?.id)	
+
+	const { data: details, isLoading: detailsLoading } = useTargetDetails(targetId);
+	const scanId = detailsLoading  ? '' : details[0]?.scan_id;
+	const crawlId = detailsLoading ? '' : details[0]?.crawl_id;
+
+	useEffect(() => {
+		if (!targetId && agent.targets[0]?.target?.id) {
+			setTargetId(agent.targets[0]?.target?.id)
+		}
+	}, [targetId, agent.targets[0]?.target?.id])
 
 	const { saveBtnDisable } = useSaveBtn({
 		isNewItem: false,
 		isSaving,
 		isDirty: (
 			!isSaving && 
-			!detailsLoading && 
-			!!(details[0]?.scan_root_path ?? false) &&
+			!agentLoading && 
 			(agent?.status === Status.IDLE || agent?.status === Status.ERRORED)
 		),
 	});
@@ -79,6 +89,7 @@ const AgentDetails = () => {
 	const circleColor = isDarkTheme ? 'bg-stone-950/50' : 'bg-sky-800'; 
 	const iconIntensity: TColorIntensity = isDarkTheme ? '500' : '100';
 
+	console.log(targetId, agent.targets, )
 	return (
 		<PageWrapper>
 			<Subheader>
@@ -91,10 +102,14 @@ const AgentDetails = () => {
 					</Link>
 					<SubheaderSeparator />
 					<>
-						{}
 						{`${agent?.name}`}{' '}
 					</>
 				</SubheaderLeft>
+				<SubheaderRight>
+					{agentLoading ? <Skeleton /> :
+					<TargetSelectPartial targets={agent.targets} targetId={targetId} setTargetId={setTargetId} />
+					}
+				</SubheaderRight>
 			</Subheader>
 			<Container className='flex shrink-0 grow basis-auto flex-col pb-0'>
 				<div className='flex h-full flex-wrap content-start'>
@@ -148,7 +163,7 @@ const AgentDetails = () => {
 												<Skeleton />
 												:
 												<LaunchScanModal
-													roots={details[0]?.roots??[]}
+													root={details[0]?.root??''}
 													skipCompleted={details[0]?.skip_completed}
 													maxWorkers={details[0]?.max_workers}
 													memoryThreshold={details[0]?.mem_thresh}
@@ -324,7 +339,7 @@ const AgentDetails = () => {
 										<CardFooterChild className='mt-12'>
 											<div className='flex items-center gap-2'>
 												<Icon icon='HeroDocumentCheck' size='text-2xl' />
-												<span className='text-zinc-500'>Last crawl:</span>
+												<span className='text-zinc-500'>Last scan:</span>
 												{detailsLoading ? <LoaderDotsCommon /> : dayjs(details[0]?.scan_end_time).locale(i18n.language).format('LLL')}
 											</div>
 										</CardFooterChild>

@@ -11,6 +11,10 @@ const headerRoutes: TRoute[] = [
 		element: <DefaultHeaderTemplate desc={appPages.teramisAppPages.subPages.agentPage.subPages.listPage.description}  />,
 	},
 	{
+		path: appPages.teramisAppPages.subPages.targetPage.subPages.listPage.to,
+		element: <DefaultHeaderTemplate desc={appPages.teramisAppPages.subPages.targetPage.subPages.listPage.description}  />,
+	},
+	{
 		path: appPages.teramisAppPages.subPages.teramisDashboardPage.to,
 		element: <DefaultHeaderTemplate desc={appPages.teramisAppPages.subPages.teramisDashboardPage.description}  />,
 	},

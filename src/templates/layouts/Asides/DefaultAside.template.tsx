@@ -20,6 +20,9 @@ const DefaultAsideTemplate = () => {
 					<NavItem
 						{...appPages.teramisAppPages.subPages.agentPage.subPages.listPage}
 					/>
+					<NavItem
+						{...appPages.teramisAppPages.subPages.targetPage.subPages.listPage}
+					/>
 				</Nav>
 			</AsideBody>
 			<AsideFooter>

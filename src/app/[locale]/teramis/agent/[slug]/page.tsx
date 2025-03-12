@@ -4,7 +4,7 @@ import TranslationsProvider from '@/components/TranslationsProvider';
 
 const i18nNamespaces = ['translation'];
 
-const CustomerPage = async (props: { params: Promise<{ locale: string }> }) => {
+const AgentPage = async (props: { params: Promise<{ locale: string }> }) => {
     const params = await props.params;
 
     const {
@@ -18,4 +18,4 @@ const CustomerPage = async (props: { params: Promise<{ locale: string }> }) => {
 	);
 };
 
-export default CustomerPage;
+export default AgentPage;

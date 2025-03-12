@@ -1,11 +1,7 @@
 FROM python:3.12
 
-WORKDIR /teramis-watcher
-
-COPY requirements.txt .
-
+WORKDIR /teramis-watchdog
+COPY teramis-watchdog/* .
 RUN pip install --no-cache-dir -r requirements.txt
-
-COPY agent_sync.py .
 
 CMD ["python", "agent_sync.py"]

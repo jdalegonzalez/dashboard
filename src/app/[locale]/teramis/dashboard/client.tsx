@@ -1,14 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-//import dayjs from 'dayjs';
 import PageWrapper from '@/components/layouts/PageWrapper/PageWrapper';
 import Subheader, { SubheaderLeft, SubheaderRight } from '@/components/layouts/Subheader/Subheader';
 import Button from '@/components/ui/Button';
-//import Dropdown, { DropdownMenu, DropdownToggle } from '@/components/ui/Dropdown';
-//import { DateRangePicker } from 'react-date-range';
-//import colors from '@/tailwindcss/colors.tailwind';
-//import themeConfig from '@/config/theme.config';
 import Container from '@/components/layouts/Container/Container';
 import MiniAgent from '@/app/[locale]/teramis/dashboard/_partial/MiniAgent.partial';
 import MiniCUIWarnings from '@/app/[locale]/teramis/dashboard/_partial/MiniCUIWarnings.partial';
@@ -21,9 +16,6 @@ import ScanSummaryPartial from '@/app/[locale]/teramis/dashboard/_partial/ScanSu
 import ScanErrorListPartial from '@/app/[locale]/teramis/dashboard/_partial/ScanErrorList.partial';
 import CrawlErrorListPartial from '@/app/[locale]/teramis/dashboard/_partial/CrawlErrorList.partial';
 import FindingsListPartial from '@/app/[locale]/teramis/dashboard/_partial/FindingsList.partial';
-
-//import { useTranslation } from 'react-i18next';
-//import useLocale from '@/hooks/useLocale';
 
 const TABS: {
 	[key in 'OVERVIEW' | 'AGENTS' ] : 'Overview' | 'Agents';

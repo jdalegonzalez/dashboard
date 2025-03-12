@@ -27,6 +27,21 @@ export const appPages = {
 					},
 				},
 			},
+			targetPage: {
+				id: 'targetPage',
+				to: '/teramis/target',
+				text: 'Targets',
+				icon: 'HeroFolder',
+				subPages: {
+					listPage: {
+						id: 'targetListPage',
+						to: '/teramis/target/list',
+						text: 'Target List',
+						icon: 'HeroFolder',
+						description: 'A list of all of the targets that have been scanned.'
+					},
+				},
+			},
 		}
 	},
 };

@@ -1,20 +1,23 @@
 import React, { FC, HTMLAttributes } from 'react';
 import classNames from 'classnames';
-import {useAgentDetails} from '@/hooks/useAgent';
+import {useAgentAndTarget} from '@/hooks/useAgent';
 
 import AgentDetails from './AgentCard.partial';
 import NewAgentButton from './NewAgentButton.partial';
-import { getAgentDetails } from '@/prisma-client/sql';
+import { getAgentAndTarget } from '@/prisma-client/sql';
 
+const detailsClass = 'col-span-12 lg:col-span-6 2xl:col-span-4';
 const AgentsPartial: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
 	const { className, ...rest } = props;
-    const { data } = useAgentDetails();
+    const { data } = useAgentAndTarget();
     const cname = classNames('grid grid-cols-12 gap-4', className);
 	return (
 		<div data-component-name='AgentsPart' className={cname} {...rest}>
 			{
                 data 
-                ? data.map((agent:getAgentDetails.Result) => <AgentDetails className='col-span-12 lg:col-span-6 2xl:col-span-4' key={agent.agent_id} agent={agent} />)
+                ? data.map(
+                    (agent:getAgentAndTarget.Result) => 
+                    <AgentDetails className={detailsClass} key={agent.agent_id} agent={agent} />)
                 :
                 ''
             }

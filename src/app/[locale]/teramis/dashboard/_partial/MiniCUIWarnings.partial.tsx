@@ -2,13 +2,13 @@ import React from 'react';
 import Card, { CardBody } from '@/components/ui/Card';
 import Icon from '@/components/icon/Icon';
 import themeConfig from '@/config/theme.config';
-import useAgentOverview from '@/hooks/useAgent';
+import useTeramisOverview from '@/hooks/useOverview';
 import useDarkMode from '@/hooks/useDarkMode';
 import { loadingOrProperty } from '@/components/LoaderDots.common';
-import { AgentAPIResults } from '@/app/lib/fetch';
+import { TeramisAPIResults } from '@/app/lib/fetch';
 
 const MiniCUIWarnings = () => {
-	const { agentInfo } = useAgentOverview();
+	const { agentInfo } = useTeramisOverview();
 	const {isDarkTheme} = useDarkMode();
 
 	const circleColor = isDarkTheme ? 'bg-stone-950/50' : 'bg-amber-800'; 
@@ -32,7 +32,7 @@ const MiniCUIWarnings = () => {
 						<div>
 							<div className='text-zinc-500'>Unique Files with CUI</div>
 							<div className='text-3xl font-semibold'>
-								{ loadingOrProperty<AgentAPIResults>(agentInfo, 'warningCount', 'mt-4 mb-3') }
+								{ loadingOrProperty<TeramisAPIResults>(agentInfo, 'warningCount', 'mt-4 mb-3') }
 							</div>
 						</div>
 					</div>

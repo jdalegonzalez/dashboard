@@ -1,8 +1,8 @@
 import React from 'react';
-import CustomerListClient from '@/app/[locale]/teramis/agent/list/client';
+import AgentListClient from '@/app/[locale]/teramis/agent/list/client';
 
-const CustomerList = () => {
-	return <CustomerListClient />;
+const AgentList = () => {
+	return <AgentListClient />;
 };
 
-export default CustomerList;
+export default AgentList;

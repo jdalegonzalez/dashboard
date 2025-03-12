@@ -14,6 +14,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model AgentsToTarget
+ * 
+ */
+export type AgentsToTarget = $Result.DefaultSelection<Prisma.$AgentsToTargetPayload>
+/**
  * Model Target
  * 
  */
@@ -111,8 +116,8 @@ export const Confidence: typeof $Enums.Confidence
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Targets
- * const targets = await prisma.target.findMany()
+ * // Fetch zero or more AgentsToTargets
+ * const agentsToTargets = await prisma.agentsToTarget.findMany()
  * ```
  *
  *
@@ -132,8 +137,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Targets
-   * const targets = await prisma.target.findMany()
+   * // Fetch zero or more AgentsToTargets
+   * const agentsToTargets = await prisma.agentsToTarget.findMany()
    * ```
    *
    *
@@ -240,6 +245,16 @@ export class PrismaClient<
   }>, ClientOptions>
 
       /**
+   * `prisma.agentsToTarget`: Exposes CRUD operations for the **AgentsToTarget** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AgentsToTargets
+    * const agentsToTargets = await prisma.agentsToTarget.findMany()
+    * ```
+    */
+  get agentsToTarget(): Prisma.AgentsToTargetDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.target`: Exposes CRUD operations for the **Target** model.
     * Example usage:
     * ```ts
@@ -758,6 +773,7 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    AgentsToTarget: 'AgentsToTarget',
     Target: 'Target',
     Agent: 'Agent',
     Crawl: 'Crawl',
@@ -781,10 +797,84 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "target" | "agent" | "crawl" | "crawlError" | "crawlHash" | "scan" | "scanError" | "scanResult"
+      modelProps: "agentsToTarget" | "target" | "agent" | "crawl" | "crawlError" | "crawlHash" | "scan" | "scanError" | "scanResult"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      AgentsToTarget: {
+        payload: Prisma.$AgentsToTargetPayload<ExtArgs>
+        fields: Prisma.AgentsToTargetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AgentsToTargetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentsToTargetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AgentsToTargetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentsToTargetPayload>
+          }
+          findFirst: {
+            args: Prisma.AgentsToTargetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentsToTargetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AgentsToTargetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentsToTargetPayload>
+          }
+          findMany: {
+            args: Prisma.AgentsToTargetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentsToTargetPayload>[]
+          }
+          create: {
+            args: Prisma.AgentsToTargetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentsToTargetPayload>
+          }
+          createMany: {
+            args: Prisma.AgentsToTargetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AgentsToTargetCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentsToTargetPayload>[]
+          }
+          delete: {
+            args: Prisma.AgentsToTargetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentsToTargetPayload>
+          }
+          update: {
+            args: Prisma.AgentsToTargetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentsToTargetPayload>
+          }
+          deleteMany: {
+            args: Prisma.AgentsToTargetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AgentsToTargetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AgentsToTargetUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentsToTargetPayload>[]
+          }
+          upsert: {
+            args: Prisma.AgentsToTargetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentsToTargetPayload>
+          }
+          aggregate: {
+            args: Prisma.AgentsToTargetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAgentsToTarget>
+          }
+          groupBy: {
+            args: Prisma.AgentsToTargetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AgentsToTargetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AgentsToTargetCountArgs<ExtArgs>
+            result: $Utils.Optional<AgentsToTargetCountAggregateOutputType> | number
+          }
+        }
+      }
       Target: {
         payload: Prisma.$TargetPayload<ExtArgs>
         fields: Prisma.TargetFieldRefs
@@ -1465,6 +1555,7 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
+    agentsToTarget?: AgentsToTargetOmit
     target?: TargetOmit
     agent?: AgentOmit
     crawl?: CrawlOmit
@@ -1569,11 +1660,13 @@ export namespace Prisma {
   export type TargetCountOutputType = {
     crawls: number
     scans: number
+    agents: number
   }
 
   export type TargetCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     crawls?: boolean | TargetCountOutputTypeCountCrawlsArgs
     scans?: boolean | TargetCountOutputTypeCountScansArgs
+    agents?: boolean | TargetCountOutputTypeCountAgentsArgs
   }
 
   // Custom InputTypes
@@ -1599,6 +1692,13 @@ export namespace Prisma {
    */
   export type TargetCountOutputTypeCountScansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ScanWhereInput
+  }
+
+  /**
+   * TargetCountOutputType without action
+   */
+  export type TargetCountOutputTypeCountAgentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AgentsToTargetWhereInput
   }
 
 
@@ -1629,7 +1729,7 @@ export namespace Prisma {
    * AgentCountOutputType without action
    */
   export type AgentCountOutputTypeCountTargetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TargetWhereInput
+    where?: AgentsToTargetWhereInput
   }
 
 
@@ -1718,6 +1818,1059 @@ export namespace Prisma {
    */
 
   /**
+   * Model AgentsToTarget
+   */
+
+  export type AggregateAgentsToTarget = {
+    _count: AgentsToTargetCountAggregateOutputType | null
+    _min: AgentsToTargetMinAggregateOutputType | null
+    _max: AgentsToTargetMaxAggregateOutputType | null
+  }
+
+  export type AgentsToTargetMinAggregateOutputType = {
+    targetId: string | null
+    agentId: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type AgentsToTargetMaxAggregateOutputType = {
+    targetId: string | null
+    agentId: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type AgentsToTargetCountAggregateOutputType = {
+    targetId: number
+    agentId: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type AgentsToTargetMinAggregateInputType = {
+    targetId?: true
+    agentId?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type AgentsToTargetMaxAggregateInputType = {
+    targetId?: true
+    agentId?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type AgentsToTargetCountAggregateInputType = {
+    targetId?: true
+    agentId?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type AgentsToTargetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AgentsToTarget to aggregate.
+     */
+    where?: AgentsToTargetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgentsToTargets to fetch.
+     */
+    orderBy?: AgentsToTargetOrderByWithRelationInput | AgentsToTargetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AgentsToTargetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgentsToTargets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgentsToTargets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AgentsToTargets
+    **/
+    _count?: true | AgentsToTargetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AgentsToTargetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AgentsToTargetMaxAggregateInputType
+  }
+
+  export type GetAgentsToTargetAggregateType<T extends AgentsToTargetAggregateArgs> = {
+        [P in keyof T & keyof AggregateAgentsToTarget]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAgentsToTarget[P]>
+      : GetScalarType<T[P], AggregateAgentsToTarget[P]>
+  }
+
+
+
+
+  export type AgentsToTargetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AgentsToTargetWhereInput
+    orderBy?: AgentsToTargetOrderByWithAggregationInput | AgentsToTargetOrderByWithAggregationInput[]
+    by: AgentsToTargetScalarFieldEnum[] | AgentsToTargetScalarFieldEnum
+    having?: AgentsToTargetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AgentsToTargetCountAggregateInputType | true
+    _min?: AgentsToTargetMinAggregateInputType
+    _max?: AgentsToTargetMaxAggregateInputType
+  }
+
+  export type AgentsToTargetGroupByOutputType = {
+    targetId: string
+    agentId: string
+    created_at: Date
+    updated_at: Date
+    _count: AgentsToTargetCountAggregateOutputType | null
+    _min: AgentsToTargetMinAggregateOutputType | null
+    _max: AgentsToTargetMaxAggregateOutputType | null
+  }
+
+  type GetAgentsToTargetGroupByPayload<T extends AgentsToTargetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AgentsToTargetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AgentsToTargetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AgentsToTargetGroupByOutputType[P]>
+            : GetScalarType<T[P], AgentsToTargetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AgentsToTargetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    targetId?: boolean
+    agentId?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    target?: boolean | TargetDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["agentsToTarget"]>
+
+  export type AgentsToTargetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    targetId?: boolean
+    agentId?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    target?: boolean | TargetDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["agentsToTarget"]>
+
+  export type AgentsToTargetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    targetId?: boolean
+    agentId?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    target?: boolean | TargetDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["agentsToTarget"]>
+
+  export type AgentsToTargetSelectScalar = {
+    targetId?: boolean
+    agentId?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+  export type AgentsToTargetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"targetId" | "agentId" | "created_at" | "updated_at", ExtArgs["result"]["agentsToTarget"]>
+  export type AgentsToTargetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    target?: boolean | TargetDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+  }
+  export type AgentsToTargetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    target?: boolean | TargetDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+  }
+  export type AgentsToTargetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    target?: boolean | TargetDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+  }
+
+  export type $AgentsToTargetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AgentsToTarget"
+    objects: {
+      target: Prisma.$TargetPayload<ExtArgs>
+      agent: Prisma.$AgentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      targetId: string
+      agentId: string
+      created_at: Date
+      updated_at: Date
+    }, ExtArgs["result"]["agentsToTarget"]>
+    composites: {}
+  }
+
+  type AgentsToTargetGetPayload<S extends boolean | null | undefined | AgentsToTargetDefaultArgs> = $Result.GetResult<Prisma.$AgentsToTargetPayload, S>
+
+  type AgentsToTargetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AgentsToTargetFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AgentsToTargetCountAggregateInputType | true
+    }
+
+  export interface AgentsToTargetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AgentsToTarget'], meta: { name: 'AgentsToTarget' } }
+    /**
+     * Find zero or one AgentsToTarget that matches the filter.
+     * @param {AgentsToTargetFindUniqueArgs} args - Arguments to find a AgentsToTarget
+     * @example
+     * // Get one AgentsToTarget
+     * const agentsToTarget = await prisma.agentsToTarget.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AgentsToTargetFindUniqueArgs>(args: SelectSubset<T, AgentsToTargetFindUniqueArgs<ExtArgs>>): Prisma__AgentsToTargetClient<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one AgentsToTarget that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AgentsToTargetFindUniqueOrThrowArgs} args - Arguments to find a AgentsToTarget
+     * @example
+     * // Get one AgentsToTarget
+     * const agentsToTarget = await prisma.agentsToTarget.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AgentsToTargetFindUniqueOrThrowArgs>(args: SelectSubset<T, AgentsToTargetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AgentsToTargetClient<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first AgentsToTarget that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentsToTargetFindFirstArgs} args - Arguments to find a AgentsToTarget
+     * @example
+     * // Get one AgentsToTarget
+     * const agentsToTarget = await prisma.agentsToTarget.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AgentsToTargetFindFirstArgs>(args?: SelectSubset<T, AgentsToTargetFindFirstArgs<ExtArgs>>): Prisma__AgentsToTargetClient<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first AgentsToTarget that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentsToTargetFindFirstOrThrowArgs} args - Arguments to find a AgentsToTarget
+     * @example
+     * // Get one AgentsToTarget
+     * const agentsToTarget = await prisma.agentsToTarget.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AgentsToTargetFindFirstOrThrowArgs>(args?: SelectSubset<T, AgentsToTargetFindFirstOrThrowArgs<ExtArgs>>): Prisma__AgentsToTargetClient<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more AgentsToTargets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentsToTargetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AgentsToTargets
+     * const agentsToTargets = await prisma.agentsToTarget.findMany()
+     * 
+     * // Get first 10 AgentsToTargets
+     * const agentsToTargets = await prisma.agentsToTarget.findMany({ take: 10 })
+     * 
+     * // Only select the `targetId`
+     * const agentsToTargetWithTargetIdOnly = await prisma.agentsToTarget.findMany({ select: { targetId: true } })
+     * 
+     */
+    findMany<T extends AgentsToTargetFindManyArgs>(args?: SelectSubset<T, AgentsToTargetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a AgentsToTarget.
+     * @param {AgentsToTargetCreateArgs} args - Arguments to create a AgentsToTarget.
+     * @example
+     * // Create one AgentsToTarget
+     * const AgentsToTarget = await prisma.agentsToTarget.create({
+     *   data: {
+     *     // ... data to create a AgentsToTarget
+     *   }
+     * })
+     * 
+     */
+    create<T extends AgentsToTargetCreateArgs>(args: SelectSubset<T, AgentsToTargetCreateArgs<ExtArgs>>): Prisma__AgentsToTargetClient<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many AgentsToTargets.
+     * @param {AgentsToTargetCreateManyArgs} args - Arguments to create many AgentsToTargets.
+     * @example
+     * // Create many AgentsToTargets
+     * const agentsToTarget = await prisma.agentsToTarget.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AgentsToTargetCreateManyArgs>(args?: SelectSubset<T, AgentsToTargetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AgentsToTargets and returns the data saved in the database.
+     * @param {AgentsToTargetCreateManyAndReturnArgs} args - Arguments to create many AgentsToTargets.
+     * @example
+     * // Create many AgentsToTargets
+     * const agentsToTarget = await prisma.agentsToTarget.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AgentsToTargets and only return the `targetId`
+     * const agentsToTargetWithTargetIdOnly = await prisma.agentsToTarget.createManyAndReturn({
+     *   select: { targetId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AgentsToTargetCreateManyAndReturnArgs>(args?: SelectSubset<T, AgentsToTargetCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a AgentsToTarget.
+     * @param {AgentsToTargetDeleteArgs} args - Arguments to delete one AgentsToTarget.
+     * @example
+     * // Delete one AgentsToTarget
+     * const AgentsToTarget = await prisma.agentsToTarget.delete({
+     *   where: {
+     *     // ... filter to delete one AgentsToTarget
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AgentsToTargetDeleteArgs>(args: SelectSubset<T, AgentsToTargetDeleteArgs<ExtArgs>>): Prisma__AgentsToTargetClient<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one AgentsToTarget.
+     * @param {AgentsToTargetUpdateArgs} args - Arguments to update one AgentsToTarget.
+     * @example
+     * // Update one AgentsToTarget
+     * const agentsToTarget = await prisma.agentsToTarget.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AgentsToTargetUpdateArgs>(args: SelectSubset<T, AgentsToTargetUpdateArgs<ExtArgs>>): Prisma__AgentsToTargetClient<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more AgentsToTargets.
+     * @param {AgentsToTargetDeleteManyArgs} args - Arguments to filter AgentsToTargets to delete.
+     * @example
+     * // Delete a few AgentsToTargets
+     * const { count } = await prisma.agentsToTarget.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AgentsToTargetDeleteManyArgs>(args?: SelectSubset<T, AgentsToTargetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AgentsToTargets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentsToTargetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AgentsToTargets
+     * const agentsToTarget = await prisma.agentsToTarget.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AgentsToTargetUpdateManyArgs>(args: SelectSubset<T, AgentsToTargetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AgentsToTargets and returns the data updated in the database.
+     * @param {AgentsToTargetUpdateManyAndReturnArgs} args - Arguments to update many AgentsToTargets.
+     * @example
+     * // Update many AgentsToTargets
+     * const agentsToTarget = await prisma.agentsToTarget.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AgentsToTargets and only return the `targetId`
+     * const agentsToTargetWithTargetIdOnly = await prisma.agentsToTarget.updateManyAndReturn({
+     *   select: { targetId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AgentsToTargetUpdateManyAndReturnArgs>(args: SelectSubset<T, AgentsToTargetUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one AgentsToTarget.
+     * @param {AgentsToTargetUpsertArgs} args - Arguments to update or create a AgentsToTarget.
+     * @example
+     * // Update or create a AgentsToTarget
+     * const agentsToTarget = await prisma.agentsToTarget.upsert({
+     *   create: {
+     *     // ... data to create a AgentsToTarget
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AgentsToTarget we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AgentsToTargetUpsertArgs>(args: SelectSubset<T, AgentsToTargetUpsertArgs<ExtArgs>>): Prisma__AgentsToTargetClient<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of AgentsToTargets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentsToTargetCountArgs} args - Arguments to filter AgentsToTargets to count.
+     * @example
+     * // Count the number of AgentsToTargets
+     * const count = await prisma.agentsToTarget.count({
+     *   where: {
+     *     // ... the filter for the AgentsToTargets we want to count
+     *   }
+     * })
+    **/
+    count<T extends AgentsToTargetCountArgs>(
+      args?: Subset<T, AgentsToTargetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AgentsToTargetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AgentsToTarget.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentsToTargetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AgentsToTargetAggregateArgs>(args: Subset<T, AgentsToTargetAggregateArgs>): Prisma.PrismaPromise<GetAgentsToTargetAggregateType<T>>
+
+    /**
+     * Group by AgentsToTarget.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentsToTargetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AgentsToTargetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AgentsToTargetGroupByArgs['orderBy'] }
+        : { orderBy?: AgentsToTargetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AgentsToTargetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAgentsToTargetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AgentsToTarget model
+   */
+  readonly fields: AgentsToTargetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AgentsToTarget.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AgentsToTargetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    target<T extends TargetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TargetDefaultArgs<ExtArgs>>): Prisma__TargetClient<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    agent<T extends AgentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AgentDefaultArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AgentsToTarget model
+   */ 
+  interface AgentsToTargetFieldRefs {
+    readonly targetId: FieldRef<"AgentsToTarget", 'String'>
+    readonly agentId: FieldRef<"AgentsToTarget", 'String'>
+    readonly created_at: FieldRef<"AgentsToTarget", 'DateTime'>
+    readonly updated_at: FieldRef<"AgentsToTarget", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AgentsToTarget findUnique
+   */
+  export type AgentsToTargetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetInclude<ExtArgs> | null
+    /**
+     * Filter, which AgentsToTarget to fetch.
+     */
+    where: AgentsToTargetWhereUniqueInput
+  }
+
+  /**
+   * AgentsToTarget findUniqueOrThrow
+   */
+  export type AgentsToTargetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetInclude<ExtArgs> | null
+    /**
+     * Filter, which AgentsToTarget to fetch.
+     */
+    where: AgentsToTargetWhereUniqueInput
+  }
+
+  /**
+   * AgentsToTarget findFirst
+   */
+  export type AgentsToTargetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetInclude<ExtArgs> | null
+    /**
+     * Filter, which AgentsToTarget to fetch.
+     */
+    where?: AgentsToTargetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgentsToTargets to fetch.
+     */
+    orderBy?: AgentsToTargetOrderByWithRelationInput | AgentsToTargetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AgentsToTargets.
+     */
+    cursor?: AgentsToTargetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgentsToTargets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgentsToTargets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AgentsToTargets.
+     */
+    distinct?: AgentsToTargetScalarFieldEnum | AgentsToTargetScalarFieldEnum[]
+  }
+
+  /**
+   * AgentsToTarget findFirstOrThrow
+   */
+  export type AgentsToTargetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetInclude<ExtArgs> | null
+    /**
+     * Filter, which AgentsToTarget to fetch.
+     */
+    where?: AgentsToTargetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgentsToTargets to fetch.
+     */
+    orderBy?: AgentsToTargetOrderByWithRelationInput | AgentsToTargetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AgentsToTargets.
+     */
+    cursor?: AgentsToTargetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgentsToTargets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgentsToTargets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AgentsToTargets.
+     */
+    distinct?: AgentsToTargetScalarFieldEnum | AgentsToTargetScalarFieldEnum[]
+  }
+
+  /**
+   * AgentsToTarget findMany
+   */
+  export type AgentsToTargetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetInclude<ExtArgs> | null
+    /**
+     * Filter, which AgentsToTargets to fetch.
+     */
+    where?: AgentsToTargetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgentsToTargets to fetch.
+     */
+    orderBy?: AgentsToTargetOrderByWithRelationInput | AgentsToTargetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AgentsToTargets.
+     */
+    cursor?: AgentsToTargetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgentsToTargets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgentsToTargets.
+     */
+    skip?: number
+    distinct?: AgentsToTargetScalarFieldEnum | AgentsToTargetScalarFieldEnum[]
+  }
+
+  /**
+   * AgentsToTarget create
+   */
+  export type AgentsToTargetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AgentsToTarget.
+     */
+    data: XOR<AgentsToTargetCreateInput, AgentsToTargetUncheckedCreateInput>
+  }
+
+  /**
+   * AgentsToTarget createMany
+   */
+  export type AgentsToTargetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AgentsToTargets.
+     */
+    data: AgentsToTargetCreateManyInput | AgentsToTargetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AgentsToTarget createManyAndReturn
+   */
+  export type AgentsToTargetCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * The data used to create many AgentsToTargets.
+     */
+    data: AgentsToTargetCreateManyInput | AgentsToTargetCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AgentsToTarget update
+   */
+  export type AgentsToTargetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AgentsToTarget.
+     */
+    data: XOR<AgentsToTargetUpdateInput, AgentsToTargetUncheckedUpdateInput>
+    /**
+     * Choose, which AgentsToTarget to update.
+     */
+    where: AgentsToTargetWhereUniqueInput
+  }
+
+  /**
+   * AgentsToTarget updateMany
+   */
+  export type AgentsToTargetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AgentsToTargets.
+     */
+    data: XOR<AgentsToTargetUpdateManyMutationInput, AgentsToTargetUncheckedUpdateManyInput>
+    /**
+     * Filter which AgentsToTargets to update
+     */
+    where?: AgentsToTargetWhereInput
+    /**
+     * Limit how many AgentsToTargets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AgentsToTarget updateManyAndReturn
+   */
+  export type AgentsToTargetUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * The data used to update AgentsToTargets.
+     */
+    data: XOR<AgentsToTargetUpdateManyMutationInput, AgentsToTargetUncheckedUpdateManyInput>
+    /**
+     * Filter which AgentsToTargets to update
+     */
+    where?: AgentsToTargetWhereInput
+    /**
+     * Limit how many AgentsToTargets to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AgentsToTarget upsert
+   */
+  export type AgentsToTargetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AgentsToTarget to update in case it exists.
+     */
+    where: AgentsToTargetWhereUniqueInput
+    /**
+     * In case the AgentsToTarget found by the `where` argument doesn't exist, create a new AgentsToTarget with this data.
+     */
+    create: XOR<AgentsToTargetCreateInput, AgentsToTargetUncheckedCreateInput>
+    /**
+     * In case the AgentsToTarget was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AgentsToTargetUpdateInput, AgentsToTargetUncheckedUpdateInput>
+  }
+
+  /**
+   * AgentsToTarget delete
+   */
+  export type AgentsToTargetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetInclude<ExtArgs> | null
+    /**
+     * Filter which AgentsToTarget to delete.
+     */
+    where: AgentsToTargetWhereUniqueInput
+  }
+
+  /**
+   * AgentsToTarget deleteMany
+   */
+  export type AgentsToTargetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AgentsToTargets to delete
+     */
+    where?: AgentsToTargetWhereInput
+    /**
+     * Limit how many AgentsToTargets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AgentsToTarget without action
+   */
+  export type AgentsToTargetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Target
    */
 
@@ -1745,37 +2898,39 @@ export namespace Prisma {
     id: string | null
     created_at: Date | null
     updated_at: Date | null
+    root: string | null
+    name: string | null
     skip_completed: boolean | null
     max_workers: number | null
     mem_thresh: number | null
     use_history: boolean | null
     default_timeout: number | null
-    agentId: string | null
   }
 
   export type TargetMaxAggregateOutputType = {
     id: string | null
     created_at: Date | null
     updated_at: Date | null
+    root: string | null
+    name: string | null
     skip_completed: boolean | null
     max_workers: number | null
     mem_thresh: number | null
     use_history: boolean | null
     default_timeout: number | null
-    agentId: string | null
   }
 
   export type TargetCountAggregateOutputType = {
     id: number
     created_at: number
     updated_at: number
-    roots: number
+    root: number
+    name: number
     skip_completed: number
     max_workers: number
     mem_thresh: number
     use_history: number
     default_timeout: number
-    agentId: number
     _all: number
   }
 
@@ -1796,37 +2951,39 @@ export namespace Prisma {
     id?: true
     created_at?: true
     updated_at?: true
+    root?: true
+    name?: true
     skip_completed?: true
     max_workers?: true
     mem_thresh?: true
     use_history?: true
     default_timeout?: true
-    agentId?: true
   }
 
   export type TargetMaxAggregateInputType = {
     id?: true
     created_at?: true
     updated_at?: true
+    root?: true
+    name?: true
     skip_completed?: true
     max_workers?: true
     mem_thresh?: true
     use_history?: true
     default_timeout?: true
-    agentId?: true
   }
 
   export type TargetCountAggregateInputType = {
     id?: true
     created_at?: true
     updated_at?: true
-    roots?: true
+    root?: true
+    name?: true
     skip_completed?: true
     max_workers?: true
     mem_thresh?: true
     use_history?: true
     default_timeout?: true
-    agentId?: true
     _all?: true
   }
 
@@ -1920,13 +3077,13 @@ export namespace Prisma {
     id: string
     created_at: Date
     updated_at: Date
-    roots: string[]
+    root: string
+    name: string
     skip_completed: boolean
     max_workers: number
     mem_thresh: number
     use_history: boolean
     default_timeout: number
-    agentId: string
     _count: TargetCountAggregateOutputType | null
     _avg: TargetAvgAggregateOutputType | null
     _sum: TargetSumAggregateOutputType | null
@@ -1952,16 +3109,16 @@ export namespace Prisma {
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
-    roots?: boolean
+    root?: boolean
+    name?: boolean
     skip_completed?: boolean
     max_workers?: boolean
     mem_thresh?: boolean
     use_history?: boolean
     default_timeout?: boolean
-    agentId?: boolean
     crawls?: boolean | Target$crawlsArgs<ExtArgs>
     scans?: boolean | Target$scansArgs<ExtArgs>
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    agents?: boolean | Target$agentsArgs<ExtArgs>
     _count?: boolean | TargetCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["target"]>
 
@@ -1969,75 +3126,69 @@ export namespace Prisma {
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
-    roots?: boolean
+    root?: boolean
+    name?: boolean
     skip_completed?: boolean
     max_workers?: boolean
     mem_thresh?: boolean
     use_history?: boolean
     default_timeout?: boolean
-    agentId?: boolean
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["target"]>
 
   export type TargetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
-    roots?: boolean
+    root?: boolean
+    name?: boolean
     skip_completed?: boolean
     max_workers?: boolean
     mem_thresh?: boolean
     use_history?: boolean
     default_timeout?: boolean
-    agentId?: boolean
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["target"]>
 
   export type TargetSelectScalar = {
     id?: boolean
     created_at?: boolean
     updated_at?: boolean
-    roots?: boolean
+    root?: boolean
+    name?: boolean
     skip_completed?: boolean
     max_workers?: boolean
     mem_thresh?: boolean
     use_history?: boolean
     default_timeout?: boolean
-    agentId?: boolean
   }
 
-  export type TargetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "roots" | "skip_completed" | "max_workers" | "mem_thresh" | "use_history" | "default_timeout" | "agentId", ExtArgs["result"]["target"]>
+  export type TargetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "updated_at" | "root" | "name" | "skip_completed" | "max_workers" | "mem_thresh" | "use_history" | "default_timeout", ExtArgs["result"]["target"]>
   export type TargetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     crawls?: boolean | Target$crawlsArgs<ExtArgs>
     scans?: boolean | Target$scansArgs<ExtArgs>
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    agents?: boolean | Target$agentsArgs<ExtArgs>
     _count?: boolean | TargetCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type TargetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
-  }
-  export type TargetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agent?: boolean | AgentDefaultArgs<ExtArgs>
-  }
+  export type TargetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type TargetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $TargetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Target"
     objects: {
       crawls: Prisma.$CrawlPayload<ExtArgs>[]
       scans: Prisma.$ScanPayload<ExtArgs>[]
-      agent: Prisma.$AgentPayload<ExtArgs>
+      agents: Prisma.$AgentsToTargetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       created_at: Date
       updated_at: Date
-      roots: string[]
+      root: string
+      name: string
       skip_completed: boolean
       max_workers: number
       mem_thresh: number
       use_history: boolean
       default_timeout: number
-      agentId: string
     }, ExtArgs["result"]["target"]>
     composites: {}
   }
@@ -2434,7 +3585,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     crawls<T extends Target$crawlsArgs<ExtArgs> = {}>(args?: Subset<T, Target$crawlsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrawlPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     scans<T extends Target$scansArgs<ExtArgs> = {}>(args?: Subset<T, Target$scansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ScanPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
-    agent<T extends AgentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AgentDefaultArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    agents<T extends Target$agentsArgs<ExtArgs> = {}>(args?: Subset<T, Target$agentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2467,13 +3618,13 @@ export namespace Prisma {
     readonly id: FieldRef<"Target", 'String'>
     readonly created_at: FieldRef<"Target", 'DateTime'>
     readonly updated_at: FieldRef<"Target", 'DateTime'>
-    readonly roots: FieldRef<"Target", 'String[]'>
+    readonly root: FieldRef<"Target", 'String'>
+    readonly name: FieldRef<"Target", 'String'>
     readonly skip_completed: FieldRef<"Target", 'Boolean'>
     readonly max_workers: FieldRef<"Target", 'Int'>
     readonly mem_thresh: FieldRef<"Target", 'Int'>
     readonly use_history: FieldRef<"Target", 'Boolean'>
     readonly default_timeout: FieldRef<"Target", 'Int'>
-    readonly agentId: FieldRef<"Target", 'String'>
   }
     
 
@@ -2723,10 +3874,6 @@ export namespace Prisma {
      */
     data: TargetCreateManyInput | TargetCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TargetIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2797,10 +3944,6 @@ export namespace Prisma {
      * Limit how many Targets to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TargetIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -2915,6 +4058,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ScanScalarFieldEnum | ScanScalarFieldEnum[]
+  }
+
+  /**
+   * Target.agents
+   */
+  export type Target$agentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentsToTarget
+     */
+    select?: AgentsToTargetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentsToTarget
+     */
+    omit?: AgentsToTargetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentsToTargetInclude<ExtArgs> | null
+    where?: AgentsToTargetWhereInput
+    orderBy?: AgentsToTargetOrderByWithRelationInput | AgentsToTargetOrderByWithRelationInput[]
+    cursor?: AgentsToTargetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AgentsToTargetScalarFieldEnum | AgentsToTargetScalarFieldEnum[]
   }
 
   /**
@@ -3269,7 +4436,7 @@ export namespace Prisma {
   export type $AgentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Agent"
     objects: {
-      targets: Prisma.$TargetPayload<ExtArgs>[]
+      targets: Prisma.$AgentsToTargetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3679,7 +4846,7 @@ export namespace Prisma {
    */
   export interface Prisma__AgentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    targets<T extends Agent$targetsArgs<ExtArgs> = {}>(args?: Subset<T, Agent$targetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TargetPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    targets<T extends Agent$targetsArgs<ExtArgs> = {}>(args?: Subset<T, Agent$targetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentsToTargetPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4114,23 +5281,23 @@ export namespace Prisma {
    */
   export type Agent$targetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Target
+     * Select specific fields to fetch from the AgentsToTarget
      */
-    select?: TargetSelect<ExtArgs> | null
+    select?: AgentsToTargetSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Target
+     * Omit specific fields from the AgentsToTarget
      */
-    omit?: TargetOmit<ExtArgs> | null
+    omit?: AgentsToTargetOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TargetInclude<ExtArgs> | null
-    where?: TargetWhereInput
-    orderBy?: TargetOrderByWithRelationInput | TargetOrderByWithRelationInput[]
-    cursor?: TargetWhereUniqueInput
+    include?: AgentsToTargetInclude<ExtArgs> | null
+    where?: AgentsToTargetWhereInput
+    orderBy?: AgentsToTargetOrderByWithRelationInput | AgentsToTargetOrderByWithRelationInput[]
+    cursor?: AgentsToTargetWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: TargetScalarFieldEnum | TargetScalarFieldEnum[]
+    distinct?: AgentsToTargetScalarFieldEnum | AgentsToTargetScalarFieldEnum[]
   }
 
   /**
@@ -11246,17 +12413,27 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const AgentsToTargetScalarFieldEnum: {
+    targetId: 'targetId',
+    agentId: 'agentId',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type AgentsToTargetScalarFieldEnum = (typeof AgentsToTargetScalarFieldEnum)[keyof typeof AgentsToTargetScalarFieldEnum]
+
+
   export const TargetScalarFieldEnum: {
     id: 'id',
     created_at: 'created_at',
     updated_at: 'updated_at',
-    roots: 'roots',
+    root: 'root',
+    name: 'name',
     skip_completed: 'skip_completed',
     max_workers: 'max_workers',
     mem_thresh: 'mem_thresh',
     use_history: 'use_history',
-    default_timeout: 'default_timeout',
-    agentId: 'agentId'
+    default_timeout: 'default_timeout'
   };
 
   export type TargetScalarFieldEnum = (typeof TargetScalarFieldEnum)[keyof typeof TargetScalarFieldEnum]
@@ -11534,6 +12711,60 @@ export namespace Prisma {
    */
 
 
+  export type AgentsToTargetWhereInput = {
+    AND?: AgentsToTargetWhereInput | AgentsToTargetWhereInput[]
+    OR?: AgentsToTargetWhereInput[]
+    NOT?: AgentsToTargetWhereInput | AgentsToTargetWhereInput[]
+    targetId?: StringFilter<"AgentsToTarget"> | string
+    agentId?: StringFilter<"AgentsToTarget"> | string
+    created_at?: DateTimeFilter<"AgentsToTarget"> | Date | string
+    updated_at?: DateTimeFilter<"AgentsToTarget"> | Date | string
+    target?: XOR<TargetScalarRelationFilter, TargetWhereInput>
+    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+  }
+
+  export type AgentsToTargetOrderByWithRelationInput = {
+    targetId?: SortOrder
+    agentId?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    target?: TargetOrderByWithRelationInput
+    agent?: AgentOrderByWithRelationInput
+  }
+
+  export type AgentsToTargetWhereUniqueInput = Prisma.AtLeast<{
+    targetId_agentId?: AgentsToTargetTargetIdAgentIdCompoundUniqueInput
+    AND?: AgentsToTargetWhereInput | AgentsToTargetWhereInput[]
+    OR?: AgentsToTargetWhereInput[]
+    NOT?: AgentsToTargetWhereInput | AgentsToTargetWhereInput[]
+    targetId?: StringFilter<"AgentsToTarget"> | string
+    agentId?: StringFilter<"AgentsToTarget"> | string
+    created_at?: DateTimeFilter<"AgentsToTarget"> | Date | string
+    updated_at?: DateTimeFilter<"AgentsToTarget"> | Date | string
+    target?: XOR<TargetScalarRelationFilter, TargetWhereInput>
+    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+  }, "targetId_agentId">
+
+  export type AgentsToTargetOrderByWithAggregationInput = {
+    targetId?: SortOrder
+    agentId?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    _count?: AgentsToTargetCountOrderByAggregateInput
+    _max?: AgentsToTargetMaxOrderByAggregateInput
+    _min?: AgentsToTargetMinOrderByAggregateInput
+  }
+
+  export type AgentsToTargetScalarWhereWithAggregatesInput = {
+    AND?: AgentsToTargetScalarWhereWithAggregatesInput | AgentsToTargetScalarWhereWithAggregatesInput[]
+    OR?: AgentsToTargetScalarWhereWithAggregatesInput[]
+    NOT?: AgentsToTargetScalarWhereWithAggregatesInput | AgentsToTargetScalarWhereWithAggregatesInput[]
+    targetId?: StringWithAggregatesFilter<"AgentsToTarget"> | string
+    agentId?: StringWithAggregatesFilter<"AgentsToTarget"> | string
+    created_at?: DateTimeWithAggregatesFilter<"AgentsToTarget"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"AgentsToTarget"> | Date | string
+  }
+
   export type TargetWhereInput = {
     AND?: TargetWhereInput | TargetWhereInput[]
     OR?: TargetWhereInput[]
@@ -11541,65 +12772,64 @@ export namespace Prisma {
     id?: StringFilter<"Target"> | string
     created_at?: DateTimeFilter<"Target"> | Date | string
     updated_at?: DateTimeFilter<"Target"> | Date | string
-    roots?: StringNullableListFilter<"Target">
+    root?: StringFilter<"Target"> | string
+    name?: StringFilter<"Target"> | string
     skip_completed?: BoolFilter<"Target"> | boolean
     max_workers?: IntFilter<"Target"> | number
     mem_thresh?: IntFilter<"Target"> | number
     use_history?: BoolFilter<"Target"> | boolean
     default_timeout?: IntFilter<"Target"> | number
-    agentId?: StringFilter<"Target"> | string
     crawls?: CrawlListRelationFilter
     scans?: ScanListRelationFilter
-    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+    agents?: AgentsToTargetListRelationFilter
   }
 
   export type TargetOrderByWithRelationInput = {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    roots?: SortOrder
+    root?: SortOrder
+    name?: SortOrder
     skip_completed?: SortOrder
     max_workers?: SortOrder
     mem_thresh?: SortOrder
     use_history?: SortOrder
     default_timeout?: SortOrder
-    agentId?: SortOrder
     crawls?: CrawlOrderByRelationAggregateInput
     scans?: ScanOrderByRelationAggregateInput
-    agent?: AgentOrderByWithRelationInput
+    agents?: AgentsToTargetOrderByRelationAggregateInput
   }
 
   export type TargetWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    agent_target?: TargetAgent_targetCompoundUniqueInput
     AND?: TargetWhereInput | TargetWhereInput[]
     OR?: TargetWhereInput[]
     NOT?: TargetWhereInput | TargetWhereInput[]
     created_at?: DateTimeFilter<"Target"> | Date | string
     updated_at?: DateTimeFilter<"Target"> | Date | string
-    roots?: StringNullableListFilter<"Target">
+    root?: StringFilter<"Target"> | string
+    name?: StringFilter<"Target"> | string
     skip_completed?: BoolFilter<"Target"> | boolean
     max_workers?: IntFilter<"Target"> | number
     mem_thresh?: IntFilter<"Target"> | number
     use_history?: BoolFilter<"Target"> | boolean
     default_timeout?: IntFilter<"Target"> | number
-    agentId?: StringFilter<"Target"> | string
     crawls?: CrawlListRelationFilter
     scans?: ScanListRelationFilter
-    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
-  }, "id" | "agent_target">
+    agents?: AgentsToTargetListRelationFilter
+  }, "id">
 
   export type TargetOrderByWithAggregationInput = {
     id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    roots?: SortOrder
+    root?: SortOrder
+    name?: SortOrder
     skip_completed?: SortOrder
     max_workers?: SortOrder
     mem_thresh?: SortOrder
     use_history?: SortOrder
     default_timeout?: SortOrder
-    agentId?: SortOrder
     _count?: TargetCountOrderByAggregateInput
     _avg?: TargetAvgOrderByAggregateInput
     _max?: TargetMaxOrderByAggregateInput
@@ -11614,13 +12844,13 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Target"> | string
     created_at?: DateTimeWithAggregatesFilter<"Target"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"Target"> | Date | string
-    roots?: StringNullableListFilter<"Target">
+    root?: StringWithAggregatesFilter<"Target"> | string
+    name?: StringWithAggregatesFilter<"Target"> | string
     skip_completed?: BoolWithAggregatesFilter<"Target"> | boolean
     max_workers?: IntWithAggregatesFilter<"Target"> | number
     mem_thresh?: IntWithAggregatesFilter<"Target"> | number
     use_history?: BoolWithAggregatesFilter<"Target"> | boolean
     default_timeout?: IntWithAggregatesFilter<"Target"> | number
-    agentId?: StringWithAggregatesFilter<"Target"> | string
   }
 
   export type AgentWhereInput = {
@@ -11640,7 +12870,7 @@ export namespace Prisma {
     cores?: IntFilter<"Agent"> | number
     logical_cpus?: IntFilter<"Agent"> | number
     ram_gb?: FloatFilter<"Agent"> | number
-    targets?: TargetListRelationFilter
+    targets?: AgentsToTargetListRelationFilter
   }
 
   export type AgentOrderByWithRelationInput = {
@@ -11657,7 +12887,7 @@ export namespace Prisma {
     cores?: SortOrder
     logical_cpus?: SortOrder
     ram_gb?: SortOrder
-    targets?: TargetOrderByRelationAggregateInput
+    targets?: AgentsToTargetOrderByRelationAggregateInput
   }
 
   export type AgentWhereUniqueInput = Prisma.AtLeast<{
@@ -11677,7 +12907,7 @@ export namespace Prisma {
     cores?: IntFilter<"Agent"> | number
     logical_cpus?: IntFilter<"Agent"> | number
     ram_gb?: FloatFilter<"Agent"> | number
-    targets?: TargetListRelationFilter
+    targets?: AgentsToTargetListRelationFilter
   }, "id">
 
   export type AgentOrderByWithAggregationInput = {
@@ -12253,11 +13483,59 @@ export namespace Prisma {
     scanId?: StringWithAggregatesFilter<"ScanResult"> | string
   }
 
+  export type AgentsToTargetCreateInput = {
+    created_at?: Date | string
+    updated_at?: Date | string
+    target: TargetCreateNestedOneWithoutAgentsInput
+    agent: AgentCreateNestedOneWithoutTargetsInput
+  }
+
+  export type AgentsToTargetUncheckedCreateInput = {
+    targetId: string
+    agentId: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type AgentsToTargetUpdateInput = {
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    target?: TargetUpdateOneRequiredWithoutAgentsNestedInput
+    agent?: AgentUpdateOneRequiredWithoutTargetsNestedInput
+  }
+
+  export type AgentsToTargetUncheckedUpdateInput = {
+    targetId?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentsToTargetCreateManyInput = {
+    targetId: string
+    agentId: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type AgentsToTargetUpdateManyMutationInput = {
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentsToTargetUncheckedUpdateManyInput = {
+    targetId?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TargetCreateInput = {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
-    roots?: TargetCreaterootsInput | string[]
+    root: string
+    name: string
     skip_completed: boolean
     max_workers: number
     mem_thresh: number
@@ -12265,29 +13543,31 @@ export namespace Prisma {
     default_timeout: number
     crawls?: CrawlCreateNestedManyWithoutTargetInput
     scans?: ScanCreateNestedManyWithoutTargetInput
-    agent: AgentCreateNestedOneWithoutTargetsInput
+    agents?: AgentsToTargetCreateNestedManyWithoutTargetInput
   }
 
   export type TargetUncheckedCreateInput = {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
-    roots?: TargetCreaterootsInput | string[]
+    root: string
+    name: string
     skip_completed: boolean
     max_workers: number
     mem_thresh: number
     use_history: boolean
     default_timeout: number
-    agentId: string
     crawls?: CrawlUncheckedCreateNestedManyWithoutTargetInput
     scans?: ScanUncheckedCreateNestedManyWithoutTargetInput
+    agents?: AgentsToTargetUncheckedCreateNestedManyWithoutTargetInput
   }
 
   export type TargetUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    roots?: TargetUpdaterootsInput | string[]
+    root?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
     mem_thresh?: IntFieldUpdateOperationsInput | number
@@ -12295,42 +13575,44 @@ export namespace Prisma {
     default_timeout?: IntFieldUpdateOperationsInput | number
     crawls?: CrawlUpdateManyWithoutTargetNestedInput
     scans?: ScanUpdateManyWithoutTargetNestedInput
-    agent?: AgentUpdateOneRequiredWithoutTargetsNestedInput
+    agents?: AgentsToTargetUpdateManyWithoutTargetNestedInput
   }
 
   export type TargetUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    roots?: TargetUpdaterootsInput | string[]
+    root?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
     mem_thresh?: IntFieldUpdateOperationsInput | number
     use_history?: BoolFieldUpdateOperationsInput | boolean
     default_timeout?: IntFieldUpdateOperationsInput | number
-    agentId?: StringFieldUpdateOperationsInput | string
     crawls?: CrawlUncheckedUpdateManyWithoutTargetNestedInput
     scans?: ScanUncheckedUpdateManyWithoutTargetNestedInput
+    agents?: AgentsToTargetUncheckedUpdateManyWithoutTargetNestedInput
   }
 
   export type TargetCreateManyInput = {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
-    roots?: TargetCreaterootsInput | string[]
+    root: string
+    name: string
     skip_completed: boolean
     max_workers: number
     mem_thresh: number
     use_history: boolean
     default_timeout: number
-    agentId: string
   }
 
   export type TargetUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    roots?: TargetUpdaterootsInput | string[]
+    root?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
     mem_thresh?: IntFieldUpdateOperationsInput | number
@@ -12342,13 +13624,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    roots?: TargetUpdaterootsInput | string[]
+    root?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
     mem_thresh?: IntFieldUpdateOperationsInput | number
     use_history?: BoolFieldUpdateOperationsInput | boolean
     default_timeout?: IntFieldUpdateOperationsInput | number
-    agentId?: StringFieldUpdateOperationsInput | string
   }
 
   export type AgentCreateInput = {
@@ -12365,7 +13647,7 @@ export namespace Prisma {
     cores: number
     logical_cpus: number
     ram_gb: number
-    targets?: TargetCreateNestedManyWithoutAgentInput
+    targets?: AgentsToTargetCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateInput = {
@@ -12382,7 +13664,7 @@ export namespace Prisma {
     cores: number
     logical_cpus: number
     ram_gb: number
-    targets?: TargetUncheckedCreateNestedManyWithoutAgentInput
+    targets?: AgentsToTargetUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUpdateInput = {
@@ -12399,7 +13681,7 @@ export namespace Prisma {
     cores?: IntFieldUpdateOperationsInput | number
     logical_cpus?: IntFieldUpdateOperationsInput | number
     ram_gb?: FloatFieldUpdateOperationsInput | number
-    targets?: TargetUpdateManyWithoutAgentNestedInput
+    targets?: AgentsToTargetUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateInput = {
@@ -12416,7 +13698,7 @@ export namespace Prisma {
     cores?: IntFieldUpdateOperationsInput | number
     logical_cpus?: IntFieldUpdateOperationsInput | number
     ram_gb?: FloatFieldUpdateOperationsInput | number
-    targets?: TargetUncheckedUpdateManyWithoutAgentNestedInput
+    targets?: AgentsToTargetUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentCreateManyInput = {
@@ -13091,40 +14373,9 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type CrawlListRelationFilter = {
-    every?: CrawlWhereInput
-    some?: CrawlWhereInput
-    none?: CrawlWhereInput
-  }
-
-  export type ScanListRelationFilter = {
-    every?: ScanWhereInput
-    some?: ScanWhereInput
-    none?: ScanWhereInput
+  export type TargetScalarRelationFilter = {
+    is?: TargetWhereInput
+    isNot?: TargetWhereInput
   }
 
   export type AgentScalarRelationFilter = {
@@ -13132,66 +14383,30 @@ export namespace Prisma {
     isNot?: AgentWhereInput
   }
 
-  export type CrawlOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ScanOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TargetAgent_targetCompoundUniqueInput = {
+  export type AgentsToTargetTargetIdAgentIdCompoundUniqueInput = {
+    targetId: string
     agentId: string
-    roots: string[]
   }
 
-  export type TargetCountOrderByAggregateInput = {
-    id?: SortOrder
+  export type AgentsToTargetCountOrderByAggregateInput = {
+    targetId?: SortOrder
+    agentId?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    roots?: SortOrder
-    skip_completed?: SortOrder
-    max_workers?: SortOrder
-    mem_thresh?: SortOrder
-    use_history?: SortOrder
-    default_timeout?: SortOrder
+  }
+
+  export type AgentsToTargetMaxOrderByAggregateInput = {
+    targetId?: SortOrder
     agentId?: SortOrder
-  }
-
-  export type TargetAvgOrderByAggregateInput = {
-    max_workers?: SortOrder
-    mem_thresh?: SortOrder
-    default_timeout?: SortOrder
-  }
-
-  export type TargetMaxOrderByAggregateInput = {
-    id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    skip_completed?: SortOrder
-    max_workers?: SortOrder
-    mem_thresh?: SortOrder
-    use_history?: SortOrder
-    default_timeout?: SortOrder
-    agentId?: SortOrder
   }
 
-  export type TargetMinOrderByAggregateInput = {
-    id?: SortOrder
+  export type AgentsToTargetMinOrderByAggregateInput = {
+    targetId?: SortOrder
+    agentId?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    skip_completed?: SortOrder
-    max_workers?: SortOrder
-    mem_thresh?: SortOrder
-    use_history?: SortOrder
-    default_timeout?: SortOrder
-    agentId?: SortOrder
-  }
-
-  export type TargetSumOrderByAggregateInput = {
-    max_workers?: SortOrder
-    mem_thresh?: SortOrder
-    default_timeout?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -13224,6 +14439,103 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type CrawlListRelationFilter = {
+    every?: CrawlWhereInput
+    some?: CrawlWhereInput
+    none?: CrawlWhereInput
+  }
+
+  export type ScanListRelationFilter = {
+    every?: ScanWhereInput
+    some?: ScanWhereInput
+    none?: ScanWhereInput
+  }
+
+  export type AgentsToTargetListRelationFilter = {
+    every?: AgentsToTargetWhereInput
+    some?: AgentsToTargetWhereInput
+    none?: AgentsToTargetWhereInput
+  }
+
+  export type CrawlOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ScanOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AgentsToTargetOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TargetCountOrderByAggregateInput = {
+    id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    root?: SortOrder
+    name?: SortOrder
+    skip_completed?: SortOrder
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    use_history?: SortOrder
+    default_timeout?: SortOrder
+  }
+
+  export type TargetAvgOrderByAggregateInput = {
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    default_timeout?: SortOrder
+  }
+
+  export type TargetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    root?: SortOrder
+    name?: SortOrder
+    skip_completed?: SortOrder
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    use_history?: SortOrder
+    default_timeout?: SortOrder
+  }
+
+  export type TargetMinOrderByAggregateInput = {
+    id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    root?: SortOrder
+    name?: SortOrder
+    skip_completed?: SortOrder
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    use_history?: SortOrder
+    default_timeout?: SortOrder
+  }
+
+  export type TargetSumOrderByAggregateInput = {
+    max_workers?: SortOrder
+    mem_thresh?: SortOrder
+    default_timeout?: SortOrder
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -13266,16 +14578,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type TargetListRelationFilter = {
-    every?: TargetWhereInput
-    some?: TargetWhereInput
-    none?: TargetWhereInput
-  }
-
-  export type TargetOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type AgentCountOrderByAggregateInput = {
@@ -13375,6 +14677,14 @@ export namespace Prisma {
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type CrawlErrorListRelationFilter = {
     every?: CrawlErrorWhereInput
     some?: CrawlErrorWhereInput
@@ -13385,11 +14695,6 @@ export namespace Prisma {
     every?: CrawlHashWhereInput
     some?: CrawlHashWhereInput
     none?: CrawlHashWhereInput
-  }
-
-  export type TargetScalarRelationFilter = {
-    is?: TargetWhereInput
-    isNot?: TargetWhereInput
   }
 
   export type CrawlErrorOrderByRelationAggregateInput = {
@@ -13815,8 +15120,40 @@ export namespace Prisma {
     _max?: NestedEnumConfidenceFilter<$PrismaModel>
   }
 
-  export type TargetCreaterootsInput = {
-    set: string[]
+  export type TargetCreateNestedOneWithoutAgentsInput = {
+    create?: XOR<TargetCreateWithoutAgentsInput, TargetUncheckedCreateWithoutAgentsInput>
+    connectOrCreate?: TargetCreateOrConnectWithoutAgentsInput
+    connect?: TargetWhereUniqueInput
+  }
+
+  export type AgentCreateNestedOneWithoutTargetsInput = {
+    create?: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
+    connectOrCreate?: AgentCreateOrConnectWithoutTargetsInput
+    connect?: AgentWhereUniqueInput
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type TargetUpdateOneRequiredWithoutAgentsNestedInput = {
+    create?: XOR<TargetCreateWithoutAgentsInput, TargetUncheckedCreateWithoutAgentsInput>
+    connectOrCreate?: TargetCreateOrConnectWithoutAgentsInput
+    upsert?: TargetUpsertWithoutAgentsInput
+    connect?: TargetWhereUniqueInput
+    update?: XOR<XOR<TargetUpdateToOneWithWhereWithoutAgentsInput, TargetUpdateWithoutAgentsInput>, TargetUncheckedUpdateWithoutAgentsInput>
+  }
+
+  export type AgentUpdateOneRequiredWithoutTargetsNestedInput = {
+    create?: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
+    connectOrCreate?: AgentCreateOrConnectWithoutTargetsInput
+    upsert?: AgentUpsertWithoutTargetsInput
+    connect?: AgentWhereUniqueInput
+    update?: XOR<XOR<AgentUpdateToOneWithWhereWithoutTargetsInput, AgentUpdateWithoutTargetsInput>, AgentUncheckedUpdateWithoutTargetsInput>
+  }
+
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
   export type CrawlCreateNestedManyWithoutTargetInput = {
@@ -13833,10 +15170,11 @@ export namespace Prisma {
     connect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
   }
 
-  export type AgentCreateNestedOneWithoutTargetsInput = {
-    create?: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
-    connectOrCreate?: AgentCreateOrConnectWithoutTargetsInput
-    connect?: AgentWhereUniqueInput
+  export type AgentsToTargetCreateNestedManyWithoutTargetInput = {
+    create?: XOR<AgentsToTargetCreateWithoutTargetInput, AgentsToTargetUncheckedCreateWithoutTargetInput> | AgentsToTargetCreateWithoutTargetInput[] | AgentsToTargetUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: AgentsToTargetCreateOrConnectWithoutTargetInput | AgentsToTargetCreateOrConnectWithoutTargetInput[]
+    createMany?: AgentsToTargetCreateManyTargetInputEnvelope
+    connect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
   }
 
   export type CrawlUncheckedCreateNestedManyWithoutTargetInput = {
@@ -13853,17 +15191,11 @@ export namespace Prisma {
     connect?: ScanWhereUniqueInput | ScanWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
-  }
-
-  export type TargetUpdaterootsInput = {
-    set?: string[]
-    push?: string | string[]
+  export type AgentsToTargetUncheckedCreateNestedManyWithoutTargetInput = {
+    create?: XOR<AgentsToTargetCreateWithoutTargetInput, AgentsToTargetUncheckedCreateWithoutTargetInput> | AgentsToTargetCreateWithoutTargetInput[] | AgentsToTargetUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: AgentsToTargetCreateOrConnectWithoutTargetInput | AgentsToTargetCreateOrConnectWithoutTargetInput[]
+    createMany?: AgentsToTargetCreateManyTargetInputEnvelope
+    connect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -13906,12 +15238,18 @@ export namespace Prisma {
     deleteMany?: ScanScalarWhereInput | ScanScalarWhereInput[]
   }
 
-  export type AgentUpdateOneRequiredWithoutTargetsNestedInput = {
-    create?: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
-    connectOrCreate?: AgentCreateOrConnectWithoutTargetsInput
-    upsert?: AgentUpsertWithoutTargetsInput
-    connect?: AgentWhereUniqueInput
-    update?: XOR<XOR<AgentUpdateToOneWithWhereWithoutTargetsInput, AgentUpdateWithoutTargetsInput>, AgentUncheckedUpdateWithoutTargetsInput>
+  export type AgentsToTargetUpdateManyWithoutTargetNestedInput = {
+    create?: XOR<AgentsToTargetCreateWithoutTargetInput, AgentsToTargetUncheckedCreateWithoutTargetInput> | AgentsToTargetCreateWithoutTargetInput[] | AgentsToTargetUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: AgentsToTargetCreateOrConnectWithoutTargetInput | AgentsToTargetCreateOrConnectWithoutTargetInput[]
+    upsert?: AgentsToTargetUpsertWithWhereUniqueWithoutTargetInput | AgentsToTargetUpsertWithWhereUniqueWithoutTargetInput[]
+    createMany?: AgentsToTargetCreateManyTargetInputEnvelope
+    set?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    disconnect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    delete?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    connect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    update?: AgentsToTargetUpdateWithWhereUniqueWithoutTargetInput | AgentsToTargetUpdateWithWhereUniqueWithoutTargetInput[]
+    updateMany?: AgentsToTargetUpdateManyWithWhereWithoutTargetInput | AgentsToTargetUpdateManyWithWhereWithoutTargetInput[]
+    deleteMany?: AgentsToTargetScalarWhereInput | AgentsToTargetScalarWhereInput[]
   }
 
   export type CrawlUncheckedUpdateManyWithoutTargetNestedInput = {
@@ -13942,18 +15280,32 @@ export namespace Prisma {
     deleteMany?: ScanScalarWhereInput | ScanScalarWhereInput[]
   }
 
-  export type TargetCreateNestedManyWithoutAgentInput = {
-    create?: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput> | TargetCreateWithoutAgentInput[] | TargetUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: TargetCreateOrConnectWithoutAgentInput | TargetCreateOrConnectWithoutAgentInput[]
-    createMany?: TargetCreateManyAgentInputEnvelope
-    connect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+  export type AgentsToTargetUncheckedUpdateManyWithoutTargetNestedInput = {
+    create?: XOR<AgentsToTargetCreateWithoutTargetInput, AgentsToTargetUncheckedCreateWithoutTargetInput> | AgentsToTargetCreateWithoutTargetInput[] | AgentsToTargetUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: AgentsToTargetCreateOrConnectWithoutTargetInput | AgentsToTargetCreateOrConnectWithoutTargetInput[]
+    upsert?: AgentsToTargetUpsertWithWhereUniqueWithoutTargetInput | AgentsToTargetUpsertWithWhereUniqueWithoutTargetInput[]
+    createMany?: AgentsToTargetCreateManyTargetInputEnvelope
+    set?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    disconnect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    delete?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    connect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    update?: AgentsToTargetUpdateWithWhereUniqueWithoutTargetInput | AgentsToTargetUpdateWithWhereUniqueWithoutTargetInput[]
+    updateMany?: AgentsToTargetUpdateManyWithWhereWithoutTargetInput | AgentsToTargetUpdateManyWithWhereWithoutTargetInput[]
+    deleteMany?: AgentsToTargetScalarWhereInput | AgentsToTargetScalarWhereInput[]
   }
 
-  export type TargetUncheckedCreateNestedManyWithoutAgentInput = {
-    create?: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput> | TargetCreateWithoutAgentInput[] | TargetUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: TargetCreateOrConnectWithoutAgentInput | TargetCreateOrConnectWithoutAgentInput[]
-    createMany?: TargetCreateManyAgentInputEnvelope
-    connect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
+  export type AgentsToTargetCreateNestedManyWithoutAgentInput = {
+    create?: XOR<AgentsToTargetCreateWithoutAgentInput, AgentsToTargetUncheckedCreateWithoutAgentInput> | AgentsToTargetCreateWithoutAgentInput[] | AgentsToTargetUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AgentsToTargetCreateOrConnectWithoutAgentInput | AgentsToTargetCreateOrConnectWithoutAgentInput[]
+    createMany?: AgentsToTargetCreateManyAgentInputEnvelope
+    connect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+  }
+
+  export type AgentsToTargetUncheckedCreateNestedManyWithoutAgentInput = {
+    create?: XOR<AgentsToTargetCreateWithoutAgentInput, AgentsToTargetUncheckedCreateWithoutAgentInput> | AgentsToTargetCreateWithoutAgentInput[] | AgentsToTargetUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AgentsToTargetCreateOrConnectWithoutAgentInput | AgentsToTargetCreateOrConnectWithoutAgentInput[]
+    createMany?: AgentsToTargetCreateManyAgentInputEnvelope
+    connect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
   }
 
   export type EnumStatusFieldUpdateOperationsInput = {
@@ -13968,32 +15320,32 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type TargetUpdateManyWithoutAgentNestedInput = {
-    create?: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput> | TargetCreateWithoutAgentInput[] | TargetUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: TargetCreateOrConnectWithoutAgentInput | TargetCreateOrConnectWithoutAgentInput[]
-    upsert?: TargetUpsertWithWhereUniqueWithoutAgentInput | TargetUpsertWithWhereUniqueWithoutAgentInput[]
-    createMany?: TargetCreateManyAgentInputEnvelope
-    set?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
-    disconnect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
-    delete?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
-    connect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
-    update?: TargetUpdateWithWhereUniqueWithoutAgentInput | TargetUpdateWithWhereUniqueWithoutAgentInput[]
-    updateMany?: TargetUpdateManyWithWhereWithoutAgentInput | TargetUpdateManyWithWhereWithoutAgentInput[]
-    deleteMany?: TargetScalarWhereInput | TargetScalarWhereInput[]
+  export type AgentsToTargetUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<AgentsToTargetCreateWithoutAgentInput, AgentsToTargetUncheckedCreateWithoutAgentInput> | AgentsToTargetCreateWithoutAgentInput[] | AgentsToTargetUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AgentsToTargetCreateOrConnectWithoutAgentInput | AgentsToTargetCreateOrConnectWithoutAgentInput[]
+    upsert?: AgentsToTargetUpsertWithWhereUniqueWithoutAgentInput | AgentsToTargetUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: AgentsToTargetCreateManyAgentInputEnvelope
+    set?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    disconnect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    delete?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    connect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    update?: AgentsToTargetUpdateWithWhereUniqueWithoutAgentInput | AgentsToTargetUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: AgentsToTargetUpdateManyWithWhereWithoutAgentInput | AgentsToTargetUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: AgentsToTargetScalarWhereInput | AgentsToTargetScalarWhereInput[]
   }
 
-  export type TargetUncheckedUpdateManyWithoutAgentNestedInput = {
-    create?: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput> | TargetCreateWithoutAgentInput[] | TargetUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: TargetCreateOrConnectWithoutAgentInput | TargetCreateOrConnectWithoutAgentInput[]
-    upsert?: TargetUpsertWithWhereUniqueWithoutAgentInput | TargetUpsertWithWhereUniqueWithoutAgentInput[]
-    createMany?: TargetCreateManyAgentInputEnvelope
-    set?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
-    disconnect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
-    delete?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
-    connect?: TargetWhereUniqueInput | TargetWhereUniqueInput[]
-    update?: TargetUpdateWithWhereUniqueWithoutAgentInput | TargetUpdateWithWhereUniqueWithoutAgentInput[]
-    updateMany?: TargetUpdateManyWithWhereWithoutAgentInput | TargetUpdateManyWithWhereWithoutAgentInput[]
-    deleteMany?: TargetScalarWhereInput | TargetScalarWhereInput[]
+  export type AgentsToTargetUncheckedUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<AgentsToTargetCreateWithoutAgentInput, AgentsToTargetUncheckedCreateWithoutAgentInput> | AgentsToTargetCreateWithoutAgentInput[] | AgentsToTargetUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AgentsToTargetCreateOrConnectWithoutAgentInput | AgentsToTargetCreateOrConnectWithoutAgentInput[]
+    upsert?: AgentsToTargetUpsertWithWhereUniqueWithoutAgentInput | AgentsToTargetUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: AgentsToTargetCreateManyAgentInputEnvelope
+    set?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    disconnect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    delete?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    connect?: AgentsToTargetWhereUniqueInput | AgentsToTargetWhereUniqueInput[]
+    update?: AgentsToTargetUpdateWithWhereUniqueWithoutAgentInput | AgentsToTargetUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: AgentsToTargetUpdateManyWithWhereWithoutAgentInput | AgentsToTargetUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: AgentsToTargetScalarWhereInput | AgentsToTargetScalarWhereInput[]
   }
 
   export type CrawlCreateextensionsInput = {
@@ -14329,22 +15681,6 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -14362,6 +15698,17 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -14374,6 +15721,11 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -14541,6 +15893,162 @@ export namespace Prisma {
     _max?: NestedEnumConfidenceFilter<$PrismaModel>
   }
 
+  export type TargetCreateWithoutAgentsInput = {
+    id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    root: string
+    name: string
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    crawls?: CrawlCreateNestedManyWithoutTargetInput
+    scans?: ScanCreateNestedManyWithoutTargetInput
+  }
+
+  export type TargetUncheckedCreateWithoutAgentsInput = {
+    id?: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    root: string
+    name: string
+    skip_completed: boolean
+    max_workers: number
+    mem_thresh: number
+    use_history: boolean
+    default_timeout: number
+    crawls?: CrawlUncheckedCreateNestedManyWithoutTargetInput
+    scans?: ScanUncheckedCreateNestedManyWithoutTargetInput
+  }
+
+  export type TargetCreateOrConnectWithoutAgentsInput = {
+    where: TargetWhereUniqueInput
+    create: XOR<TargetCreateWithoutAgentsInput, TargetUncheckedCreateWithoutAgentsInput>
+  }
+
+  export type AgentCreateWithoutTargetsInput = {
+    id: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    name: string
+    location: string
+    status?: $Enums.Status
+    os: string
+    os_version: string
+    arch: string
+    processor: string
+    cores: number
+    logical_cpus: number
+    ram_gb: number
+  }
+
+  export type AgentUncheckedCreateWithoutTargetsInput = {
+    id: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    name: string
+    location: string
+    status?: $Enums.Status
+    os: string
+    os_version: string
+    arch: string
+    processor: string
+    cores: number
+    logical_cpus: number
+    ram_gb: number
+  }
+
+  export type AgentCreateOrConnectWithoutTargetsInput = {
+    where: AgentWhereUniqueInput
+    create: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
+  }
+
+  export type TargetUpsertWithoutAgentsInput = {
+    update: XOR<TargetUpdateWithoutAgentsInput, TargetUncheckedUpdateWithoutAgentsInput>
+    create: XOR<TargetCreateWithoutAgentsInput, TargetUncheckedCreateWithoutAgentsInput>
+    where?: TargetWhereInput
+  }
+
+  export type TargetUpdateToOneWithWhereWithoutAgentsInput = {
+    where?: TargetWhereInput
+    data: XOR<TargetUpdateWithoutAgentsInput, TargetUncheckedUpdateWithoutAgentsInput>
+  }
+
+  export type TargetUpdateWithoutAgentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    root?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+    crawls?: CrawlUpdateManyWithoutTargetNestedInput
+    scans?: ScanUpdateManyWithoutTargetNestedInput
+  }
+
+  export type TargetUncheckedUpdateWithoutAgentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    root?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    skip_completed?: BoolFieldUpdateOperationsInput | boolean
+    max_workers?: IntFieldUpdateOperationsInput | number
+    mem_thresh?: IntFieldUpdateOperationsInput | number
+    use_history?: BoolFieldUpdateOperationsInput | boolean
+    default_timeout?: IntFieldUpdateOperationsInput | number
+    crawls?: CrawlUncheckedUpdateManyWithoutTargetNestedInput
+    scans?: ScanUncheckedUpdateManyWithoutTargetNestedInput
+  }
+
+  export type AgentUpsertWithoutTargetsInput = {
+    update: XOR<AgentUpdateWithoutTargetsInput, AgentUncheckedUpdateWithoutTargetsInput>
+    create: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
+    where?: AgentWhereInput
+  }
+
+  export type AgentUpdateToOneWithWhereWithoutTargetsInput = {
+    where?: AgentWhereInput
+    data: XOR<AgentUpdateWithoutTargetsInput, AgentUncheckedUpdateWithoutTargetsInput>
+  }
+
+  export type AgentUpdateWithoutTargetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    os?: StringFieldUpdateOperationsInput | string
+    os_version?: StringFieldUpdateOperationsInput | string
+    arch?: StringFieldUpdateOperationsInput | string
+    processor?: StringFieldUpdateOperationsInput | string
+    cores?: IntFieldUpdateOperationsInput | number
+    logical_cpus?: IntFieldUpdateOperationsInput | number
+    ram_gb?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type AgentUncheckedUpdateWithoutTargetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    os?: StringFieldUpdateOperationsInput | string
+    os_version?: StringFieldUpdateOperationsInput | string
+    arch?: StringFieldUpdateOperationsInput | string
+    processor?: StringFieldUpdateOperationsInput | string
+    cores?: IntFieldUpdateOperationsInput | number
+    logical_cpus?: IntFieldUpdateOperationsInput | number
+    ram_gb?: FloatFieldUpdateOperationsInput | number
+  }
+
   export type CrawlCreateWithoutTargetInput = {
     id?: string
     created_at?: Date | string
@@ -14639,41 +16147,26 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AgentCreateWithoutTargetsInput = {
-    id: string
+  export type AgentsToTargetCreateWithoutTargetInput = {
     created_at?: Date | string
     updated_at?: Date | string
-    name: string
-    location: string
-    status?: $Enums.Status
-    os: string
-    os_version: string
-    arch: string
-    processor: string
-    cores: number
-    logical_cpus: number
-    ram_gb: number
+    agent: AgentCreateNestedOneWithoutTargetsInput
   }
 
-  export type AgentUncheckedCreateWithoutTargetsInput = {
-    id: string
+  export type AgentsToTargetUncheckedCreateWithoutTargetInput = {
+    agentId: string
     created_at?: Date | string
     updated_at?: Date | string
-    name: string
-    location: string
-    status?: $Enums.Status
-    os: string
-    os_version: string
-    arch: string
-    processor: string
-    cores: number
-    logical_cpus: number
-    ram_gb: number
   }
 
-  export type AgentCreateOrConnectWithoutTargetsInput = {
-    where: AgentWhereUniqueInput
-    create: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
+  export type AgentsToTargetCreateOrConnectWithoutTargetInput = {
+    where: AgentsToTargetWhereUniqueInput
+    create: XOR<AgentsToTargetCreateWithoutTargetInput, AgentsToTargetUncheckedCreateWithoutTargetInput>
+  }
+
+  export type AgentsToTargetCreateManyTargetInputEnvelope = {
+    data: AgentsToTargetCreateManyTargetInput | AgentsToTargetCreateManyTargetInput[]
+    skipDuplicates?: boolean
   }
 
   export type CrawlUpsertWithWhereUniqueWithoutTargetInput = {
@@ -14751,117 +16244,68 @@ export namespace Prisma {
     targetId?: StringFilter<"Scan"> | string
   }
 
-  export type AgentUpsertWithoutTargetsInput = {
-    update: XOR<AgentUpdateWithoutTargetsInput, AgentUncheckedUpdateWithoutTargetsInput>
-    create: XOR<AgentCreateWithoutTargetsInput, AgentUncheckedCreateWithoutTargetsInput>
-    where?: AgentWhereInput
+  export type AgentsToTargetUpsertWithWhereUniqueWithoutTargetInput = {
+    where: AgentsToTargetWhereUniqueInput
+    update: XOR<AgentsToTargetUpdateWithoutTargetInput, AgentsToTargetUncheckedUpdateWithoutTargetInput>
+    create: XOR<AgentsToTargetCreateWithoutTargetInput, AgentsToTargetUncheckedCreateWithoutTargetInput>
   }
 
-  export type AgentUpdateToOneWithWhereWithoutTargetsInput = {
-    where?: AgentWhereInput
-    data: XOR<AgentUpdateWithoutTargetsInput, AgentUncheckedUpdateWithoutTargetsInput>
+  export type AgentsToTargetUpdateWithWhereUniqueWithoutTargetInput = {
+    where: AgentsToTargetWhereUniqueInput
+    data: XOR<AgentsToTargetUpdateWithoutTargetInput, AgentsToTargetUncheckedUpdateWithoutTargetInput>
   }
 
-  export type AgentUpdateWithoutTargetsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    os?: StringFieldUpdateOperationsInput | string
-    os_version?: StringFieldUpdateOperationsInput | string
-    arch?: StringFieldUpdateOperationsInput | string
-    processor?: StringFieldUpdateOperationsInput | string
-    cores?: IntFieldUpdateOperationsInput | number
-    logical_cpus?: IntFieldUpdateOperationsInput | number
-    ram_gb?: FloatFieldUpdateOperationsInput | number
+  export type AgentsToTargetUpdateManyWithWhereWithoutTargetInput = {
+    where: AgentsToTargetScalarWhereInput
+    data: XOR<AgentsToTargetUpdateManyMutationInput, AgentsToTargetUncheckedUpdateManyWithoutTargetInput>
   }
 
-  export type AgentUncheckedUpdateWithoutTargetsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: StringFieldUpdateOperationsInput | string
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    os?: StringFieldUpdateOperationsInput | string
-    os_version?: StringFieldUpdateOperationsInput | string
-    arch?: StringFieldUpdateOperationsInput | string
-    processor?: StringFieldUpdateOperationsInput | string
-    cores?: IntFieldUpdateOperationsInput | number
-    logical_cpus?: IntFieldUpdateOperationsInput | number
-    ram_gb?: FloatFieldUpdateOperationsInput | number
+  export type AgentsToTargetScalarWhereInput = {
+    AND?: AgentsToTargetScalarWhereInput | AgentsToTargetScalarWhereInput[]
+    OR?: AgentsToTargetScalarWhereInput[]
+    NOT?: AgentsToTargetScalarWhereInput | AgentsToTargetScalarWhereInput[]
+    targetId?: StringFilter<"AgentsToTarget"> | string
+    agentId?: StringFilter<"AgentsToTarget"> | string
+    created_at?: DateTimeFilter<"AgentsToTarget"> | Date | string
+    updated_at?: DateTimeFilter<"AgentsToTarget"> | Date | string
   }
 
-  export type TargetCreateWithoutAgentInput = {
-    id?: string
+  export type AgentsToTargetCreateWithoutAgentInput = {
     created_at?: Date | string
     updated_at?: Date | string
-    roots?: TargetCreaterootsInput | string[]
-    skip_completed: boolean
-    max_workers: number
-    mem_thresh: number
-    use_history: boolean
-    default_timeout: number
-    crawls?: CrawlCreateNestedManyWithoutTargetInput
-    scans?: ScanCreateNestedManyWithoutTargetInput
+    target: TargetCreateNestedOneWithoutAgentsInput
   }
 
-  export type TargetUncheckedCreateWithoutAgentInput = {
-    id?: string
+  export type AgentsToTargetUncheckedCreateWithoutAgentInput = {
+    targetId: string
     created_at?: Date | string
     updated_at?: Date | string
-    roots?: TargetCreaterootsInput | string[]
-    skip_completed: boolean
-    max_workers: number
-    mem_thresh: number
-    use_history: boolean
-    default_timeout: number
-    crawls?: CrawlUncheckedCreateNestedManyWithoutTargetInput
-    scans?: ScanUncheckedCreateNestedManyWithoutTargetInput
   }
 
-  export type TargetCreateOrConnectWithoutAgentInput = {
-    where: TargetWhereUniqueInput
-    create: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput>
+  export type AgentsToTargetCreateOrConnectWithoutAgentInput = {
+    where: AgentsToTargetWhereUniqueInput
+    create: XOR<AgentsToTargetCreateWithoutAgentInput, AgentsToTargetUncheckedCreateWithoutAgentInput>
   }
 
-  export type TargetCreateManyAgentInputEnvelope = {
-    data: TargetCreateManyAgentInput | TargetCreateManyAgentInput[]
+  export type AgentsToTargetCreateManyAgentInputEnvelope = {
+    data: AgentsToTargetCreateManyAgentInput | AgentsToTargetCreateManyAgentInput[]
     skipDuplicates?: boolean
   }
 
-  export type TargetUpsertWithWhereUniqueWithoutAgentInput = {
-    where: TargetWhereUniqueInput
-    update: XOR<TargetUpdateWithoutAgentInput, TargetUncheckedUpdateWithoutAgentInput>
-    create: XOR<TargetCreateWithoutAgentInput, TargetUncheckedCreateWithoutAgentInput>
+  export type AgentsToTargetUpsertWithWhereUniqueWithoutAgentInput = {
+    where: AgentsToTargetWhereUniqueInput
+    update: XOR<AgentsToTargetUpdateWithoutAgentInput, AgentsToTargetUncheckedUpdateWithoutAgentInput>
+    create: XOR<AgentsToTargetCreateWithoutAgentInput, AgentsToTargetUncheckedCreateWithoutAgentInput>
   }
 
-  export type TargetUpdateWithWhereUniqueWithoutAgentInput = {
-    where: TargetWhereUniqueInput
-    data: XOR<TargetUpdateWithoutAgentInput, TargetUncheckedUpdateWithoutAgentInput>
+  export type AgentsToTargetUpdateWithWhereUniqueWithoutAgentInput = {
+    where: AgentsToTargetWhereUniqueInput
+    data: XOR<AgentsToTargetUpdateWithoutAgentInput, AgentsToTargetUncheckedUpdateWithoutAgentInput>
   }
 
-  export type TargetUpdateManyWithWhereWithoutAgentInput = {
-    where: TargetScalarWhereInput
-    data: XOR<TargetUpdateManyMutationInput, TargetUncheckedUpdateManyWithoutAgentInput>
-  }
-
-  export type TargetScalarWhereInput = {
-    AND?: TargetScalarWhereInput | TargetScalarWhereInput[]
-    OR?: TargetScalarWhereInput[]
-    NOT?: TargetScalarWhereInput | TargetScalarWhereInput[]
-    id?: StringFilter<"Target"> | string
-    created_at?: DateTimeFilter<"Target"> | Date | string
-    updated_at?: DateTimeFilter<"Target"> | Date | string
-    roots?: StringNullableListFilter<"Target">
-    skip_completed?: BoolFilter<"Target"> | boolean
-    max_workers?: IntFilter<"Target"> | number
-    mem_thresh?: IntFilter<"Target"> | number
-    use_history?: BoolFilter<"Target"> | boolean
-    default_timeout?: IntFilter<"Target"> | number
-    agentId?: StringFilter<"Target"> | string
+  export type AgentsToTargetUpdateManyWithWhereWithoutAgentInput = {
+    where: AgentsToTargetScalarWhereInput
+    data: XOR<AgentsToTargetUpdateManyMutationInput, AgentsToTargetUncheckedUpdateManyWithoutAgentInput>
   }
 
   export type CrawlErrorCreateWithoutCrawlInput = {
@@ -14924,28 +16368,30 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
-    roots?: TargetCreaterootsInput | string[]
+    root: string
+    name: string
     skip_completed: boolean
     max_workers: number
     mem_thresh: number
     use_history: boolean
     default_timeout: number
     scans?: ScanCreateNestedManyWithoutTargetInput
-    agent: AgentCreateNestedOneWithoutTargetsInput
+    agents?: AgentsToTargetCreateNestedManyWithoutTargetInput
   }
 
   export type TargetUncheckedCreateWithoutCrawlsInput = {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
-    roots?: TargetCreaterootsInput | string[]
+    root: string
+    name: string
     skip_completed: boolean
     max_workers: number
     mem_thresh: number
     use_history: boolean
     default_timeout: number
-    agentId: string
     scans?: ScanUncheckedCreateNestedManyWithoutTargetInput
+    agents?: AgentsToTargetUncheckedCreateNestedManyWithoutTargetInput
   }
 
   export type TargetCreateOrConnectWithoutCrawlsInput = {
@@ -15026,28 +16472,30 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    roots?: TargetUpdaterootsInput | string[]
+    root?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
     mem_thresh?: IntFieldUpdateOperationsInput | number
     use_history?: BoolFieldUpdateOperationsInput | boolean
     default_timeout?: IntFieldUpdateOperationsInput | number
     scans?: ScanUpdateManyWithoutTargetNestedInput
-    agent?: AgentUpdateOneRequiredWithoutTargetsNestedInput
+    agents?: AgentsToTargetUpdateManyWithoutTargetNestedInput
   }
 
   export type TargetUncheckedUpdateWithoutCrawlsInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    roots?: TargetUpdaterootsInput | string[]
+    root?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
     mem_thresh?: IntFieldUpdateOperationsInput | number
     use_history?: BoolFieldUpdateOperationsInput | boolean
     default_timeout?: IntFieldUpdateOperationsInput | number
-    agentId?: StringFieldUpdateOperationsInput | string
     scans?: ScanUncheckedUpdateManyWithoutTargetNestedInput
+    agents?: AgentsToTargetUncheckedUpdateManyWithoutTargetNestedInput
   }
 
   export type CrawlCreateWithoutErrorsInput = {
@@ -15340,28 +16788,30 @@ export namespace Prisma {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
-    roots?: TargetCreaterootsInput | string[]
+    root: string
+    name: string
     skip_completed: boolean
     max_workers: number
     mem_thresh: number
     use_history: boolean
     default_timeout: number
     crawls?: CrawlCreateNestedManyWithoutTargetInput
-    agent: AgentCreateNestedOneWithoutTargetsInput
+    agents?: AgentsToTargetCreateNestedManyWithoutTargetInput
   }
 
   export type TargetUncheckedCreateWithoutScansInput = {
     id?: string
     created_at?: Date | string
     updated_at?: Date | string
-    roots?: TargetCreaterootsInput | string[]
+    root: string
+    name: string
     skip_completed: boolean
     max_workers: number
     mem_thresh: number
     use_history: boolean
     default_timeout: number
-    agentId: string
     crawls?: CrawlUncheckedCreateNestedManyWithoutTargetInput
+    agents?: AgentsToTargetUncheckedCreateNestedManyWithoutTargetInput
   }
 
   export type TargetCreateOrConnectWithoutScansInput = {
@@ -15449,28 +16899,30 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    roots?: TargetUpdaterootsInput | string[]
+    root?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
     mem_thresh?: IntFieldUpdateOperationsInput | number
     use_history?: BoolFieldUpdateOperationsInput | boolean
     default_timeout?: IntFieldUpdateOperationsInput | number
     crawls?: CrawlUpdateManyWithoutTargetNestedInput
-    agent?: AgentUpdateOneRequiredWithoutTargetsNestedInput
+    agents?: AgentsToTargetUpdateManyWithoutTargetNestedInput
   }
 
   export type TargetUncheckedUpdateWithoutScansInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    roots?: TargetUpdaterootsInput | string[]
+    root?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     skip_completed?: BoolFieldUpdateOperationsInput | boolean
     max_workers?: IntFieldUpdateOperationsInput | number
     mem_thresh?: IntFieldUpdateOperationsInput | number
     use_history?: BoolFieldUpdateOperationsInput | boolean
     default_timeout?: IntFieldUpdateOperationsInput | number
-    agentId?: StringFieldUpdateOperationsInput | string
     crawls?: CrawlUncheckedUpdateManyWithoutTargetNestedInput
+    agents?: AgentsToTargetUncheckedUpdateManyWithoutTargetNestedInput
   }
 
   export type ScanCreateWithoutErrorsInput = {
@@ -15668,6 +17120,12 @@ export namespace Prisma {
     gigs_per_second: number
   }
 
+  export type AgentsToTargetCreateManyTargetInput = {
+    agentId: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
   export type CrawlUpdateWithoutTargetInput = {
     id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15781,56 +17239,46 @@ export namespace Prisma {
     gigs_per_second?: FloatFieldUpdateOperationsInput | number
   }
 
-  export type TargetCreateManyAgentInput = {
-    id?: string
+  export type AgentsToTargetUpdateWithoutTargetInput = {
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    agent?: AgentUpdateOneRequiredWithoutTargetsNestedInput
+  }
+
+  export type AgentsToTargetUncheckedUpdateWithoutTargetInput = {
+    agentId?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentsToTargetUncheckedUpdateManyWithoutTargetInput = {
+    agentId?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentsToTargetCreateManyAgentInput = {
+    targetId: string
     created_at?: Date | string
     updated_at?: Date | string
-    roots?: TargetCreaterootsInput | string[]
-    skip_completed: boolean
-    max_workers: number
-    mem_thresh: number
-    use_history: boolean
-    default_timeout: number
   }
 
-  export type TargetUpdateWithoutAgentInput = {
-    id?: StringFieldUpdateOperationsInput | string
+  export type AgentsToTargetUpdateWithoutAgentInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    roots?: TargetUpdaterootsInput | string[]
-    skip_completed?: BoolFieldUpdateOperationsInput | boolean
-    max_workers?: IntFieldUpdateOperationsInput | number
-    mem_thresh?: IntFieldUpdateOperationsInput | number
-    use_history?: BoolFieldUpdateOperationsInput | boolean
-    default_timeout?: IntFieldUpdateOperationsInput | number
-    crawls?: CrawlUpdateManyWithoutTargetNestedInput
-    scans?: ScanUpdateManyWithoutTargetNestedInput
+    target?: TargetUpdateOneRequiredWithoutAgentsNestedInput
   }
 
-  export type TargetUncheckedUpdateWithoutAgentInput = {
-    id?: StringFieldUpdateOperationsInput | string
+  export type AgentsToTargetUncheckedUpdateWithoutAgentInput = {
+    targetId?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    roots?: TargetUpdaterootsInput | string[]
-    skip_completed?: BoolFieldUpdateOperationsInput | boolean
-    max_workers?: IntFieldUpdateOperationsInput | number
-    mem_thresh?: IntFieldUpdateOperationsInput | number
-    use_history?: BoolFieldUpdateOperationsInput | boolean
-    default_timeout?: IntFieldUpdateOperationsInput | number
-    crawls?: CrawlUncheckedUpdateManyWithoutTargetNestedInput
-    scans?: ScanUncheckedUpdateManyWithoutTargetNestedInput
   }
 
-  export type TargetUncheckedUpdateManyWithoutAgentInput = {
-    id?: StringFieldUpdateOperationsInput | string
+  export type AgentsToTargetUncheckedUpdateManyWithoutAgentInput = {
+    targetId?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    roots?: TargetUpdaterootsInput | string[]
-    skip_completed?: BoolFieldUpdateOperationsInput | boolean
-    max_workers?: IntFieldUpdateOperationsInput | number
-    mem_thresh?: IntFieldUpdateOperationsInput | number
-    use_history?: BoolFieldUpdateOperationsInput | boolean
-    default_timeout?: IntFieldUpdateOperationsInput | number
   }
 
   export type CrawlErrorCreateManyCrawlInput = {
